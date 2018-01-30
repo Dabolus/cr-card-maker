@@ -19,7 +19,7 @@
         overflow-y: auto;
       }
 
-      .tabs ul {
+      .tabs > ul {
         list-style: none;
         margin: 0;
         padding: 0;
@@ -28,7 +28,7 @@
         overflow-y: hidden;
       }
 
-      .tabs li {
+      .tabs > ul > li {
         display: inline-block;
         cursor: pointer;
         text-align: center;
@@ -44,11 +44,11 @@
         transition: .2s background-color ease-in-out, .2s padding ease-in-out;
       }
 
-      .tabs li:hover {
+      .tabs > ul > li:hover {
         background-color: #82a0ba;
       }
 
-      .tabs li.selected {
+      .tabs > ul > li.selected {
         padding-top: 6px;
         background-color: #e2eff2;
         border: 3px solid #fff;
@@ -69,17 +69,17 @@
         visibility: hidden;
       }
 
-      .content ul {
+      .content > ul {
         list-style: none;
         margin: 0;
         padding: 0;
       }
 
-      .content li {
+      .content > ul > li {
         display: none;
       }
 
-      .content li.selected {
+      .content > ul > li.selected {
         display: block;
       }
 
@@ -128,6 +128,62 @@
         font-size: 20px;
         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000, 1px 2px 0 #000;
       }
+
+      .changelog-container {
+        background-color: #e2eff2;
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 8px 0;
+        width: 100vw;
+        height: calc(100vh - 123px);
+        overflow-y: auto;
+      }
+
+      .changelog-container ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .changelog-container li {
+        background-color: #fff;
+        border: 1px solid #999;
+        border-radius: 6px;
+        margin: 8px;
+        padding: 8px;
+        width: 90vw;
+        max-width: 720px;
+      }
+
+      .changelog-header {
+        overflow: hidden;
+      }
+
+      .changelog-container h3 {
+        float: left;
+        color: #999;
+        font-size: 16px;
+        font-family: 'Supercell Magic';
+        margin: 0;
+      }
+
+      .changelog-container h4 {
+        float: right;
+        color: #999;
+        font-size: 10px;
+        font-family: 'SC CCBackBeat';
+        margin: 0;
+      }
+
+      .changelog-container p {
+        color: #666;
+        font-size: 14px;
+        font-family: 'SC CCBackBeat';
+      }
     </style>
 
     <nav class="tabs">
@@ -164,7 +220,101 @@
           </div>
         </li>
         <li>bbb</li>
-        <li>ccc</li>
+        <li>
+          <div class="changelog-container">
+            <ul>
+              <li>
+                <div class="changelog-header">
+                  <h3>1.2.0</h3>
+                  <h4>2017-08-23</h4>
+                </div>
+                <p>
+                  Added Spanish translation
+                </p>
+              </li>
+              <li>
+                <div class="changelog-header">
+                  <h3>1.1.0</h3>
+                  <h4>2016-11-24</h4>
+                </div>
+                <p>
+                  Added Portuguese translation (thanks to <a href="http://supr.cl/RoyaleDicas" target="CRD">Clash Royale
+                  Dicas</a>!).<br>
+                  Started translating the whole website in the various languages.<br>
+                  Fixed the undefined type of troop problem that some users had.<br>
+                  Lots of bugfixes and improvements as suggested by you!
+                </p>
+              </li>
+              <li>
+                <div class="changelog-header">
+                  <h3>1.0.0 - Finally out of the beta!</h3>
+                  <h4>2016-11-07</h4>
+                </div>
+                <p>
+                  The created cards are now in HD.<br>
+                  You can now choose various options to save your card or to automatically upload it to imgur!<br>
+                  Resize and crop the card image as you wish!<br>
+                  Drag and drop the card properties to change their order.<br>
+                  Added Japanese translation (thanks to <a href="https://forum.supercell.com/member.php/1811075-WCF20"
+                                                           target="WCF20Profile">WCF20</a> for the translation).<br>
+                  Finally fixed the problems with Safari.<br>
+                  Many other fixes and enhancements.
+                </p>
+              </li>
+              <li>
+                <div class="changelog-header">
+                  <h3>0.4.1b</h3>
+                  <h4>2016-10-26</h4>
+                </div>
+                <p>
+                  Fixed compatibility issues with older browsers.<br>
+                  Added some missing icons.
+                </p>
+              </li>
+              <li>
+                <div class="changelog-header">
+                  <h3>0.4.0b</h3>
+                  <h4>2016-10-25</h4>
+                </div>
+                <p>Added an awesome info menu.</p>
+              </li>
+              <li>
+                <div class="changelog-header">
+                  <h3>0.3.0b</h3>
+                  <h4>2016-10-24</h4>
+                </div>
+                <p>
+                  Choose if you want the property icon background and the info button.<br>
+                  Restyled the donate process.
+                </p>
+              </li>
+              <li>
+                <div class="changelog-header">
+                  <h3>0.2.0b</h3>
+                  <h4>2016-10-23</h4>
+                </div>
+                <p>
+                  Added the possibility to switch the card language.<br>
+                  Now it is possible to export and import the cards in JSON format.
+                </p>
+              </li>
+              <li>
+                <div class="changelog-header">
+                  <h3>0.1.1b</h3>
+                  <h4>2016-10-21</h4>
+                </div>
+                <p>Icons hotfix.</p>
+              </li>
+              <li>
+                <div class="changelog-header">
+                  <h3>0.1.0b</h3>
+                  <h4>2016-10-21</h4>
+                </div>
+                <p>Initial release.</p>
+              </li>
+            </ul>
+          </div>
+        </li>
         <li>ddd</li>
         <li>eee</li>
       </ul>
@@ -200,8 +350,8 @@
         this.loadResources(
             this.resolveUrl(`locales/info-section.${this.language}.json`),
         );
-        this._tabs = this.shadowRoot.querySelectorAll('.tabs li[role=tab]');
-        this._tabViews = this.shadowRoot.querySelectorAll('.content li');
+        this._tabs = this.shadowRoot.querySelectorAll('.tabs > ul > li[role=tab]');
+        this._tabViews = this.shadowRoot.querySelectorAll('.content > ul > li');
         for (let i = 0; i < this._tabs.length; i++) {
           this._tabs[i].addEventListener('click', () => this._changeTab(i));
         }
