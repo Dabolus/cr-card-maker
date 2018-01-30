@@ -1,0 +1,104 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="style-reset.html">
+
+<dom-module id="cr-chat-message">
+  <template>
+    <!--suppress CssNoGenericFontName -->
+    <style include="style-reset">
+      :host {
+        width: 80%;
+        display: block;
+        overflow: hidden;
+        font-family: 'Supercell Magic';
+        z-index: 2;
+      }
+
+      .chat-message {
+        transform: perspective(1px);
+        background-color: #4376a9;
+        padding: 6px 16px;
+        border-radius: 12px;
+        margin: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .5);
+      }
+
+      .chat-message:before {
+        pointer-events: none;
+        position: absolute;
+        content: '';
+        border-style: solid;
+        top: 16px;
+        left: 0;
+        border-width: 10px 15px 10px 0;
+        border-color: transparent #4376a9 transparent transparent;
+        transform: translateX(-15px);
+      }
+
+      .header {
+        overflow: hidden;
+      }
+
+      .from {
+        float: left;
+        color: #6cf;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000, 1px 2px 0 #000;
+        font-size: 16px;
+      }
+
+      .role {
+        float: right;
+        color: #6cf;
+        font-size: 12px;
+      }
+
+      .content {
+        color: #fff;
+        padding: 6px;
+        font-size: 12px;
+      }
+
+      .date {
+        color: #39f;
+        font-size: 8px;
+      }
+    </style>
+
+    <div class="chat-message">
+      <div class="header">
+        <div class="from">[[from]]</div>
+        <div class="role">[[userRole]]</div>
+      </div>
+      <div class="content">
+        <slot></slot>
+      </div>
+      <div class="date">[[date]]</div>
+    </div>
+  </template>
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class CrChatMessage extends Polymer.Element {
+      static get is() {
+        return 'cr-chat-message';
+      }
+
+      static get properties() {
+        return {
+          from: {
+            type: String,
+          },
+          userRole: {
+            type: String,
+          },
+          date: {
+            type: String,
+          },
+        };
+      }
+    }
+
+    window.customElements.define(CrChatMessage.is, CrChatMessage);
+  </script>
+</dom-module>

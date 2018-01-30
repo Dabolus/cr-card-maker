@@ -1,6 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="style-reset.html">
+<link rel="import" href="cr-chat-message.html">
+<link rel="import" href="cr-chat-request.html">
 
 <dom-module id="info-section">
   <template>
@@ -58,8 +60,8 @@
         left: 0;
         width: 100vw;
         min-height: calc(100vh - 104px);
-        color: #666;
-        background-color: #e2eff2;
+        /* color: #666;
+        background-color: #e2eff2; */
       }
 
       .spacer {
@@ -80,22 +82,87 @@
       .content li.selected {
         display: block;
       }
+
+      .chat-container {
+        position: absolute;
+        top: 82px;
+        left: 0;
+        width: 100vw;
+        height: calc(100vh - 186px);
+        overflow-y: auto;
+      }
+
+      .chat {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(100vw - 32px);
+        max-width: 720px;
+        min-height: calc(100vh - 218px);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-start;
+        margin: 16px;
+      }
+
+      .chat-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        background-color: #e2eff2;
+        display: flex;
+        align-items: center;
+        z-index: 3;
+      }
+
+      .chat-header img {
+        height: 82px;
+        padding: 4px;
+        width: auto;
+      }
+
+      .chat-header h3 {
+        color: white;
+        font-size: 20px;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000, 1px 2px 0 #000;
+      }
     </style>
 
     <nav class="tabs">
       <ul role="tablist">
         <li class="spacer"></li>
-        <li role="tab" class="selected">Chat</li>
-        <li role="tab">About</li>
-        <li role="tab">Changelog</li>
-        <li role="tab">Credits</li>
-        <li role="tab">Special thanks</li>
+        <li role="tab" class="selected">[[localize('chat-tab')]]</li>
+        <li role="tab">[[localize('about-tab')]]</li>
+        <li role="tab">[[localize('changelog-tab')]]</li>
+        <li role="tab">[[localize('credits-tab')]]</li>
+        <li role="tab">[[localize('special-thanks-tab')]]</li>
         <li class="spacer"></li>
       </ul>
     </nav>
     <section class="content">
       <ul role="group">
-        <li class="selected">aaa</li>
+        <li class="selected">
+          <div class="chat-container">
+            <div class="chat">
+              <cr-chat-message from="Dabolus" user-role="[[localize('message-role')]]"
+                               date="[[localize('message-date')]]">
+                <p>[[localize('message-content.part1')]]</p>
+                <p>[[localize('message-content.part2')]]</p>
+                <p>[[localize('message-content.part3')]]</p>
+              </cr-chat-message>
+              <cr-chat-request from="Dabolus" donation-header="[[localize('donation-header')]]"
+                               donation-text="[[localize('donation-text')]]"
+                               donation-button-text="[[localize('donation-button-text')]]">
+              </cr-chat-request>
+            </div>
+          </div>
+          <div class="chat-header">
+            <img src="../assets/navbar/create.svg">
+            <h3>CRCM Clan</h3>
+          </div>
+        </li>
         <li>bbb</li>
         <li>ccc</li>
         <li>ddd</li>
@@ -131,7 +198,7 @@
       attached() {
         super.attached();
         this.loadResources(
-            this.resolveUrl(`locales/create-section.${this.language}.json`),
+            this.resolveUrl(`locales/info-section.${this.language}.json`),
         );
         this._tabs = this.shadowRoot.querySelectorAll('.tabs li[role=tab]');
         this._tabViews = this.shadowRoot.querySelectorAll('.content li');

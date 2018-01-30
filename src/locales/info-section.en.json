@@ -1,0 +1,17 @@
+{
+  "en": {
+    "chat-tab": "Chat",
+    "about-tab": "About",
+    "changelog-tab": "Changelog",
+    "credits-tab": "Credits",
+    "special-thanks-tab": "Special thanks",
+    "message-role": "Leader",
+    "message-date": "1min ago",
+    "message-content.part1": "Hi! Happy to see you here!",
+    "message-content.part2": "If you like my work, I would really love if you decide to make a small donation. Any amount will be fine!",
+    "message-content.part3": "Thanks in advance!",
+    "donation-header": "Requesting Donation!",
+    "donation-text": "You are donating:",
+    "donation-button-text": "Donate"
+  }
+}

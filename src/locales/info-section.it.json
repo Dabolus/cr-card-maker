@@ -1,0 +1,17 @@
+{
+  "it": {
+    "chat-tab": "Chat",
+    "about-tab": "Altro",
+    "changelog-tab": "Changelog",
+    "credits-tab": "Crediti",
+    "special-thanks-tab": "Ringraziamenti speciali",
+    "message-role": "Capo",
+    "message-date": "1min fa",
+    "message-content.part1": "Ciao! È bello vederti qui!",
+    "message-content.part2": "Se ti piace il mio lavoro, mi piacerebbe molto se decidessi di farmi una piccola donazione. Qualsiasi cifra andrà bene!",
+    "message-content.part3": "Grazie in anticipo!",
+    "donation-header": "Richiesta Donazione!",
+    "donation-text": "Stai donando:",
+    "donation-button-text": "Dona"
+  }
+}

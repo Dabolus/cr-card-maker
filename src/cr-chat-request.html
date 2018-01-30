@@ -1,0 +1,174 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="style-reset.html">
+
+<dom-module id="cr-chat-request">
+  <template>
+    <!--suppress CssNoGenericFontName -->
+    <style include="style-reset">
+      :host {
+        width: 100%;
+        display: block;
+        overflow: hidden;
+        font-family: 'Supercell Magic';
+        z-index: 2;
+      }
+
+      .chat-request {
+        width: calc(100% - 30px);
+        height: 144px;
+        margin: 15px;
+        background-color: #f3e2ce;
+        border-radius: 12px;
+      }
+
+      .header {
+        width: 100%;
+        border-radius: 12px 12px 0 0;
+        background-color: #e5c39b;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 8px;
+      }
+
+      .header > img {
+        height: 36px;
+        width: auto;
+      }
+
+      .from {
+        font-size: 16px;
+        color: white;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000, 1px 2px 0 #000;
+      }
+
+      .request-header {
+        font-size: 18px;
+        color: #ffc;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000, 1px 2px 0 #000;
+        margin-top: -6px;
+      }
+
+      .content {
+        position: relative;
+      }
+
+      .content > * {
+        position: absolute;
+      }
+
+      .dollar-image {
+        top: 10px;
+        left: 10px;
+        width: 50px;
+        height: 64px;
+        background: #5d712e url(../assets/dollar.svg) no-repeat center;
+        background-size: contain;
+        border: 1px solid black;
+        border-radius: 6px;
+      }
+
+      .donation-text {
+        left: 64px;
+        top: 10px;
+        font-size: 14px;
+        color: #666;
+      }
+
+      #donationInput {
+        left: 64px;
+        top: 32px;
+        width: calc(100% - 72px);
+        background-color: #d9c9cb;
+        border: 0;
+        border-radius: 6px;
+        padding: 4px;
+        color: #de9cff;
+        font-size: 16px;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000, 1px 2px 0 #000;
+      }
+
+      .donation-button {
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        padding: 0 18px;
+        background-color: #38E448;
+        border-radius: 5px;
+        border: 0;
+        box-shadow: 0 4px 0 0 #138D26, 0 0 0 1px #000, 0 4px 0 1px #000;
+        color: white;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000, 1px 2px 0 #000;
+        top: 30px;
+        right: 6px;
+      }
+
+      .donation-button:active {
+        box-shadow: 0 0 0 1px #000;
+        top: 32px;
+      }
+    </style>
+
+    <div class="chat-request">
+      <div class="header">
+        <div>
+          <div class="from">[[from]]</div>
+          <div class="request-header">[[donationHeader]]</div>
+        </div>
+        <img src="../assets/navbar/info.svg">
+      </div>
+      <div class="content">
+        <div class="dollar-image"></div>
+        <label for="donationInput" class="donation-text">[[donationText]]</label>
+        <input id="donationInput" type="number" min="0.05" step="0.05" value="{{donationAmount::input}}"
+               title="[[donationText]]">
+        <a class="donation-button" href$="[[donationLink]]" target="_blank">[[donationButtonText]]</a>
+      </div>
+    </div>
+  </template>
+  <!--suppress JSMethodCanBeStatic -->
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class CrChatRequest extends Polymer.mixinBehaviors(
+        [Polymer.AppLocalizeBehavior], Polymer.Element) {
+      static get is() {
+        return 'cr-chat-request';
+      }
+
+      static get properties() {
+        return {
+          from: {
+            type: String,
+          },
+          donationAmount: {
+            type: Number,
+            value: 5.00,
+          },
+          donationLink: {
+            type: String,
+            computed: '_generateLink(donationAmount)',
+          },
+          donationHeader: {
+            type: String,
+          },
+          donationText: {
+            type: String,
+          },
+          donationButtonText: {
+            type: String,
+          },
+        };
+      }
+
+      _generateLink(donationAmount) {
+        return `https://www.paypal.me/GiorgioGarasto/${parseFloat(donationAmount).toFixed(2)}usd`;
+      }
+    }
+
+    window.customElements.define(CrChatRequest.is, CrChatRequest);
+  </script>
+</dom-module>
