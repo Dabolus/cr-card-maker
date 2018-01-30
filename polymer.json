@@ -1,0 +1,47 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/crcm-shell.html",
+  "fragments": [
+    "src/style-reset.html",
+    "src/crcm-tutorial.html",
+    "src/cropperjs-import.html",
+    "src/photo-editor.html",
+    "src/nav-bar.html",
+    "src/sections-container.html",
+    "src/cards-section.html",
+    "src/create-section.html",
+    "src/info-section.html"
+  ],
+  "sources": [
+    "src/**/*",
+    "assets/**/*",
+    "bower.json"
+  ],
+  "extraDependencies": [
+    "manifest.json",
+    "browserconfig.xml",
+    "favicon.ico",
+    "robots.txt",
+    "humans.txt",
+    "bower_components/webcomponentsjs/*.js",
+    "bower_components/idb/lib/idb.js",
+    "bower_components/cr-fonts/fonts/*",
+    "bower_components/cr-card/assets/**/*"
+  ],
+  "lint": {
+    "rules": [
+      "polymer-2"
+    ]
+  },
+  "builds": [
+    {
+      "preset": "es5-bundled"
+    },
+    {
+      "preset": "es6-bundled"
+    },
+    {
+      "preset": "es6-unbundled"
+    }
+  ]
+}

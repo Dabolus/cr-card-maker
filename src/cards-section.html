@@ -1,0 +1,317 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/cr-button/cr-button.html">
+<link rel="import" href="style-reset.html">
+<link rel="import" href="photo-editor.html">
+
+<dom-module id="cards-section">
+  <template>
+    <!--suppress CssNoGenericFontName -->
+    <style include="style-reset">
+      :host {
+        display: block;
+        margin: 0;
+        padding: 0;
+        color: white;
+        width: 100vw;
+        height: calc(100vh - 60px);
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-items: center;
+        align-content: flex-start;
+      }
+
+      .card {
+        position: relative;
+        background: no-repeat center;
+        background-size: cover;
+        float: left;
+        width: 158px;
+        height: 202px;
+        margin: 6px;
+        cursor: pointer;
+      }
+
+      .card > * {
+        position: absolute;
+      }
+
+      .elixir {
+        top: 6px;
+        left: 0;
+        width: 40px;
+        height: 47px;
+        background: url(../bower_components/cr-card/assets/elixir.png) no-repeat center;
+        background-size: contain;
+        text-align: center;
+        font-family: 'Supercell Magic';
+        font-size: 27px;
+        line-height: 1.75;
+        color: #ffe9ff;
+        text-shadow: -2px -2px 0 #760088, 2px -2px 0 #760088, -2px 4px 0 #760088, 2px 4px 0 #760088;
+      }
+
+      .card-image {
+        position: absolute;
+        top: 13px;
+        left: 12px;
+        width: 135px;
+        height: 174px;
+        background: #fff no-repeat center;
+        background-size: contain;
+        clip-path: polygon(3% 0, 97% 0, 100% 3%, 100% 97%, 97% 100%, 3% 100%, 0 97%, 0 3%);
+      }
+
+      .card.legendary .card-image {
+        clip-path: polygon(0 10%, 50% 0, 100% 10%, 100% 90%, 50% 100%, 0 90%);
+      }
+
+      .card-image-frame {
+        background: url(../bower_components/cr-card/assets/shapes/normal.png) no-repeat center;
+        background-size: contain;
+        top: 11px;
+        left: 8px;
+        width: 145px;
+        height: 179px;
+      }
+
+      .card.rare .card-image-frame {
+        filter: drop-shadow(0 0 3px #fa6205);
+      }
+
+      .card.epic .card-image-frame {
+        filter: drop-shadow(0 0 3px #af0de0);
+      }
+
+      .card.legendary .card-image-frame {
+        top: 0;
+        left: 7px;
+        width: 145px;
+        height: 199px;
+        background-image: url(../bower_components/cr-card/assets/shapes/legendary.png);
+        filter: drop-shadow(0 0 3px #40bdc1);
+      }
+
+      .card-level {
+        left: 12px;
+        top: 153px;
+        width: 135px;
+        height: 31px;
+        padding: 0 8px;
+        font-size: 18px;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000, 1px 2px 0 #000;
+        clip-path: polygon(0 0, 100% 0, 100% 75%, 99% 87%, 95% 100%, 5% 100%, 1% 87%, 0 75%);
+      }
+
+      .card.common .card-level {
+        color: #9cf;
+        background-color: rgba(0, 0, 0, .3);
+      }
+
+      .card.rare .card-level {
+        color: #fc6;
+        background-color: rgba(250, 98, 5, .3);
+      }
+
+      .card.epic .card-level {
+        color: #f9f;
+        background-color: rgba(175, 13, 224, .3);
+      }
+
+      .card.legendary .card-level {
+        left: 17px;
+        width: 124px;
+        height: 34px;
+        color: #40bdc1;
+        background-color: rgba(64, 189, 193, .3);
+        clip-path: polygon(0 0, 100% 0, 100% 30%, 97% 42%, 53% 100%, 47% 100%, 3% 42%, 0 30%);
+      }
+
+      .buttons-container {
+        margin: 16px;
+        overflow: hidden;
+      }
+
+      #sortButton {
+        font-size: 24px;
+        background-color: #717171;
+        border: 3px solid #505050;
+        color: white;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000, 1px 2px 0 #000;
+        width: 224px;
+        line-height: 2;
+        border-radius: 8px;
+        transition: .2s background-color, .2s transform;
+        float: right;
+      }
+
+      #sortButton:hover, #sortButton:focus {
+        transform: scale(1.025);
+      }
+
+      #sortButton:active {
+        transform: scale(.975);
+        background-color: white;
+      }
+
+      @media (max-width: 768px) {
+        #sortButton {
+          font-size: 16px;
+          width: 128px;
+        }
+      }
+    </style>
+
+    <div class="buttons-container">
+      <button id="sortButton" on-click="_changeSorting">[[localize(sortButtonKey)]]</button>
+    </div>
+
+    <div class="cards-container">
+      <template is="dom-repeat" id="cardsTempl" items="[[cards]]" as="card" sort="_sortCards">
+        <div class$="card [[card.rarity]]">
+          <!-- Card image -->
+          <div class="card-image" style$="background-image: url('[[card.image]]');"></div>
+          <!-- Card image frame -->
+          <div class="card-image-frame"></div>
+          <!-- Card level -->
+          <div class="card-level">[[card.name]]</div>
+          <!-- Elixir drop -->
+          <div class="elixir">[[card.elixir]]</div>
+        </div>
+      </template>
+    </div>
+  </template>
+  <!--suppress JSMethodCanBeStatic -->
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class CardsSection extends Polymer.mixinBehaviors(
+        [Polymer.AppLocalizeBehavior], Polymer.Element) {
+      static get is() {
+        return 'cards-section';
+      }
+
+      static get properties() {
+        return {
+          language: {
+            value: () => {
+              return sessionStorage.getItem('language') || 'en';
+            },
+          },
+          cards: {
+            type: Array,
+            value: () => {
+              return [];
+            },
+          },
+          nextCardIndex: {
+            type: Number,
+            value: 1,
+          },
+          currentSorting: {
+            type: String,
+            value: () => {
+              return localStorage.getItem('cardsSorting') || 'timestamp';
+            },
+          },
+          sortButtonKey: {
+            type: String,
+            value: () => {
+              return `sort-by-${localStorage.getItem('cardsSorting') || 'timestamp'}`;
+            },
+            computed: '_getSortButtonKey(currentSorting)',
+          },
+        };
+      }
+
+      attached() {
+        super.attached();
+        this.loadResources(
+            this.resolveUrl(`locales/cards-section.${this.language}.json`),
+        );
+
+        this.dbPromise = idb.open('crcm-db', 1, (upgradeDb) => {
+          switch (upgradeDb.oldVersion) {
+            case 0: // Creating first version of the DB
+              upgradeDb.createObjectStore('cards', {
+                keyPath: 'id',
+              });
+          }
+        });
+        this.dbPromise.then((dbInstance) => {
+          const tx = dbInstance.transaction('cards');
+          tx.objectStore('cards').getAll().then((cards) => {
+            this.set('cards', cards);
+            this.nextCardIndex = cards.length + 1;
+          });
+        });
+      }
+
+      addCard(card) {
+        card.id = this.nextCardIndex;
+        card.timestamp = new Date().getTime();
+        this.push('cards', card);
+        this.dbPromise.then((dbInstance) => {
+          const tx = dbInstance.transaction('cards', 'readwrite');
+          tx.objectStore('cards').put(card);
+        });
+        this.nextCardIndex++;
+      }
+
+      _sortCards(a, b) {
+        const currentSort = this.currentSorting || 'timestamp';
+        switch (currentSort) {
+          case 'timestamp':
+            return a.timestamp - b.timestamp;
+          case 'name':
+            if (a.name.toLowerCase() < b.name.toLowerCase()) {
+              return -1;
+            }
+            if (a.name.toLowerCase() > b.name.toLowerCase()) {
+              return 1;
+            }
+            return 0;
+          case 'elixir':
+            // We put the cards that cost '?' elixir at the beginning
+            if (a.elixir === '?') {
+              return -1;
+            }
+            if (b.elixir === '?') {
+              return 1;
+            }
+            // We have to convert the elixir cost to a number to do this, otherwise strange things might happen
+            return parseInt(a.elixir) - parseInt(b.elixir);
+          case 'rarity':
+            const rarities = ['common', 'rare', 'epic', 'legendary'];
+            return rarities.indexOf(a.rarity) - rarities.indexOf(b.rarity);
+        }
+      }
+
+      _changeSorting() {
+        const sortings = ['timestamp', 'rarity', 'name', 'elixir'];
+        this.currentSorting = sortings[(sortings.indexOf(this.currentSorting) + 1) % sortings.length];
+        localStorage.setItem('cardsSorting', this.currentSorting);
+        this.$.cardsTempl.render();
+      }
+
+      _getSortButtonKey(currentSorting) {
+        return `sort-by-${currentSorting}`;
+      }
+    }
+
+    window.customElements.define(CardsSection.is, CardsSection);
+  </script>
+</dom-module>

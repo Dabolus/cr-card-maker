@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <base href="/">
+
+  <link rel="author" type="text/plain" href="humans.txt">
+  <meta name="author" content="Giorgio Garasto (Dabolus)">
+  <meta name="copyright" content="Giorgio Garasto (Dabolus)">
+  <meta name="description"
+        content="Welcome to Clash Royale Card Maker! With this simple online tool you will be able to create your own custom Clash Royale cards!">
+  <meta name="keywords" content="clash royale card maker supercell generator online free">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="194x194" href="assets/icons/favicon-194x194.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#344253">
+  <link rel="shortcut icon" href="favicon.ico">
+  <meta name="apple-mobile-web-app-title" content="Clash Royale Card Maker">
+  <meta name="application-name" content="Clash Royale Card Maker">
+  <meta name="msapplication-config" content="browserconfig.xml">
+  <meta name="theme-color" content="#344253">
+
+  <title>Clash Royale Card Maker</title>
+
+  <script>
+    window.Polymer = {rootPath: '/'};
+    // Load and register pre-caching Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js', {
+          scope: Polymer.rootPath,
+        }).then((registration) => {
+          registration.onupdatefound = () => {
+            if (navigator.serviceWorker.controller) {
+              const installing = registration.installing;
+              installing.onstatechange = () => {
+                // SW updated
+                if (installing.state === 'installed') {
+                  const shell = document.querySelector('crcm-shell');
+                  if (shell && shell.showUpdateToast)
+                    shell.showUpdateToast();
+                  else if (window.confirm('New version available. Do you want to use it now?'))
+                    window.location.reload();
+                }
+              };
+            }
+          };
+        });
+      });
+    }
+
+    /* const webpCanvas = document.createElement('canvas');
+    webpCanvas.width = 1;
+    webpCanvas.height = 1;
+    if (!!webpCanvas.toDataURL('image/webp').indexOf('data:image/webp')) {
+      const webpjs = document.createElement('script');
+      webpjs.src = 'http://libwebpjs.hohenlimburg.org/v0.6.0/js/libwebp-0.6.0.min.js';
+      webpjs.async = true;
+      document.head.appendChild(webpjs);
+    } */
+  </script>
+
+  <script async src="https://www.google-analytics.com/analytics.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      padding: 0;
+      margin: 0;
+      font-family: 'SC CCBackbeat', sans-serif;
+      line-height: 1.5;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #344253;
+    }
+  </style>
+</head>
+<body>
+<crcm-shell></crcm-shell>
+
+<!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
+<script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+<!-- Load IDB promised -->
+<script src="bower_components/idb/lib/idb.js"></script>
+
+<!-- Load your application shell -->
+<link rel="import" href="src/crcm-shell.html">
+
+<noscript>
+  Please enable JavaScript to use this website.
+</noscript>
+</body>
+</html>

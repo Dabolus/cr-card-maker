@@ -1,0 +1,24 @@
+{
+  "it": {
+    "language-label": "Lingua:",
+    "name-label": "Nome:",
+    "name-input": "Inserisci il nome",
+    "rarity-label": "Rarità:",
+    "rarity-common": "Comune",
+    "rarity-rare": "Rara",
+    "rarity-epic": "Epica",
+    "rarity-legendary": "Leggendaria",
+    "level-label": "Livello:",
+    "type-label": "Tipo:",
+    "type-troop": "Truppa",
+    "type-building": "Edificio",
+    "type-spell": "Incantesimo",
+    "cost-label": "Costo:",
+    "description-label": "Descrizione:",
+    "description-textarea": "Inserisci la descrizione...",
+    "image-label": "Immagine:",
+    "properties-label": "Proprietà:",
+    "update-notification": "App aggiornata! Premi qui per ricaricare.",
+    "no-cards": "Non hai ancora salvato nessuna carta."
+  }
+}

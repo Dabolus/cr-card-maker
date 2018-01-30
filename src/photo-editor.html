@@ -1,0 +1,155 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/cr-button/cr-button.html">
+<link rel="import" href="cropperjs-import.html">
+
+<dom-module id="photo-editor">
+  <template>
+    <style include="cropper-js">
+      :host {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 100;
+        background-color: rgba(0, 0, 0, .5);
+        opacity: 0;
+        transition: .5s opacity;
+      }
+
+      #modal {
+        width: calc(100vw - 36px);
+        height: calc(100vh - 36px);
+        border-radius: 16px;
+        border: 2px solid black;
+        margin: 16px;
+        background-color: white;
+        display: none;
+        transform: translateY(-100vh);
+        transition: .5s transform;
+      }
+
+      #cropperContainer {
+        width: calc(100vw - 36px);
+        height: calc(100vh - 124px);
+      }
+
+      .cropper-container, .cropper-drag-box, .cropper-modal, .cropper-move {
+        border-radius: 16px 16px 0 0;
+      }
+
+      #img {
+        max-width: calc(100vw - 36px);
+        max-height: calc(100vh - 124px);
+      }
+
+      #buttons {
+        width: calc(100vw - 36px);
+        height: 88px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      cr-button {
+        margin-right: 12px;
+        margin-top: -10px;
+      }
+    </style>
+
+    <div id="modal">
+      <div id="cropperContainer">
+        <img id="img">
+      </div>
+      <div id="buttons">
+        <cr-button small on-tap="_noCrop">[[localize('no-crop')]]</cr-button>
+        <cr-button small info on-tap="_crop">[[localize('crop')]]</cr-button>
+      </div>
+    </div>
+  </template>
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class PhotoEditor extends Polymer.mixinBehaviors(
+      [Polymer.AppLocalizeBehavior], Polymer.Element) {
+      static get is() {
+        return 'photo-editor';
+      }
+
+      static get properties() {
+        return {
+          language: {
+            value: () => {
+              return sessionStorage.getItem('language') || 'en';
+            },
+          },
+        };
+      }
+
+      attached() {
+        super.attached();
+        this.loadResources(
+          this.resolveUrl(`locales/photo-editor.${this.language}.json`)
+        );
+      }
+
+      show(imgSrc) {
+        this.$.img.onload = () => {
+          document.body.appendChild(this);
+          this.style.display = this.$.modal.style.display = 'block';
+          setTimeout(() => {
+            this.style.opacity = '100';
+            this.$.modal.style.transform = 'translateY(0)';
+            this._cropper = new Cropper(this.$.img, {
+              autoCropArea: 0.5,
+              dragMode: "move",
+              rotatable: false,
+              aspectRatio: 18 / 23,
+            });
+          }, 100);
+        };
+        this.$.img.src = imgSrc;
+      }
+
+      _noCrop() {
+        this.dispatchEvent(new CustomEvent('done', {
+            detail: {
+              img: this.$.img.src,
+            },
+          },
+        ));
+        this._hide();
+      }
+
+      _crop() {
+        if (this._cropper) {
+          this.dispatchEvent(new CustomEvent('done', {
+              detail: {
+                img: this._cropper.getCroppedCanvas().toDataURL(),
+              },
+            },
+          ));
+          this._hide();
+        }
+      }
+
+      _hide() {
+        if (this._cropper)
+          this._cropper.destroy();
+        this.$.img.src = null;
+        this.$.modal.style.transform = 'translateY(-100vh)';
+        this.style.opacity = '0';
+        setTimeout(() => {
+          this.style.display = this.$.modal.style.display = 'none';
+          document.body.removeChild(this);
+        }, 500);
+      }
+    }
+
+    window.customElements.define(PhotoEditor.is, PhotoEditor);
+  </script>
+</dom-module>

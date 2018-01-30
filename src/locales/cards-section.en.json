@@ -1,0 +1,8 @@
+{
+  "en": {
+    "sort-by-timestamp": "By Date",
+    "sort-by-rarity": "By Rarity",
+    "sort-by-name": "By Name",
+    "sort-by-elixir": "By Elixir"
+  }
+}

@@ -1,0 +1,780 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/cr-card/cr-card-property.html">
+<link rel="import" href="../bower_components/cr-card/cr-card.html">
+<link rel="import" href="../bower_components/cr-button/cr-button.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="style-reset.html">
+<link rel="import" href="crcm-icons.html">
+<link rel="import" href="photo-editor.html">
+<script src="../bower_components/Sortable/Sortable.js"></script>
+
+<dom-module id="create-section">
+  <template>
+    <!--suppress CssNoGenericFontName -->
+    <style include="style-reset">
+      :host {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        color: white;
+        width: 100vw;
+        height: calc(100vh - 60px);
+        overflow-x: hidden;
+        overflow-y: auto;
+        box-shadow: 0 0 10px 5px rgba(0, 0, 0, .5);
+        background: radial-gradient(transparent, rgba(0, 0, 20, .4)) no-repeat, url(../assets/bg.svg) repeat;
+        background-size: cover, 97px 100px;
+        z-index: 2;
+      }
+
+      @media (max-width: 767px), (orientation: portrait) {
+        :host {
+          --card-width: 100vw;
+          --card-height: calc((var(--card-width) / 1432 * 1794) - 24px);
+        }
+      }
+
+      @media (min-width: 768px), (orientation: landscape) {
+        :host {
+          --card-height: calc(90vh - 60px);
+          --card-width: calc(var(--card-height) / 1794 * 1432);
+        }
+      }
+
+      #menuContainer {
+        position: absolute;
+        top: -80px;
+        left: 0;
+        width: 100vw;
+        height: 108px;
+        z-index: 100;
+        transition: .2s transform;
+      }
+
+      #menuContainer.shown {
+        transform: translateY(58px);
+      }
+
+      #menu {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 80px;
+        background: linear-gradient(to bottom, #ffb271, #fc9);
+        border-bottom: 4px solid #ffb271;
+        cursor: pointer;
+      }
+
+      #menuToggle {
+        position: absolute;
+        top: 76px;
+        right: 8px;
+        width: 56px;
+        height: 28px;
+        background: linear-gradient(to bottom, #fc9, #ffb271);
+        border-left: 4px solid #ffb271;
+        border-right: 4px solid #ffb271;
+        border-bottom: 4px solid #ffb271;
+        border-radius: 0 0 18px 18px;
+        cursor: pointer;
+      }
+
+      #menuToggle:after {
+        display: block;
+        line-height: 28px;
+        font-size: 14px;
+        text-align: center;
+        text-shadow: 1px 1px 0 #bd7c5f;
+        content: '\25bc';
+      }
+
+      #menuContainer.shown #menuToggle:after {
+        content: '\25b2';
+      }
+
+      #menu ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      #menu li {
+        display: inline-block;
+        cursor: pointer;
+        width: 96px;
+        height: 80px;
+        text-align: center;
+      }
+
+      #menu button {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(to bottom, #2181fc, #1c61c3);
+        padding: 0;
+        border: 1px solid #000;
+        border-radius: 5px;
+        margin-top: 26px;
+      }
+
+      #menu div {
+        font-size: 12px;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        line-height: 1.25em;
+      }
+
+      .cr-control {
+        background-color: transparent;
+        border-radius: .2em;
+      }
+
+      select {
+        cursor: pointer;
+      }
+
+      option {
+        background-color: #545a6a;
+      }
+
+      #card {
+        position: relative;
+        margin: 12px;
+        background: url(../bower_components/cr-card/assets/bg.png) no-repeat center;
+        background-size: contain;
+        width: var(--card-width);
+        height: var(--card-height);
+      }
+
+      #card > * {
+        position: absolute;
+      }
+
+      #langListBox {
+        top: 1.5%;
+        left: 2%;
+        width: 6%;
+        height: 5%;
+      }
+
+      #header {
+        width: 80%;
+        top: 1.2%;
+        left: 10%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      #level, #cardName {
+        background-color: #545a6a;
+        border: .01em solid #404656;
+        border-bottom-width: .025em;
+        height: 1.2em;
+      }
+
+      #cardName {
+        display: inline-block;
+        line-height: 1.18em;
+        min-width: 4.2em;
+        padding: 0 .3em;
+      }
+
+      #cardName * {
+        display: inline;
+      }
+
+      #cardName br {
+        display: none;
+      }
+
+      #header, #header * {
+        font-size: calc(var(--card-width) / 18);
+        text-shadow: calc(var(--card-width) / -320) calc(var(--card-width) / -320) 0 #000,
+        calc(var(--card-width) / 320) calc(var(--card-width) / -320) 0 #000,
+        calc(var(--card-width) / -320) calc(var(--card-width) / 160) 0 #000,
+        calc(var(--card-width) / 320) calc(var(--card-width) / 160) 0 #000;
+      }
+
+      #cardImage {
+        top: 13.88%;
+        left: 8.38%;
+        width: 25.14%;
+        height: 25.64%;
+        background: #fff no-repeat center;
+        background-size: contain;
+        clip-path: polygon(3% 0, 97% 0, 100% 3%, 100% 97%, 97% 100%, 3% 100%, 0 97%, 0 3%);
+      }
+
+      #card.legendary #cardImage {
+        clip-path: polygon(0 10%, 50% 0, 100% 10%, 100% 90%, 50% 100%, 0 90%);
+      }
+
+      #cardImageFrame {
+        cursor: pointer;
+        background: url(../bower_components/cr-card/assets/shapes/normal.png) no-repeat center;
+        background-size: contain;
+        top: 13.49%;
+        left: 7.4%;
+        width: 26.96%;
+        height: 26.59%;
+      }
+
+      #card.legendary #cardImageFrame {
+        top: 11.98%;
+        left: 7.4%;
+        width: 26.96%;
+        height: 29.49%;
+        background-image: url(../bower_components/cr-card/assets/shapes/legendary.png);
+      }
+
+      #elixir {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: url(../bower_components/cr-card/assets/elixir.png) no-repeat center;
+        background-size: contain;
+        border: 0;
+        top: 12.82%;
+        left: 6.15%;
+        width: 7.33%;
+        height: 6.97%;
+        text-align: center;
+        text-align-last: center;
+      }
+
+      #elixir, #elixir option {
+        font-family: 'Supercell Magic';
+        font-size: calc(var(--card-width) / 20);
+        color: #ffe9ff;
+        text-shadow: calc(var(--card-width) / -320) calc(var(--card-width) / -320) 0 #760088,
+        calc(var(--card-width) / 320) calc(var(--card-width) / -320) 0 #760088,
+        calc(var(--card-width) / -320) calc(var(--card-width) / 160) 0 #760088,
+        calc(var(--card-width) / 320) calc(var(--card-width) / 160) 0 #760088;
+      }
+
+      #elixir option {
+        background-color: #d217dd;
+      }
+
+      #rarityTypeBox {
+        top: 11.54%;
+        left: 38.97%;
+        width: 53.98%;
+        height: 8.75%;
+        border-radius: calc(var(--card-width) / 95);
+        background-color: #666;
+      }
+
+      #card.rare #rarityTypeBox {
+        background-color: #fda03c;
+      }
+
+      #card.epic #rarityTypeBox {
+        background-color: #c3f;
+      }
+
+      #card.legendary #rarityTypeBox {
+        background-color: #65baba;
+      }
+
+      #rarityTypeBox > * {
+        position: absolute;
+      }
+
+      .rarity-type-label {
+        top: 5%;
+        color: white;
+        font-size: calc(var(--card-width) / 30);
+      }
+
+      #rarityLabel {
+        left: 2%;
+      }
+
+      #typeLabel {
+        left: 52%;
+      }
+
+      .rarity-type-select {
+        top: 55%;
+        font-size: calc(var(--card-width) / 35);
+        border: 0;
+        border-radius: calc(var(--card-width) / 150);
+        padding: calc(var(--card-width) / 300) 0;
+      }
+
+      #raritySelect {
+        left: 1%;
+      }
+
+      #typeSelect {
+        left: 51%;
+      }
+
+      .rarity-type-select, .rarity-type-select option {
+        color: white;
+        text-shadow: calc(var(--card-width) / -480) calc(var(--card-width) / -480) 0 #000,
+        calc(var(--card-width) / 480) calc(var(--card-width) / -480) 0 #000,
+        calc(var(--card-width) / -480) calc(var(--card-width) / 240) 0 #000,
+        calc(var(--card-width) / 480) calc(var(--card-width) / 240) 0 #000;
+        background-color: #505050;
+      }
+
+      #card.rare .rarity-type-select, #card.rare .rarity-type-select option {
+        background-color: #fa6205;
+      }
+
+      #card.epic .rarity-type-select, #card.epic .rarity-type-select option {
+        background-color: #af0de0;
+      }
+
+      #card.legendary .rarity-type-select, #card.legendary .rarity-type-select option {
+        background-color: #40bdc1;
+      }
+
+      #description {
+        color: #333;
+        font-family: 'SC CCBackBeat';
+        font-size: calc(var(--card-width) / 36);
+        text-align: center;
+        top: 24.53%;
+        left: 41.13%;
+        width: 49.02%;
+        height: 18.5%;
+        background-color: #e6e6e6;
+        border: .01em solid #d7d7d7;
+        border-bottom-width: .1em;
+        border-radius: .75em;
+        resize: none;
+      }
+
+      #properties {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        top: 49.55%;
+        left: 9.29%;
+        width: 80.66%;
+        height: 46.27%;
+      }
+
+      .property {
+        position: absolute;
+        width: 49.09%;
+        height: 13.25%;
+        background-color: #c2d3db;
+        font-family: 'Supercell Magic';
+      }
+
+      .property * {
+        position: absolute;
+      }
+
+      .property .property-title {
+        top: 3%;
+        left: 19.22%;
+        font-size: calc(var(--card-width) / 40);
+        color: #333;
+      }
+
+      .property .property-value {
+        top: 35%;
+        left: 19.22%;
+        font-size: calc(var(--card-width) / 30);
+        color: white;
+        text-shadow: calc(var(--card-width) / -640) calc(var(--card-width) / -640) 0 #000,
+        calc(var(--card-width) / 640) calc(var(--card-width) / -640) 0 #000,
+        calc(var(--card-width) / -640) calc(var(--card-width) / 320) 0 #000,
+        calc(var(--card-width) / 640) calc(var(--card-width) / 320) 0 #000;
+      }
+
+      .property .icon-background {
+        top: 7.27%;
+        left: 1.23%;
+        width: 16.75%;
+        height: 86.36%;
+        border-radius: 5%;
+        background-color: #575e62;
+      }
+
+      .property:nth-child(odd) {
+        left: 0;
+      }
+
+      .property:nth-child(even) {
+        left: 50.91%;
+      }
+
+      .property:nth-child(1), .property:nth-child(2) {
+        top: 0;
+      }
+
+      .property:nth-child(3), .property:nth-child(4) {
+        top: 14.46%;
+        background-color: #fdfefe;
+      }
+
+      .property:nth-child(5), .property:nth-child(6) {
+        top: 28.92%;
+      }
+
+      .property:nth-child(7), .property:nth-child(8) {
+        top: 43.37%;
+        background-color: #fdfefe;
+      }
+
+      .property:nth-child(9), .property:nth-child(10) {
+        top: 57.83%;
+      }
+
+      .property:nth-child(11), .property:nth-child(12) {
+        top: 72.29%;
+        background-color: #fdfefe;
+      }
+
+      .property:nth-child(13), .property:nth-child(14) {
+        top: 86.75%;
+      }
+    </style>
+
+    <div id="menuContainer">
+      <nav id="menu">
+        <ul role="toolbar">
+          <li>
+            <button on-click="_saveCard">
+              <iron-icon icon="crcm-icons:save"></iron-icon>
+            </button>
+            <div>Save</div>
+          </li>
+          <li>
+            <button on-click="_downloadCard">
+              <iron-icon icon="crcm-icons:export"></iron-icon>
+            </button>
+            <div>Download</div>
+          </li>
+          <li>
+            <button on-click="_openImportDialog">
+              <iron-icon icon="crcm-icons:import"></iron-icon>
+            </button>
+            <input type="file" id="import" accept=".card" on-change="_importCard" hidden>
+            <div>Import</div>
+          </li>
+          <li>
+            <button on-click="_exportCard">
+              <iron-icon icon="crcm-icons:export"></iron-icon>
+            </button>
+            <div>Export</div>
+          </li>
+        </ul>
+      </nav>
+      <div id="menuToggle" on-click="_toggleMenu"></div>
+    </div>
+
+    <div id="card" class$="[[cardRarity]]">
+      <!-- Language -->
+      <div id="langListBox"></div>
+      <!-- Card header -->
+      <div id="header">
+        Level&nbsp;
+        <select class="cr-control" id="level" value="{{cardLevel::change}}" title="[[localize('level-label')]]">
+          <template is="dom-repeat" items="[[availableLevels]]" as="level">
+            <option value="[[level]]">[[level]]</option>
+          </template>
+        </select>&nbsp;
+        <span id="cardName" text-content="{{cardName::input}}" contenteditable></span>
+      </div>
+      <!-- Card image -->
+      <div id="cardImage" style$="background-image: url('[[cardImage]]');"></div>
+      <photo-editor id="editor" on-done="_setNewImage"></photo-editor>
+      <input id="cardImageInput" type="file" accept="image/*" on-change="_imageChanged" hidden>
+      <!-- Card image frame -->
+      <div id="cardImageFrame" on-click="_openCardImageDialog"></div>
+      <select id="elixir" value="{{cardCost::change}}" title="Elixir cost">
+        <option value="?">?</option>
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+      <!-- Rarity/Type box -->
+      <div id="rarityTypeBox">
+        <label class="rarity-type-label" id="rarityLabel" for="raritySelect">[[localize('rarity-label')]]</label>
+        <select class="cr-control rarity-type-select" id="raritySelect" value="{{cardRarity::change}}">
+          <option value="common">[[localize('rarity-common')]]</option>
+          <option value="rare">[[localize('rarity-rare')]]</option>
+          <option value="epic">[[localize('rarity-epic')]]</option>
+          <option value="legendary">[[localize('rarity-legendary')]]</option>
+        </select>
+        <label class="rarity-type-label" id="typeLabel" for="typeSelect">[[localize('type-label')]]</label>
+        <select class="cr-control rarity-type-select" id="typeSelect" value="{{cardType::change}}">
+          <option value="troop">[[localize('type-troop')]]</option>
+          <option value="building">[[localize('type-building')]]</option>
+          <option value="spell">[[localize('type-spell')]]</option>
+        </select>
+      </div>
+      <!-- Description -->
+      <textarea id="description" value="{{cardDescription::input}}"
+                title="[[localize('description-label')]]"></textarea>
+      <ul id="properties">
+        <template is="dom-repeat" items="[[cardProperties]]" as="property">
+          <li class="property">
+            <template is="dom-if" if="[[property.showIconBackground]]">
+              <div class="icon-background"></div>
+            </template>
+            <div class="icon"
+                 style$="background-image: url(bower_components/cr-card/assets/icons/[[property.icon]].png);"></div>
+            <div class="property-title" text-content="{{property.title::input}}" contenteditable></div>
+            <div class="property-value" text-content="{{property.value::input}}" contenteditable></div>
+            <template is="dom-if" if="[[property.showInfoButton">
+              <div class="info-button"></div>
+            </template>
+          </li>
+        </template>
+      </ul>
+    </div>
+    <cr-card
+        hidden
+        id="cardGenerator"
+        language="[[cardLanguage]]"
+        card-name="[[cardName]]"
+        rarity="[[cardRarity]]"
+        level="[[cardLevel]]"
+        type="[[cardType]]"
+        elixir-cost="[[cardCost]]"
+        description="[[cardDescription]]"
+        image="[[cardImage]]">
+      <template is="dom-repeat" items="[[cardProperties]]" as="property">
+        <cr-card-property
+            title="[[property.title]]"
+            value="[[property.value]]"
+            show-icon-background="[[property.showIconBackground]]"
+            show-info-button="[[property.showInfoButton]]"
+            icon="[[property.icon]]">
+        </cr-card-property>
+      </template>
+    </cr-card>
+  </template>
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class CreateSection extends Polymer.mixinBehaviors(
+      [Polymer.AppLocalizeBehavior], Polymer.Element) {
+      static get is() {
+        return 'create-section';
+      }
+
+      static get properties() {
+        return {
+          language: {
+            value: () => {
+              return sessionStorage.getItem('language') || 'en';
+            },
+          },
+          cardLanguages: {
+            type: Object,
+            value: CrCard.properties._locales.value(),
+          },
+          cardLanguage: {
+            type: String,
+            value: 'en',
+          },
+          cardName: {
+            type: String,
+            value: '',
+          },
+          cardRarity: {
+            type: String,
+            value: 'common',
+          },
+          cardLevel: {
+            type: Number,
+            value: 1,
+          },
+          cardType: {
+            type: String,
+            value: 'troop',
+          },
+          cardCost: {
+            type: String,
+            value: '?',
+          },
+          cardImage: {
+            type: String,
+            value: `${Polymer.rootPath}assets/placeholder.svg`,
+          },
+          cardProperties: {
+            type: Array,
+            value: () => {
+              return [{
+                title: 'Test1',
+                value: 100,
+                showIconBackground: true,
+                showInfoButton: true,
+                icon: 'hp',
+              }, {
+                title: 'Test2',
+                value: 200,
+                showIconBackground: true,
+                showInfoButton: true,
+                icon: 'hp',
+              }, {
+                title: 'Test3',
+                value: 300,
+                showIconBackground: true,
+                showInfoButton: true,
+                icon: 'hp',
+              }, {
+                title: 'Test4',
+                value: 400,
+                showIconBackground: false,
+                showInfoButton: true,
+                icon: 'hp',
+              }, {
+                title: 'Test5',
+                value: 100,
+                showIconBackground: true,
+                showInfoButton: true,
+                icon: 'hp',
+              }, {
+                title: 'Test6',
+                value: 200,
+                showIconBackground: true,
+                showInfoButton: true,
+                icon: 'hp',
+              }, {
+                title: 'Test7',
+                value: 300,
+                showIconBackground: true,
+                showInfoButton: true,
+                icon: 'hp',
+              }, {
+                title: 'Test8',
+                value: 400,
+                showIconBackground: false,
+                showInfoButton: true,
+                icon: 'hp',
+              }];
+            },
+          },
+          cardDescription: {
+            type: String,
+            value: '',
+          },
+          availableLevels: {
+            type: Array,
+            computed: '_computeAvailableLevels(cardRarity)',
+          }
+        };
+      }
+
+      attached() {
+        super.attached();
+        this.loadResources(
+          this.resolveUrl(`locales/create-section.${this.language}.json`)
+        );
+        Sortable.create(this.$.properties, {
+          animation: 200,
+          // onSort: (e) => this._updatePropertiesSorting(e),
+        });
+        document.addEventListener('click', (e) => {
+          const target = e.path ? e.path[0] : (e.b ? e.b[0] : e.explicitOriginalTarget || e.__target);
+          if (target.id !== 'menuToggle')
+            this.$.menuContainer.classList.remove('shown')
+        });
+      }
+
+      _computeAvailableLevels(rarity) {
+        const oldLevel = this.cardLevel;
+        let maxLevel = 13;
+        switch (rarity) {
+          case 'rare':
+            maxLevel = 11;
+            break;
+          case 'epic':
+            maxLevel = 8;
+            break;
+          case 'legendary':
+            maxLevel = 5;
+            break;
+        }
+        let arr = new Array(maxLevel);
+        for (let i = 0; i < maxLevel; i++)
+          arr[i] = i + 1;
+        this.cardLevel = Math.min(oldLevel, maxLevel);
+        return arr;
+      }
+
+      _imageChanged() {
+        const file = this.$.cardImageInput.files[0];
+        const reader = new FileReader();
+        reader.addEventListener('loadend', () => {
+          this.$.editor.show(reader.result);
+          this.$.cardImageInput.value = null;
+        });
+        if (file && file.type.startsWith('image')) {
+          this._filename = file.name;
+          reader.readAsDataURL(file);
+        }
+      }
+
+      _setNewImage(res) {
+        if (res && res.detail && res.detail.img) {
+          this.cardImage = res.detail.img;
+        }
+      }
+
+      _toggleMenu() {
+        this.$.menuContainer.classList.toggle('shown');
+      }
+
+      _saveCard() {
+        this.$.cardGenerator.toJSON().then((card) => {
+          this.dispatchEvent(new CustomEvent('cardsaved', {detail: card}))
+        });
+      }
+
+      _downloadCard() {
+        this.$.cardGenerator.save();
+      }
+
+      _exportCard() {
+        this.$.cardGenerator.exportFile();
+      }
+
+      _openImportDialog() {
+        this.$.import.value = null;
+        this.$.import.click();
+      }
+
+      _importCard() {
+        if (!this.$.import.files || this.$.import.files.length !== 1)
+          return;
+        this.$.cardGenerator.importFile(this.$.import.files[0]).catch(console.error);
+      }
+
+      _openCardImageDialog() {
+        this.$.cardImageInput.value = null;
+        this.$.cardImageInput.click();
+      }
+    }
+
+    window.customElements.define(CreateSection.is, CreateSection);
+  </script>
+</dom-module>

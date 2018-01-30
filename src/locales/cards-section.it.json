@@ -1,0 +1,8 @@
+{
+  "it": {
+    "sort-by-timestamp": "Per data",
+    "sort-by-rarity": "Per rarità",
+    "sort-by-name": "Per nome",
+    "sort-by-elixir": "Per elisir"
+  }
+}

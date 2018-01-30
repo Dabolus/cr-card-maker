@@ -1,0 +1,24 @@
+{
+  "en": {
+    "language-label": "Language:",
+    "name-label": "Name:",
+    "name-input": "Enter name",
+    "rarity-label": "Rarity:",
+    "rarity-common": "Common",
+    "rarity-rare": "Rare",
+    "rarity-epic": "Epic",
+    "rarity-legendary": "Legendary",
+    "level-label": "Level:",
+    "type-label": "Type:",
+    "type-troop": "Troop",
+    "type-building": "Building",
+    "type-spell": "Spell",
+    "cost-label": "Elixir cost:",
+    "description-label": "Description:",
+    "description-textarea": "Enter description...",
+    "image-label": "Image:",
+    "properties-label": "Properties:",
+    "update-notification": "App updated! Press here to reload.",
+    "no-cards": "You didn't save any card yet."
+  }
+}

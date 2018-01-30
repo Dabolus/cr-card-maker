@@ -1,0 +1,237 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/cr-fonts/cr-fonts.html">
+<link rel="import" href="../bower_components/cr-toast/cr-toast.html">
+<link rel="import" href="sections-container.html">
+<link rel="import" href="style-reset.html">
+<link rel="import" href="nav-bar.html">
+
+
+<dom-module id="crcm-tutorial">
+  <template>
+    <!--suppress CssNoGenericFontName -->
+    <style include="style-reset">
+      :host, #tutorialOverlay, #tutorialOverlay svg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 20;
+        cursor: pointer;
+      }
+
+      :host {
+        display: none;
+      }
+
+      :host([shown]) {
+        display: block;
+      }
+
+      #tutorialOverlay {
+        opacity: 0;
+        transition: .2s opacity;
+      }
+
+      #tutorialOverlay.shown {
+        opacity: 1;
+      }
+
+      #tutorialOverlay circle {
+        transition: .3s all;
+      }
+
+      #tutorialText {
+        position: absolute;
+        font-family: 'Supercell Magic';
+        font-size: 20px;
+        color: #fff;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+        z-index: 21;
+        width: 100vw;
+        line-height: 100%;
+        padding: 10px;
+      }
+
+      #tutorialOverlay.step1 #tutorialText {
+        top: 50vh;
+        left: 0;
+        height: 100vh;
+        text-align: center;
+      }
+
+      #tutorialOverlay.step2 #tutorialText {
+        bottom: 70px;
+        left: 0;
+        text-align: center;
+      }
+
+      #tutorialOverlay.step3 #tutorialText {
+        bottom: 70px;
+        text-align: left;
+      }
+
+      #tutorialOverlay.step4 #tutorialText {
+        bottom: 70px;
+        text-align: right;
+      }
+
+      #tutorialOverlay.step5 #tutorialText {
+        top: 70px;
+        text-align: right;
+      }
+
+      #tutorialOverlay.step6 #tutorialText {
+        top: 50vh;
+        left: 0;
+        height: 100vh;
+        text-align: center;
+      }
+    </style>
+
+    <div id="tutorialOverlay" class$="[[tutorialOverlayClass]]">
+      <svg>
+        <mask id="mask">
+          <rect x="0" y="0" width$="[[overlayWidth]]" height$="[[overlayHeight]]" fill="white"></rect>
+          <circle id="clipCircle" fill="black" cx$="[[tutorialCircleX]]" cy$="[[tutorialCircleY]]"
+                  r$="[[tutorialCircleR]]"></circle>
+        </mask>
+        <rect fill="rgba(0, 0, 0, .75)" x="0" y="0" width$="[[overlayWidth]]" height$="[[overlayHeight]]" mask="url(#mask)"></rect>
+      </svg>
+      <div id="tutorialText">[[localize(stepKey)]]</div>
+    </div>
+  </template>
+
+  <!--suppress JSMethodCanBeStatic -->
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class CRCMTutorial extends Polymer.mixinBehaviors(
+      [Polymer.AppLocalizeBehavior], Polymer.Element) {
+      static get is() {
+        return 'crcm-tutorial';
+      }
+
+      static get properties() {
+        return {
+          language: {
+            value: () => {
+              return sessionStorage.getItem('language') || 'en';
+            },
+          },
+          autoStart: {
+            type: Boolean,
+            value: false,
+          },
+          overlayWidth: {
+            type: Number,
+            value: window.innerWidth,
+          },
+          overlayHeight: {
+            type: Number,
+            value: window.innerHeight,
+          },
+          tutorialCircleX: {
+            type: Number,
+            value: 0,
+          },
+          tutorialCircleY: {
+            type: Number,
+            value: 0,
+          },
+          tutorialCircleR: {
+            type: Number,
+            value: 0,
+          },
+          tutorialText: {
+            type: Number,
+            value: '',
+          },
+          currentStep: {
+            type: Number,
+            value: 1,
+          },
+          stepKey: {
+            type: String,
+            value: '',
+            computed: '_getStepKey(currentStep)',
+          },
+          shown: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+          },
+          tutorialOverlayShown: {
+            type: Boolean,
+            value: false,
+          },
+          tutorialOverlayClass: {
+            type: String,
+            computed: '_computeTutorialOverlayClass(stepKey, tutorialOverlayShown)'
+          }
+        };
+      }
+
+      attached() {
+        super.attached();
+        this.loadResources(
+          this.resolveUrl(`locales/crcm-tutorial.${this.language}.json`)
+        );
+        if (this.autoStart)
+          this.start();
+      }
+
+      start() {
+        this.shown = true;
+        setTimeout(() => this.tutorialOverlayShown = true, 50);
+        this.$.tutorialOverlay.addEventListener('click', () => {
+          if (this.currentStep < 6)
+            this.currentStep++;
+          switch (this.currentStep) {
+            case 2:
+              this.tutorialCircleX = window.innerWidth / 2;
+              this.tutorialCircleY = window.innerHeight - 30;
+              this.tutorialCircleR = 60;
+              break;
+            case 3:
+              this.tutorialCircleX = window.innerWidth / 8;
+              this.tutorialCircleY = window.innerHeight - 30;
+              this.tutorialCircleR = 60;
+              break;
+            case 4:
+              this.tutorialCircleX = window.innerWidth / 8 * 7;
+              this.tutorialCircleY = window.innerHeight - 30;
+              this.tutorialCircleR = 60;
+              break;
+            case 5:
+              this.tutorialCircleX = window.innerWidth - 36;
+              this.tutorialCircleY = 10;
+              this.tutorialCircleR = 60;
+              break;
+            case 6:
+              this.tutorialCircleR = 0;
+              setTimeout(() => {
+                this.tutorialOverlayShown = false;
+                setTimeout(() => this.shown = false, 200);
+                localStorage.setItem('tutorialCompleted', true);
+              }, 1500);
+              break;
+          }
+        });
+      }
+
+      _getStepKey(currentStep) {
+        return `step${currentStep}`;
+      }
+
+      _computeTutorialOverlayClass(stepKey, tutorialOverlayShown) {
+        return stepKey + (tutorialOverlayShown ? ' shown' : '');
+      }
+    }
+
+    window.customElements.define(CRCMTutorial.is, CRCMTutorial);
+  </script>
+</dom-module>

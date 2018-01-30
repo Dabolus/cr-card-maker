@@ -1,0 +1,43 @@
+{
+  "name": "cr-card-maker",
+  "version": "2.0.0",
+  "description": "Create your own custom Clash Royale cards!",
+  "keywords": [
+    "clash",
+    "royale",
+    "card",
+    "maker",
+    "supercell",
+    "generator",
+    "online",
+    "free"
+  ],
+  "homepage": "https://beta.clashroyalecardmaker.com/",
+  "bugs": {
+    "url": "https://github.com/Dabolus/cr-card-maker/issues",
+    "email": "bugs@dabolus.com"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Giorgio Garasto (Dabolus)",
+    "email": "contact@dabolus.com",
+    "url": "https://dabolus.com/"
+  },
+  "contributors": [],
+  "main": "src/scripts/app.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dabolus/cr-card-maker.git"
+  },
+  "scripts": {
+    "polymer": "polymer",
+    "serve": "polymer serve",
+    "build": "polymer build"
+  },
+  "private": true,
+  "devDependencies": {
+    "eslint": "^4.16.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-html": "^4.0.2"
+  }
+}

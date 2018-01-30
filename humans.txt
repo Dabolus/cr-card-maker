@@ -1,0 +1,20 @@
+/* TEAM */
+	Chief: Giorgio Garasto
+	Site: https://dabolus.com/
+	Contact: contact [at] dabolus.com
+	Twitter: @Dabolus
+	From: Italy
+
+/* THANKS */
+    The Polymer Project Authors: https://polymer.github.io/AUTHORS.txt
+	Site: https://www.polymer-project.org/
+	Contact: polymer-dev [at] googlegroups.com
+	From: Austria
+
+/* SITE */
+	Last update: 2018/01/30
+	Standards: HTML5, CSS3, ES6
+	Technologies: WebComponents, Polymer
+	Languages: English / Italian
+	Doctype: HTML5
+	Software: JetBrains WebStorm 2017.3.2, Adobe Photoshop CC 2017, Adobe Illustrator CC 2017

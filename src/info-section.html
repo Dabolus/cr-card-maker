@@ -1,0 +1,155 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="style-reset.html">
+
+<dom-module id="info-section">
+  <template>
+    <!--suppress CssNoGenericFontName -->
+    <style include="style-reset">
+      :host {
+        display: block;
+        margin: 0;
+        padding: 0;
+        color: white;
+        width: 100vw;
+        height: calc(100vh - 60px);
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      .tabs ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      .tabs li {
+        display: inline-block;
+        cursor: pointer;
+        text-align: center;
+        font-family: 'Supercell Magic';
+        padding: 8px 18px 6px 18px;
+        margin: 0 1px;
+        border-radius: 10px 10px 0 0;
+        border: 3px solid #7ea0b8;
+        font-size: 18px;
+        color: #3cf;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000, 1px 2px 0 #000;
+        background-color: #677e97;
+        transition: .2s background-color ease-in-out, .2s padding ease-in-out;
+      }
+
+      .tabs li:hover {
+        background-color: #82a0ba;
+      }
+
+      .tabs li.selected {
+        padding-top: 6px;
+        background-color: #e2eff2;
+        border: 3px solid #fff;
+      }
+
+      .content {
+        position: absolute;
+        top: 44px;
+        left: 0;
+        width: 100vw;
+        min-height: calc(100vh - 104px);
+        color: #666;
+        background-color: #e2eff2;
+      }
+
+      .spacer {
+        width: 24px;
+        visibility: hidden;
+      }
+
+      .content ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .content li {
+        display: none;
+      }
+
+      .content li.selected {
+        display: block;
+      }
+    </style>
+
+    <nav class="tabs">
+      <ul role="tablist">
+        <li class="spacer"></li>
+        <li role="tab" class="selected">Chat</li>
+        <li role="tab">About</li>
+        <li role="tab">Changelog</li>
+        <li role="tab">Credits</li>
+        <li role="tab">Special thanks</li>
+        <li class="spacer"></li>
+      </ul>
+    </nav>
+    <section class="content">
+      <ul role="group">
+        <li class="selected">aaa</li>
+        <li>bbb</li>
+        <li>ccc</li>
+        <li>ddd</li>
+        <li>eee</li>
+      </ul>
+    </section>
+  </template>
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class InfoSection extends Polymer.mixinBehaviors(
+        [Polymer.AppLocalizeBehavior], Polymer.Element) {
+      static get is() {
+        return 'info-section';
+      }
+
+      static get properties() {
+        return {
+          language: {
+            value: () => {
+              return sessionStorage.getItem('language') || 'en';
+            },
+          },
+          selectedTabIndex: {
+            type: Number,
+            value: 0,
+          },
+        };
+      }
+
+      attached() {
+        super.attached();
+        this.loadResources(
+            this.resolveUrl(`locales/create-section.${this.language}.json`),
+        );
+        this._tabs = this.shadowRoot.querySelectorAll('.tabs li[role=tab]');
+        this._tabViews = this.shadowRoot.querySelectorAll('.content li');
+        for (let i = 0; i < this._tabs.length; i++) {
+          this._tabs[i].addEventListener('click', () => this._changeTab(i));
+        }
+      }
+
+      _changeTab(newTabIndex) {
+        if (this.selectedTabIndex === newTabIndex) {
+          return;
+        }
+        this._tabs[this.selectedTabIndex].className = this._tabViews[this.selectedTabIndex].className = '';
+        this._tabs[newTabIndex].className = this._tabViews[newTabIndex].className = 'selected';
+        this.selectedTabIndex = newTabIndex;
+      }
+    }
+
+    window.customElements.define(InfoSection.is, InfoSection);
+  </script>
+</dom-module>

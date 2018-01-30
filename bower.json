@@ -1,0 +1,38 @@
+{
+  "name": "cr-card-maker",
+  "description": "Create your own custom Clash Royale cards!",
+  "authors": [
+    "Giorgio Garasto (Dabolus) <contact@dabolus.com>"
+  ],
+  "keywords": [
+    "clash",
+    "royale",
+    "card",
+    "maker",
+    "supercell",
+    "generator",
+    "online",
+    "free"
+  ],
+  "license": "MIT",
+  "main": "index.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "app-localize-behavior": "PolymerElements/app-localize-behavior#^2.0.0",
+    "cr-card": "Dabolus/cr-card#^2.1.1",
+    "cr-button": "Dabolus/cr-button#^2.0.0",
+    "cr-fonts": "Dabolus/cr-fonts#^2.0.0",
+    "cr-toast": "Dabolus/cr-toast#^2.0.0",
+    "cropperjs": "^1.1.1",
+    "Sortable": "sortablejs#^1.6.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
+    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^2.0.0",
+    "iron-icon": "PolymerElements/iron-icon#^2.0.0",
+    "idb": "jakearchibald/idb"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "private": true
+}

@@ -1,0 +1,262 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="nav-bar">
+  <template>
+    <!--suppress CssNoGenericFontName -->
+    <style>
+      :host {
+        display: block;
+        position: fixed;
+        margin: 0;
+        padding: 0;
+        left: 0;
+        bottom: 0;
+        width: 100vw;
+        overflow: hidden;
+        height: 60px;
+        background: #344253 linear-gradient(#354354, #344253);
+        cursor: pointer;
+        font-family: 'Supercell Magic';
+        text-align: center;
+        color: #fff;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000, 1px 2px 0 #000;
+        @apply --layout-horizontal;
+      }
+
+      .nav-btn {
+        position: relative;
+        @apply --layout-flex;
+        height: 60px;
+        transition: -ms-flex .5s, -webkit-flex .5s, flex .5s;
+        border-top: 3px solid #45566a;
+        border-left: 1px solid #878f99;
+        border-right: 1px solid #1f2731;
+      }
+
+      .nav-btn > .arrow-left {
+        width: 25%;
+        float: left;
+        line-height: 56px;
+        transition: opacity .25s;
+        transition-delay: .25s;
+        opacity: 0;
+      }
+
+      .nav-btn > .arrow-right {
+        width: 25%;
+        float: right;
+        line-height: 56px;
+        transition: opacity .25s;
+        transition-delay: .25s;
+        opacity: 0;
+      }
+
+      .nav-btn > .arrow-left, .nav-btn > .arrow-right {
+        color: #82dfff;
+        text-shadow: 0 -1px 0 #fff,
+        1px 0 0 #fff,
+        -1px -2px 0 #000,
+        1px -2px 0 #000,
+        -1px 2px 0 #000,
+        1px 2px 0 #000;
+      }
+
+      .nav-btn .content {
+        width: 50%;
+        float: left;
+      }
+
+      .nav-btn .content > img {
+        height: 32px;
+        width: auto;
+        transition: transform .5s;
+        transform: translateY(11px);
+      }
+
+      .nav-btn .content > div {
+        line-height: .25;
+        opacity: 0;
+        transition: transform .5s, opacity .5s;
+      }
+
+      :host([selected="cards"]) #btn-cards,
+      :host([selected="create"]) #btn-create,
+      :host([selected="info"]) #btn-info {
+        @apply --layout-flex-2;
+        border-top: 3px solid #708ca8;
+        background: #5782a4 linear-gradient(#507090, #5c8cb0);
+      }
+
+      :host([selected="cards"]) #btn-cards .content > img,
+      :host([selected="create"]) #btn-create .content > img,
+      :host([selected="info"]) #btn-info .content > img {
+        transform: scale(1.25) translateY(1px);
+      }
+
+      :host([selected="cards"]) #btn-cards .content > div,
+      :host([selected="create"]) #btn-create .content > div,
+      :host([selected="info"]) #btn-info .content > div {
+        opacity: 1;
+        transform: translateY(5px);
+      }
+
+      :host([selected="cards"]) #btn-cards > .arrow-left,
+      :host([selected="cards"]) #btn-cards > .arrow-right,
+      :host([selected="create"]) #btn-create > .arrow-left,
+      :host([selected="create"]) #btn-create > .arrow-right,
+      :host([selected="info"]) #btn-info > .arrow-left,
+      :host([selected="info"]) #btn-info > .arrow-right {
+        opacity: 1;
+      }
+    </style>
+
+    <div class="nav-btn" id="btn-cards">
+      <div class="arrow-left">&nbsp;</div>
+      <div class="content"><img title="[[localize('cards')]]" alt="[[localize('cards')]]"
+                                src="[[resolveUrl('../assets/navbar/cards.svg')]]">
+        <div>[[localize('cards')]]</div>
+      </div>
+      <div class="arrow-right">▶</div>
+    </div>
+    <div class="nav-btn selected" id="btn-create">
+      <div class="arrow-left">◀</div>
+      <div class="content"><img title="[[localize('create')]]" alt="[[localize('create')]]"
+                                src="[[resolveUrl('../assets/navbar/create.svg')]]">
+        <div>[[localize('create')]]</div>
+      </div>
+      <div class="arrow-right">▶</div>
+    </div>
+    <div class="nav-btn" id="btn-info">
+      <div class="arrow-left">◀</div>
+      <div class="content"><img title="[[localize('info')]]" alt="[[localize('info')]]"
+                                src="[[resolveUrl('../assets/navbar/info.svg')]]">
+        <div>[[localize('info')]]</div>
+      </div>
+      <div class="arrow-right">&nbsp;</div>
+    </div>
+  </template>
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class NavBar extends Polymer.mixinBehaviors(
+      [Polymer.AppLocalizeBehavior], Polymer.Element) {
+      static get is() {
+        return 'nav-bar';
+      }
+
+      static get sections() {
+        return ['cards', 'create', 'info'];
+      }
+
+      static get properties() {
+        return {
+          language: {
+            value: () => {
+              return sessionStorage.getItem('language') || 'en';
+            },
+          },
+          selected: {
+            type: String,
+            value: () => {
+              if (window.location.hash) {
+                const hash = window.location.hash.substr(1);
+                if (NavBar.sections.indexOf(hash) >= 0)
+                  return hash;
+              }
+              return 'create';
+            },
+            reflectToAttribute: true,
+            observer: '_sectionChanged',
+          },
+          selectedIndex: {
+            type: Number,
+            value: () => {
+              if (window.location.hash) {
+                const index = NavBar.sections.indexOf(window.location.hash.substr(1));
+                if (index >= 0)
+                  return index;
+              }
+              return 1;
+            },
+            reflectToAttribute: true,
+            observer: '_sectionIndexChanged',
+            notify: true,
+          }
+        };
+      }
+
+      attached() {
+        super.attached();
+        this.loadResources(
+          this.resolveUrl(`locales/nav-bar.${this.language}.json`)
+        );
+      }
+
+      ready() {
+        super.ready();
+        for (let btn of this.shadowRoot.querySelectorAll('.nav-btn')) {
+          btn.addEventListener('click', () => this._changePage(btn.id.split('-')[1]));
+        }
+        let xDown = null;
+        document.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches.length > 0)
+            xDown = e.touches[0].clientX;
+        }, {passive: true});
+        document.addEventListener('touchend', (e) => {
+          if (xDown && e.changedTouches && e.changedTouches.length > 0) {
+            const xUp = e.changedTouches[0].clientX;
+            const xDiff = xDown - xUp;
+
+            // Left swipe
+            if (xDiff > 100)
+              this.selectedIndex = Math.min(this.selectedIndex + 1, NavBar.sections.length - 1);
+            // Right swipe
+            else if (xDiff < -100)
+              this.selectedIndex = Math.max(this.selectedIndex - 1, 0);
+            xDown = null;
+          }
+        }, {passive: true});
+        document.addEventListener('keydown', (e) => {
+          const target = e.path ? e.path[0] : (e.b ? e.b[0] : e.explicitOriginalTarget || e.__target);
+          if (target.nodeName !== 'INPUT' && target.nodeName !== 'TEXTAREA' && target.nodeName !== 'SELECT' && !target.isContentEditable) {
+            const key = e.keyCode || e.charCode;
+            // Left key or A
+            if ((key === 37 || key === 65) && this.selectedIndex > 0)
+              this.selectedIndex--;
+            // Right key or D
+            else if ((key === 39 || key === 68) && this.selectedIndex < NavBar.sections.length - 1)
+              this.selectedIndex++;
+          }
+        });
+      }
+
+      // noinspection JSMethodCanBeStatic
+      _changePage(index) {
+        let newIndex = 1;
+        if (typeof index === 'number') {
+          if (index >= 0 && index < NavBar.sections.length)
+            newIndex = index;
+        } else {
+          const sectionsIndex = NavBar.sections.indexOf(index);
+          newIndex = (sectionsIndex < 0) ? 1 : sectionsIndex;
+        }
+        this.selectedIndex = newIndex;
+      }
+
+      _sectionChanged(newSection, oldSection) {
+        this.selectedIndex = NavBar.sections.indexOf(newSection);
+        document.location.hash = `#${newSection}`;
+      }
+
+      _sectionIndexChanged(index) {
+        this.selected = NavBar.sections[index];
+      }
+    }
+
+    window.customElements.define(NavBar.is, NavBar);
+  </script>
+</dom-module>

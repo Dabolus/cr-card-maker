@@ -1,0 +1,107 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/cr-fonts/cr-fonts.html">
+<link rel="import" href="../bower_components/cr-toast/cr-toast.html">
+<link rel="import" href="style-reset.html">
+
+<link rel="lazy-import" href="crcm-tutorial.html">
+
+<dom-module id="crcm-shell">
+  <template>
+    <!--suppress CssNoGenericFontName -->
+    <style include="style-reset">
+      :host {
+        display: block;
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+
+    <cr-toast id="toastAppUpdated" text="[[localize('app-updated')]]" duration="5000" on-click="_reload"></cr-toast>
+
+    <template is="dom-if" if="[[tutorial]]">
+      <crcm-tutorial auto-start></crcm-tutorial>
+    </template>
+
+    <sections-container selected-index="[[selectedIndex]]"></sections-container>
+    <!-- For some reason, traditional two-way data binding isn't working here. -->
+    <nav-bar selected-index="{{selectedIndex::selected-index-changed}}"></nav-bar>
+  </template>
+
+  <!--suppress JSMethodCanBeStatic -->
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class CRCMShell extends Polymer.mixinBehaviors(
+      [Polymer.AppLocalizeBehavior], Polymer.Element) {
+      static get is() {
+        return 'crcm-shell';
+      }
+
+      static get properties() {
+        return {
+          supportedLangs: {
+            type: Array,
+            value: () => {
+              return [
+                'en',
+                'it',
+              ];
+            },
+          },
+          language: {
+            value: 'en',
+          },
+          selectedIndex: {
+            type: Number,
+          },
+          tutorial: {
+            type: Boolean,
+            value: false,
+          }
+        };
+      }
+
+      attached() {
+        super.attached();
+        const userLang = localStorage.getItem('language') || navigator.language.substring(0, 2);
+        document.documentElement.lang =
+          this.language =
+            (this.supportedLangs.indexOf(userLang) < 0) ? 'en' : userLang;
+        sessionStorage.setItem('language', this.language);
+        this.loadResources(
+          this.resolveUrl(`locales/crcm-shell.${this.language}.json`)
+        );
+        if (!localStorage.getItem('tutorialCompleted')) {
+          Polymer.importHref(
+            this.resolveUrl('crcm-tutorial.html'),
+            () => this.tutorial = true,
+            null,
+            true
+          );
+        }
+      }
+
+      showUpdateToast() {
+        this.$.toastAppUpdated.show();
+      }
+
+      _reload() {
+        window.location.reload();
+      }
+    }
+
+    window.customElements.define(CRCMShell.is, CRCMShell);
+  </script>
+</dom-module>
+
+<link rel="import" href="sections-container.html">
+<link rel="import" href="nav-bar.html">
