@@ -23,7 +23,7 @@
     "cr-button": "Dabolus/cr-button#^2.0.0",
     "cr-fonts": "Dabolus/cr-fonts#^2.0.0",
     "cr-toast": "Dabolus/cr-toast#^2.0.0",
-    "cropperjs": "^1.1.1",
+    "cropperjs": "^1.2.2",
     "Sortable": "sortablejs#^1.6.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^2.0.0",

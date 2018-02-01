@@ -203,6 +203,9 @@
         }
         let xDown = null;
         document.addEventListener('touchstart', (e) => {
+          // Ignore the touch input if we are on the photo editor
+          if (e.target.id === 'editor')
+            return;
           if (e.touches && e.touches.length > 0)
             xDown = e.touches[0].clientX;
         }, {passive: true});

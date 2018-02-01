@@ -1,10 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/cr-button/cr-button.html">
+<link rel="import" href="crcm-icons.html">
 <link rel="import" href="cropperjs-import.html">
 
 <dom-module id="photo-editor">
   <template>
+    <!--suppress CssNoGenericFontName -->
     <style include="cropper-js">
       :host {
         display: none;
@@ -33,11 +36,28 @@
 
       #cropperContainer {
         width: calc(100vw - 36px);
-        height: calc(100vh - 124px);
+        height: calc(100vh - 180px);
       }
 
       .cropper-container, .cropper-drag-box, .cropper-modal, .cropper-move {
         border-radius: 16px 16px 0 0;
+      }
+
+      button {
+        color: white;
+        border: 1px solid #000;
+        border-radius: 5px;
+        cursor: pointer;
+        background: linear-gradient(to bottom, #2181fc, #1c61c3);
+        font-family: 'Supercell Magic';
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        font-size: 16px;
+        padding: 8px;
+        margin: 0 4px;
+      }
+
+      button.yellow {
+        background: linear-gradient(to bottom, #ffbb2a, #fda80d);
       }
 
       #img {
@@ -45,9 +65,17 @@
         max-height: calc(100vh - 124px);
       }
 
+      #controls {
+        width: calc(100vw - 36px);
+        height: 72px;
+        display: flex;
+        align-items: center;
+        overflow-y: auto;
+      }
+
       #buttons {
         width: calc(100vw - 36px);
-        height: 88px;
+        height: 72px;
         display: flex;
         justify-content: flex-end;
         align-items: center;
@@ -63,9 +91,41 @@
       <div id="cropperContainer">
         <img id="img">
       </div>
+      <div id="controls">
+        <button id="zoomIn">
+          <iron-icon icon="crcm-icons:zoom-in"></iron-icon>
+        </button>
+        <button id="zoomOut">
+          <iron-icon icon="crcm-icons:zoom-out"></iron-icon>
+        </button>
+        <button id="rotateLeft">
+          <iron-icon icon="crcm-icons:rotate-left"></iron-icon>
+        </button>
+        <button id="rotateRight">
+          <iron-icon icon="crcm-icons:rotate-right"></iron-icon>
+        </button>
+        <button id="moveLeft">
+          <iron-icon icon="crcm-icons:move-left"></iron-icon>
+        </button>
+        <button id="moveRight">
+          <iron-icon icon="crcm-icons:move-right"></iron-icon>
+        </button>
+        <button id="moveUp">
+          <iron-icon icon="crcm-icons:move-up"></iron-icon>
+        </button>
+        <button id="moveDown">
+          <iron-icon icon="crcm-icons:move-down"></iron-icon>
+        </button>
+        <button id="flipHorizontally">
+          <iron-icon icon="crcm-icons:flip-horizontally"></iron-icon>
+        </button>
+        <button id="flipVertically">
+          <iron-icon icon="crcm-icons:flip-vertically"></iron-icon>
+        </button>
+      </div>
       <div id="buttons">
-        <cr-button small on-tap="_noCrop">[[localize('no-crop')]]</cr-button>
-        <cr-button small info on-tap="_crop">[[localize('crop')]]</cr-button>
+        <button class="yellow" on-click="_noCrop">[[localize('no-crop')]]</button>
+        <button on-click="_crop">[[localize('crop')]]</button>
       </div>
     </div>
   </template>
@@ -75,7 +135,7 @@
      * @polymer
      */
     class PhotoEditor extends Polymer.mixinBehaviors(
-      [Polymer.AppLocalizeBehavior], Polymer.Element) {
+        [Polymer.AppLocalizeBehavior], Polymer.Element) {
       static get is() {
         return 'photo-editor';
       }
@@ -93,7 +153,7 @@
       attached() {
         super.attached();
         this.loadResources(
-          this.resolveUrl(`locales/photo-editor.${this.language}.json`)
+            this.resolveUrl(`locales/photo-editor.${this.language}.json`),
         );
       }
 
@@ -106,21 +166,31 @@
             this.$.modal.style.transform = 'translateY(0)';
             this._cropper = new Cropper(this.$.img, {
               autoCropArea: 0.5,
-              dragMode: "move",
-              rotatable: false,
-              aspectRatio: 18 / 23,
+              dragMode: 'move',
+              rotatable: true,
+              aspectRatio: .78, // 18 / 23
             });
           }, 100);
         };
         this.$.img.src = imgSrc;
+        this.$.zoomIn.addEventListener('click', () => this._zoom(.1));
+        this.$.zoomOut.addEventListener('click', () => this._zoom(-.1));
+        this.$.rotateLeft.addEventListener('click', () => this._rotate(-15));
+        this.$.rotateRight.addEventListener('click', () => this._rotate(15));
+        this.$.moveLeft.addEventListener('click', () => this._move(-10, 0));
+        this.$.moveRight.addEventListener('click', () => this._move(10, 0));
+        this.$.moveUp.addEventListener('click', () => this._move(0, -10));
+        this.$.moveDown.addEventListener('click', () => this._move(0, 10));
+        this.$.flipHorizontally.addEventListener('click', () => this._flipHorizontally());
+        this.$.flipVertically.addEventListener('click', () => this._flipVertically());
       }
 
       _noCrop() {
         this.dispatchEvent(new CustomEvent('done', {
-            detail: {
-              img: this.$.img.src,
+              detail: {
+                img: this.$.img.src,
+              },
             },
-          },
         ));
         this._hide();
       }
@@ -128,18 +198,19 @@
       _crop() {
         if (this._cropper) {
           this.dispatchEvent(new CustomEvent('done', {
-              detail: {
-                img: this._cropper.getCroppedCanvas().toDataURL(),
+                detail: {
+                  img: this._cropper.getCroppedCanvas().toDataURL(),
+                },
               },
-            },
           ));
           this._hide();
         }
       }
 
       _hide() {
-        if (this._cropper)
+        if (this._cropper) {
           this._cropper.destroy();
+        }
         this.$.img.src = null;
         this.$.modal.style.transform = 'translateY(-100vh)';
         this.style.opacity = '0';
@@ -147,6 +218,38 @@
           this.style.display = this.$.modal.style.display = 'none';
           document.body.removeChild(this);
         }, 500);
+      }
+
+      _zoom(scale) {
+        if (this._cropper) {
+          this._cropper.zoom(scale);
+        }
+      }
+
+      _rotate(angle) {
+        if (this._cropper) {
+          this._cropper.rotate(angle);
+        }
+      }
+
+      _move(x, y) {
+        if (this._cropper) {
+          this._cropper.move(x, y);
+        }
+      }
+
+      _flipHorizontally() {
+        if (this._cropper) {
+          this._cropper.scaleX(this.flippedHorizontally ? 1 : -1);
+          this.flippedHorizontally = !this.flippedHorizontally;
+        }
+      }
+
+      _flipVertically() {
+        if (this._cropper) {
+          this._cropper.scaleY(this.flippedVertically ? 1 : -1);
+          this.flippedVertically = !this.flippedVertically;
+        }
       }
     }
 
