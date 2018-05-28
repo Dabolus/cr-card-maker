@@ -1,4 +1,4 @@
-# [![Clash Royale Card Maker](https://projects.dabolus.com/cr-card-maker/header.svg)](https://beta.clashroyalecardmaker.com)
+# [![Clash Royale Card Maker](https://projects.dabolus.com/cr-card-maker/header.svg)](https://beta.clashroyalecardmaker.com) [![Greenkeeper badge](https://badges.greenkeeper.io/Dabolus/cr-card-maker.svg)](https://greenkeeper.io/)
 
 The second version of the [Clash Royale Card Maker](https://www.clashroyalecardmaker.com), completely rewritten from scratch.
 
