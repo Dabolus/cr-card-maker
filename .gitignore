@@ -1,11 +1,4 @@
-# IntelliJ IDEA project folder
-.idea
-
-# Bower components
-bower_components
-
-# Node modules
-node_modules
-
-# Build destination directory
-build
+build/
+node_modules/
+.idea/
+.DS_Store

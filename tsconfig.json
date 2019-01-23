@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "rootDir": ".",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "strictNullChecks": false,
+    "allowJs": true,
+    "checkJs": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+    "target": "es5",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "paths": {
+      "@components/*": ["components/*"],
+      "@actions/*": ["actions/*"],
+      "@reducers/*": ["reducers/*"],
+      "@store": ["store"]
+    }
+  },
+  "include": [
+    "typings/**/*.d.ts",
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ]
+}

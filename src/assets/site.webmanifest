@@ -1,9 +1,12 @@
 {
   "name": "Clash Royale Card Maker",
   "short_name": "CRCM",
-  "start_url": ".",
   "description": "Create your own custom Clash Royale cards!",
   "author": "Giorgio Garasto (Dabolus)",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#344253",
+  "background_color": "#344253",
   "icons": [
     {
       "src": "assets/icons/android-chrome-192x192.png",
@@ -15,8 +18,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "theme_color": "#344253",
-  "background_color": "#344253",
-  "display": "standalone"
+  ]
 }

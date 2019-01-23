@@ -1,0 +1,43 @@
+:host {
+  display: block;
+  box-sizing: border-box;
+}
+
+section {
+  padding: 1.5rem;
+  background: var(--app-section-odd-color);
+
+  > * {
+    max-width: 37.5rem;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  &:nth-of-type(even) {
+    background: var(--app-section-even-color);
+  }
+}
+
+
+h2 {
+  font-size: 1.5rem;
+  text-align: center;
+  color: var(--app-dark-text-color);
+
+  @media (min-width: 28.75em) {
+    font-size: 2.25rem;
+  }
+}
+
+.circle {
+  display: block;
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 50%;
+  background: var(--app-primary-color);
+  color: var(--app-light-text-color);
+  font-size: 1.875rem;
+  line-height: 4rem;
+}

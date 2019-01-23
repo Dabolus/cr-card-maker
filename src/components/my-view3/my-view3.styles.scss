@@ -1,0 +1,25 @@
+button {
+  border: .125rem solid var(--app-dark-text-color);
+  border-radius: .1875rem;
+  padding: .5rem 1rem;
+
+  &:hover {
+    border-color: var(--app-primary-color);
+    color: var(--app-primary-color);
+  }
+}
+
+.cart, .cart svg {
+  fill: var(--app-primary-color);
+  width: 4rem;
+  height: 4rem;
+}
+
+.circle.small {
+  margin-top: -4.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.875rem;
+}
