@@ -8,7 +8,7 @@
   <meta name="author" content="Giorgio Garasto (Dabolus)">
   <meta name="copyright" content="Giorgio Garasto (Dabolus)">
   <meta name="description"
-        content="Welcome to Clash Royale Card Maker! With this simple online tool you will be able to create your own custom Clash Royale cards!">
+        content="Welcome to the beta of the Clash Royale Card Maker! With this simple online tool you will be able to create your own custom Clash Royale cards!">
   <meta name="keywords" content="clash royale card maker supercell generator online free">
   <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -18,7 +18,7 @@
   <link rel="icon" type="image/png" sizes="194x194" href="assets/icons/favicon-194x194.png">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/android-chrome-192x192.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#344253">
   <link rel="shortcut icon" href="favicon.ico">
   <meta name="apple-mobile-web-app-title" content="Clash Royale Card Maker">
@@ -26,7 +26,7 @@
   <meta name="msapplication-config" content="browserconfig.xml">
   <meta name="theme-color" content="#344253">
 
-  <title>Clash Royale Card Maker</title>
+  <title>Beta - Clash Royale Card Maker</title>
 
   <script>
     window.Polymer = {rootPath: '/'};
@@ -43,10 +43,11 @@
                 // SW updated
                 if (installing.state === 'installed') {
                   const shell = document.querySelector('crcm-shell');
-                  if (shell && shell.showUpdateToast)
+                  if (shell && shell.showUpdateToast) {
                     shell.showUpdateToast();
-                  else if (window.confirm('New version available. Do you want to use it now?'))
+                  } else if (window.confirm('New version available. Do you want to use it now?')) {
                     window.location.reload();
+                  }
                 }
               };
             }

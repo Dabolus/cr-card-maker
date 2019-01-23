@@ -12,27 +12,27 @@
         display: block;
         position: absolute;
         top: 0;
-        left: 0;
+        left: -100vw;
         margin: 0;
         padding: 0;
         width: 300vw;
         height: calc(100vh - 60px);
-        transform: translateX(-100vw);
+        transform: translateX(0);
         transform-style: preserve-3d;
         transition: .5s transform;
         background-color: #384b5e;
       }
 
       :host([selected-index="0"]) {
-        transform: translateX(0);
+        transform: translateX(100vw);
       }
 
       :host([selected-index="1"]) {
-        transform: translateX(-100vw);
+        transform: translateX(0);
       }
 
       :host([selected-index="2"]) {
-        transform: translateX(-200vw);
+        transform: translateX(-100vw);
       }
 
       .section {

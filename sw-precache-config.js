@@ -3,7 +3,7 @@
 module.exports = {
   staticFileGlobs: [
     'index.html',
-    'manifest.json',
+    'site.webmanifest',
     'favicon.ico',
     'src/**/*',
     'assets/**/*',

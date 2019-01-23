@@ -6,10 +6,10 @@
 <link rel="import" href="../bower_components/cr-card/cr-card.html">
 <link rel="import" href="../bower_components/cr-button/cr-button.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/sortable-list/sortable-list.html">
 <link rel="import" href="style-reset.html">
 <link rel="import" href="crcm-icons.html">
 <link rel="import" href="photo-editor.html">
-<script src="../bower_components/Sortable/Sortable.js"></script>
 
 <dom-module id="create-section">
   <template>
@@ -357,7 +357,6 @@
       }
 
       #properties {
-        list-style: none;
         margin: 0;
         padding: 0;
         top: 49.55%;
@@ -530,9 +529,9 @@
       <!-- Description -->
       <textarea id="description" value="{{cardDescription::input}}"
                 title="[[localize('description-label')]]"></textarea>
-      <ul id="properties">
+      <sortable-list id="properties" sortable=".property">
         <template is="dom-repeat" items="[[cardProperties]]" as="property">
-          <li class="property">
+          <div class="property">
             <template is="dom-if" if="[[property.showIconBackground]]">
               <div class="icon-background"></div>
             </template>
@@ -543,9 +542,9 @@
             <template is="dom-if" if="[[property.showInfoButton">
               <div class="info-button"></div>
             </template>
-          </li>
+          </div>
         </template>
-      </ul>
+      </sortable-list>
     </div>
     <cr-card
         hidden
@@ -575,7 +574,7 @@
      * @polymer
      */
     class CreateSection extends Polymer.mixinBehaviors(
-      [Polymer.AppLocalizeBehavior], Polymer.Element) {
+        [Polymer.AppLocalizeBehavior], Polymer.Element) {
       static get is() {
         return 'create-section';
       }
@@ -622,55 +621,56 @@
           cardProperties: {
             type: Array,
             value: () => {
-              return [{
-                title: 'Test1',
-                value: 100,
-                showIconBackground: true,
-                showInfoButton: true,
-                icon: 'hp',
-              }, {
-                title: 'Test2',
-                value: 200,
-                showIconBackground: true,
-                showInfoButton: true,
-                icon: 'hp',
-              }, {
-                title: 'Test3',
-                value: 300,
-                showIconBackground: true,
-                showInfoButton: true,
-                icon: 'hp',
-              }, {
-                title: 'Test4',
-                value: 400,
-                showIconBackground: false,
-                showInfoButton: true,
-                icon: 'hp',
-              }, {
-                title: 'Test5',
-                value: 100,
-                showIconBackground: true,
-                showInfoButton: true,
-                icon: 'hp',
-              }, {
-                title: 'Test6',
-                value: 200,
-                showIconBackground: true,
-                showInfoButton: true,
-                icon: 'hp',
-              }, {
-                title: 'Test7',
-                value: 300,
-                showIconBackground: true,
-                showInfoButton: true,
-                icon: 'hp',
-              }, {
-                title: 'Test8',
-                value: 400,
-                showIconBackground: false,
-                showInfoButton: true,
-                icon: 'hp',
-              }];
+              return [
+                {
+                  title: 'Test1',
+                  value: 100,
+                  showIconBackground: true,
+                  showInfoButton: true,
+                  icon: 'hp',
+                }, {
+                  title: 'Test2',
+                  value: 200,
+                  showIconBackground: true,
+                  showInfoButton: true,
+                  icon: 'hp',
+                }, {
+                  title: 'Test3',
+                  value: 300,
+                  showIconBackground: true,
+                  showInfoButton: true,
+                  icon: 'hp',
+                }, {
+                  title: 'Test4',
+                  value: 400,
+                  showIconBackground: false,
+                  showInfoButton: true,
+                  icon: 'hp',
+                }, {
+                  title: 'Test5',
+                  value: 100,
+                  showIconBackground: true,
+                  showInfoButton: true,
+                  icon: 'hp',
+                }, {
+                  title: 'Test6',
+                  value: 200,
+                  showIconBackground: true,
+                  showInfoButton: true,
+                  icon: 'hp',
+                }, {
+                  title: 'Test7',
+                  value: 300,
+                  showIconBackground: true,
+                  showInfoButton: true,
+                  icon: 'hp',
+                }, {
+                  title: 'Test8',
+                  value: 400,
+                  showIconBackground: false,
+                  showInfoButton: true,
+                  icon: 'hp',
+                }];
             },
           },
           cardDescription: {
@@ -680,23 +680,23 @@
           availableLevels: {
             type: Array,
             computed: '_computeAvailableLevels(cardRarity)',
-          }
+          },
+          propertiesCellWidth: Number,
+          propertiesCellHeight: Number,
+          propertiesCellMargin: Number,
         };
       }
 
       attached() {
         super.attached();
         this.loadResources(
-          this.resolveUrl(`locales/create-section.${this.language}.json`)
+            this.resolveUrl(`locales/create-section.${this.language}.json`),
         );
-        Sortable.create(this.$.properties, {
-          animation: 200,
-          // onSort: (e) => this._updatePropertiesSorting(e),
-        });
         document.addEventListener('click', (e) => {
           const target = e.path ? e.path[0] : (e.b ? e.b[0] : e.explicitOriginalTarget || e.__target);
-          if (target.id !== 'menuToggle')
-            this.$.menuContainer.classList.remove('shown')
+          if (target.id !== 'menuToggle') {
+            this.$.menuContainer.classList.remove('shown');
+          }
         });
       }
 
@@ -715,8 +715,9 @@
             break;
         }
         let arr = new Array(maxLevel);
-        for (let i = 0; i < maxLevel; i++)
+        for (let i = 0; i < maxLevel; i++) {
           arr[i] = i + 1;
+        }
         this.cardLevel = Math.min(oldLevel, maxLevel);
         return arr;
       }
@@ -746,7 +747,7 @@
 
       _saveCard() {
         this.$.cardGenerator.toJSON().then((card) => {
-          this.dispatchEvent(new CustomEvent('cardsaved', {detail: card}))
+          this.dispatchEvent(new CustomEvent('cardsaved', {detail: card}));
         });
       }
 
@@ -764,8 +765,9 @@
       }
 
       _importCard() {
-        if (!this.$.import.files || this.$.import.files.length !== 1)
+        if (!this.$.import.files || this.$.import.files.length !== 1) {
           return;
+        }
         this.$.cardGenerator.importFile(this.$.import.files[0]).catch(console.error);
       }
 

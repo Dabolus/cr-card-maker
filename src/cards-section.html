@@ -179,7 +179,7 @@
 
     <div class="cards-container">
       <template is="dom-repeat" id="cardsTempl" items="[[cards]]" as="card" sort="_sortCards">
-        <div class$="card [[card.rarity]]">
+        <div class$="card [[card.rarity]]" data-id$="[[card.id]]" on-click="_setSelectedCard">
           <!-- Card image -->
           <div class="card-image" style$="background-image: url('[[card.image]]');"></div>
           <!-- Card image frame -->
@@ -233,6 +233,10 @@
               return `sort-by-${localStorage.getItem('cardsSorting') || 'timestamp'}`;
             },
             computed: '_getSortButtonKey(currentSorting)',
+          },
+          selectedCard: {
+            type: Number,
+            value: -1,
           },
         };
       }
@@ -309,6 +313,12 @@
 
       _getSortButtonKey(currentSorting) {
         return `sort-by-${currentSorting}`;
+      }
+
+      _setSelectedCard(e) {
+        const card = (e.path ? e.path[0] : (e.b ? e.b[0] : e.explicitOriginalTarget || e.__target)).parentElement;
+        this.selectedCard = card.dataset.id;
+        console.log(this.selectedCard);
       }
     }
 
