@@ -7,7 +7,27 @@
     <title>Vite App</title>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="content">
+      <div class="page" id="cards" role="tabpanel" tabindex="0" aria-labelledby="cards-tab" aria-hidden="true"></div>
+      <div class="page" id="create" role="tabpanel" tabindex="0" aria-labelledby="create-tab" aria-hidden="true"></div>
+      <div class="page" id="info" role="tabpanel" tabindex="0" aria-labelledby="info-tab" aria-hidden="true"></div>
+    </div>
+    <nav class="navbar">
+      <div id="overlay"></div>
+      <div role="tablist">
+        <a href="/cards" role="tab" aria-selected="false" aria-controls="cards" id="cards-tab" tabindex="-1">
+          <img src="/src/images/navbar/cards.svg" role="presentation">
+          <span data-i18n="cards"></span>
+        </a>
+        <a href="/create" role="tab" aria-selected="false" aria-controls="create" id="create-tab" tabindex="-1">
+          <img src="/src/images/navbar/create.svg" role="presentation">
+          <span data-i18n="create"></span>
+        </a>
+        <a href="/info" role="tab" aria-selected="false" aria-controls="info" id="info-tab" tabindex="-1">
+          <img src="/src/images/navbar/info.svg" role="presentation">
+          <span data-i18n="info"></span>
+        </a>
+      </div>
+    </nav>
   </body>
 </html>
