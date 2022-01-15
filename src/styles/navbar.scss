@@ -1,0 +1,110 @@
+@use 'theme';
+@use 'sass:math';
+
+$navbar-height: 80px;
+$navbar-pages: 3;
+$item-width: math.div(1, $navbar-pages + 1) * 100vw;
+$selected-item-width: $item-width * 2;
+
+.navbar {
+  display: block;
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  bottom: 0;
+  width: 100vw;
+  overflow: hidden;
+  height: $navbar-height;
+  background: linear-gradient(#6f809c, #505a6e 15%, #394150);
+  cursor: pointer;
+  font-family: theme.$font-title;
+  text-align: center;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000,
+    1px 2px 0 #000;
+  width: 100%;
+
+  > #overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: $selected-item-width;
+    height: $navbar-height;
+    box-sizing: border-box;
+    border-top: 3px solid rgb(132, 143, 166);
+    border-left: 1px solid #3a4454;
+    border-right: 1px solid #5b6776;
+    background: linear-gradient(#6d8cb2, #557091 12%, #668bac);
+  }
+
+  > [role='tablist'] {
+    padding: 0;
+    margin: 0;
+    display: flex;
+
+    > [role='tab'] {
+      flex: 1;
+      list-style: none;
+      height: $navbar-height;
+      border-top: 3px solid #848fa6;
+      border-left: 1px solid #3a4454;
+      border-right: 1px solid #5b6776;
+      transition: flex 0.5s;
+      position: relative;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+
+      > img {
+        transition: transform 0.5s;
+        transform-origin: bottom center;
+        height: 50%;
+      }
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 25%;
+        height: 100%;
+        background: url(../images/arrow.svg) center / 1.5em 1.5em no-repeat;
+      }
+
+      &::before,
+      &::after,
+      span {
+        transition: opacity 0.25s;
+        transition-delay: 0.25s;
+        opacity: 0;
+      }
+
+      &::before {
+        transform: rotateY(180deg);
+        left: 0;
+      }
+
+      &::after {
+        right: 0;
+      }
+
+      &[aria-selected='true'] {
+        flex: 2;
+
+        > img {
+          transform: scale(1.33);
+        }
+
+        &:not(:first-child)::before,
+        &:not(:last-child)::after,
+        span {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
