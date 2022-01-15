@@ -251,6 +251,11 @@ postcss@^8.4.5:
     picocolors "^1.0.0"
     source-map-js "^1.0.1"
 
+pwa-helpers@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/pwa-helpers/-/pwa-helpers-0.9.1.tgz#9ea22fa1996ab97df73b276cae962621c3fd2532"
+  integrity sha512-4sP/C9sSxQ3w80AATmvCEI3R+MHzCwr2RSZEbLyMkeJgV3cRk7ySZRUrQnBDSA7A0/z6dkYtjuXlkhN1ZFw3iA==
+
 readdirp@~3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-3.6.0.tgz#74a370bd857116e245b29cc97340cd431a02a6c7"
