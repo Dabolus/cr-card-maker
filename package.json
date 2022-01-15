@@ -6,6 +6,9 @@
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
+  "dependencies": {
+    "idb": "^7.0.0"
+  },
   "devDependencies": {
     "typescript": "^4.5.4",
     "vite": "^2.7.12"
