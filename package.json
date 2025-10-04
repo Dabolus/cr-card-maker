@@ -4,16 +4,18 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "upgrade-interactive": "ncu -ui"
   },
   "dependencies": {
     "idb": "^8.0.3",
     "pwa-helpers": "^0.9.1"
   },
   "devDependencies": {
+    "npm-check-updates": "^19.0.0",
     "sass": "^1.93.2",
     "typescript": "^5.9.3",
     "vite": "^7.1.9"
   },
-  "packageManager": "yarn@4.0.1"
+  "packageManager": "bun@1.2.23"
 }
