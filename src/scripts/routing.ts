@@ -27,6 +27,18 @@ export const setupRouting = () => {
     if (previousIndex < 0 || newIndex !== previousIndex) {
       // Update the item and its view with the proper accessibility attributes
       if (previousIndex >= 0) {
+        // If the page we're about to hide contains the focused element,
+        // remove focus first so we don't set aria-hidden on an element
+        // that still has a descendant with focus (which is blocked by ATs).
+        const active = document.activeElement as HTMLElement | null;
+        if (pages[previousIndex].contains(active as Node)) {
+          // Try to blur the active element. This will move focus away
+          // from the to-be-hidden page. We avoid shifting focus to the
+          // new tab immediately here because focus() is handled later
+          // (and may be requested by the caller).
+          active?.blur();
+        }
+
         tabs[previousIndex].setAttribute('aria-selected', 'false');
         tabs[previousIndex].setAttribute('tabindex', '-1');
         pages[previousIndex].setAttribute('aria-hidden', 'true');
@@ -68,6 +80,14 @@ export const setupRouting = () => {
       item.setAttribute('tabindex', itemUrl === normalizedPath ? '0' : '-1');
 
       // Update the view of the item with the proper accessibility attributes
+      // If we're about to hide this page but it contains the active
+      // element, blur it first so we don't set aria-hidden on a
+      // focused descendant (which causes AT warnings).
+      const active = document.activeElement as HTMLElement | null;
+      if (itemUrl !== normalizedPath && pages[index].contains(active as Node)) {
+        active?.blur();
+      }
+
       pages[index].setAttribute(
         'aria-hidden',
         itemUrl === normalizedPath ? 'false' : 'true',
