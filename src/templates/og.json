@@ -1,0 +1,136 @@
+{
+  "$schema": "./$schema.json",
+  "name": "OG",
+  "width": 1432,
+  "height": 1794,
+  "supported-rarities": ["common", "rare", "epic", "legendary"],
+  "supported-types": ["troop", "building", "spell"],
+  "fields": {
+    "card-name": {
+      "x": 716,
+      "y": 50,
+      "fontSize": 70,
+      "maxWidth": 1120,
+      "color": "#fff"
+    },
+    "image": {
+      "x": 106,
+      "y": 215,
+      "width": 397,
+      "height": 529
+    },
+    "elixir-cost": {
+      "x": 88,
+      "y": 230,
+      "width": 105,
+      "height": 125,
+      "fontSize": 70
+    },
+    "rarity-background": {
+      "x": 558,
+      "y": 207,
+      "width": 773,
+      "height": 157,
+      "url": {
+        "common": "/cards-assets/rarity-backgrounds/common.svg",
+        "rare": "/cards-assets/rarity-backgrounds/rare.svg",
+        "epic": "/cards-assets/rarity-backgrounds/epic.svg",
+        "legendary": "/cards-assets/rarity-backgrounds/legendary.svg",
+        "champion": "/cards-assets/rarity-backgrounds/champion.svg"
+      }
+    },
+    "rarity-label": {
+      "x": 575,
+      "y": 230,
+      "fontSize": 48,
+      "maxWidth": 330,
+      "color": "#fff"
+    },
+    "rarity-value": {
+      "x": 576,
+      "y": 295,
+      "fontSize": 54,
+      "maxWidth": 330,
+      "color": {
+        "common": "#fff",
+        "rare": "#fff",
+        "epic": "#fff",
+        "legendary": ["#9f6", "#fff", "#f9f", "#ff9", "#66fffc"],
+        "champion": ["#f9dd50", "#fdfadf"]
+      }
+    },
+    "type-label": {
+      "x": 950,
+      "y": 230,
+      "fontSize": 48,
+      "maxWidth": 330,
+      "color": "#fff"
+    },
+    "type-value": {
+      "x": 952,
+      "y": 295,
+      "fontSize": 54,
+      "maxWidth": 330,
+      "color": "#fff"
+    },
+    "description": {
+      "x": 940,
+      "y": 440,
+      "maxWidth": 702,
+      "fontSize": 42,
+      "lineHeight": 54,
+      "color": "#333"
+    },
+    "stats": {
+      "x": 133,
+      "y": 889,
+      "gapX": 21,
+      "gapY": 10,
+      "maxItems": 14,
+      "itemsPerRow": 2,
+      "items": {
+        "width": 567,
+        "height": 110,
+        "oddBackgroundColor": "#c2d3db",
+        "evenBackgroundColor": "#fdfefe",
+        "icon": {
+          "dx": 2,
+          "dy": 3,
+          "width": 105,
+          "height": 105,
+          "backgroundColor": "#575e62"
+        },
+        "name": {
+          "dx": 109,
+          "dy": 16,
+          "fontSize": 40,
+          "maxWidth": 440,
+          "color": "#333"
+        },
+        "value": {
+          "dx": 109,
+          "dy": 57,
+          "fontSize": 48,
+          "maxWidth": 440,
+          "color": "#fff"
+        }
+      }
+    }
+  },
+  "i18n": {
+    "en": {
+      "name": "Level {{level}} {{cardName}}",
+      "rarity-label": "Rarity:",
+      "rarity-common": "Common",
+      "rarity-rare": "Rare",
+      "rarity-epic": "Epic",
+      "rarity-legendary": "Legendary",
+      "rarity-champion": "Champion",
+      "type-label": "Type:",
+      "type-troop": "Troop",
+      "type-building": "Building",
+      "type-spell": "Spell",
+      "type-tower-troop": "Tower Troop"
+    }
+  }
+}

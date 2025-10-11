@@ -1,0 +1,122 @@
+import { fitFontSize, getCanvasColor } from './utils';
+import { iconsImages } from '../shared';
+import type { $Schema as TemplateSchema } from '../../../templates/generated/types';
+import type { CardStat } from '../types';
+import type { DrawCanvasPartParams } from './types';
+
+const drawStat = ({
+  ctx,
+  stat,
+  backgroundColor,
+  x,
+  y,
+  itemsConfig,
+}: {
+  ctx: CanvasRenderingContext2D;
+  stat: CardStat;
+  backgroundColor: string | CanvasGradient;
+  x: number;
+  y: number;
+  itemsConfig: TemplateSchema['fields']['stats']['items'];
+}) => {
+  ctx.translate(x, y);
+  // Background
+  ctx.save();
+  ctx.fillStyle = backgroundColor;
+  ctx.beginPath();
+  ctx.rect(0, 0, itemsConfig.width, itemsConfig.height);
+  ctx.fill();
+  ctx.restore();
+  // Name
+  ctx.save();
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'hanging';
+  ctx.fillStyle = getCanvasColor(ctx, itemsConfig.name.color);
+  fitFontSize(
+    ctx,
+    stat.name,
+    'Supercell Magic',
+    itemsConfig.name.maxWidth,
+    itemsConfig.name.fontSize,
+  );
+  ctx.fillText(stat.name, itemsConfig.name.dx, itemsConfig.name.dy);
+  // Value
+  ctx.fillStyle = getCanvasColor(ctx, itemsConfig.value.color);
+  ctx.strokeStyle = '#000';
+  ctx.shadowColor = '#000';
+  ctx.lineWidth = 4;
+  ctx.shadowOffsetY = 4;
+  fitFontSize(
+    ctx,
+    stat.value.toString(),
+    'Supercell Magic',
+    itemsConfig.value.maxWidth,
+    itemsConfig.value.fontSize,
+  );
+  ctx.strokeText(
+    stat.value.toString(),
+    itemsConfig.value.dx,
+    itemsConfig.value.dy,
+  );
+  ctx.fillText(
+    stat.value.toString(),
+    itemsConfig.value.dx,
+    itemsConfig.value.dy,
+  );
+  ctx.restore();
+  // Icon background
+  if (stat.showIconBackground && itemsConfig.icon.backgroundColor) {
+    ctx.save();
+    ctx.fillStyle = getCanvasColor(ctx, itemsConfig.icon.backgroundColor);
+    const iconBgWidth = itemsConfig.icon.width - 10;
+    const iconBgHeight = itemsConfig.icon.height - 10;
+    const iconBgDx =
+      itemsConfig.icon.dx + (itemsConfig.icon.width - iconBgWidth) / 2;
+    const iconBgDy =
+      itemsConfig.icon.dy + (itemsConfig.icon.height - iconBgHeight) / 2;
+    ctx.beginPath();
+    ctx.roundRect(iconBgDx, iconBgDy, iconBgWidth, iconBgHeight, 6);
+    ctx.fill();
+    ctx.restore();
+  }
+  // Icon
+  if (stat.icon in iconsImages) {
+    ctx.drawImage(
+      iconsImages[stat.icon],
+      itemsConfig.icon.dx,
+      itemsConfig.icon.dy,
+      itemsConfig.icon.width,
+      itemsConfig.icon.height,
+    );
+  }
+};
+
+export const drawStats = ({ options, ctx }: DrawCanvasPartParams) => {
+  const statsConfig = options.template.fields.stats;
+  options.stats?.forEach((stat, index) => {
+    if (index >= options.template.fields.stats.maxItems) {
+      return;
+    }
+    ctx.save();
+    const rowIndex = Math.floor(index / statsConfig.itemsPerRow);
+    drawStat({
+      ctx,
+      stat,
+      backgroundColor: getCanvasColor(
+        ctx,
+        (rowIndex + 1) % 2 === 0
+          ? statsConfig.items.evenBackgroundColor
+          : statsConfig.items.oddBackgroundColor,
+      ),
+      x:
+        statsConfig.x +
+        (index % statsConfig.itemsPerRow) *
+          (statsConfig.items.width + statsConfig.gapX),
+      y:
+        statsConfig.y +
+        rowIndex * (statsConfig.items.height + statsConfig.gapY),
+      itemsConfig: statsConfig.items,
+    });
+    ctx.restore();
+  }) ?? [];
+};

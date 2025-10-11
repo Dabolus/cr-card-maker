@@ -1,0 +1,505 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "definitions": {
+    "Rarity": {
+      "type": "string",
+      "enum": ["common", "rare", "epic", "legendary", "champion"]
+    },
+    "Type": {
+      "type": "string",
+      "enum": ["troop", "building", "spell", "tower-troop", "ruler"]
+    },
+    "ColorValue": {
+      "type": ["string", "array"],
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "Color": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/ColorValue"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "common": {
+              "$ref": "#/definitions/ColorValue"
+            },
+            "rare": {
+              "$ref": "#/definitions/ColorValue"
+            },
+            "epic": {
+              "$ref": "#/definitions/ColorValue"
+            },
+            "legendary": {
+              "$ref": "#/definitions/ColorValue"
+            },
+            "champion": {
+              "$ref": "#/definitions/ColorValue"
+            }
+          },
+          "required": ["common", "rare", "epic", "legendary", "champion"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Url": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "common": {
+              "type": "string"
+            },
+            "rare": {
+              "type": "string"
+            },
+            "epic": {
+              "type": "string"
+            },
+            "legendary": {
+              "type": "string"
+            },
+            "champion": {
+              "type": "string"
+            }
+          },
+          "required": ["common", "rare", "epic", "legendary", "champion"],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "width": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
+    },
+    "supported-rarities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Rarity"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "supported-types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Type"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "fields": {
+      "type": "object",
+      "properties": {
+        "card-name": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "fontSize": {
+              "type": "integer"
+            },
+            "maxWidth": {
+              "type": "integer"
+            },
+            "color": {
+              "$ref": "#/definitions/ColorValue"
+            }
+          },
+          "required": ["x", "y", "fontSize", "maxWidth", "color"],
+          "additionalProperties": false
+        },
+        "image": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            }
+          },
+          "required": ["x", "y", "width", "height"],
+          "additionalProperties": false
+        },
+        "elixir-cost": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            },
+            "fontSize": {
+              "type": "integer"
+            }
+          },
+          "required": ["x", "y", "width", "height", "fontSize"],
+          "additionalProperties": false
+        },
+        "rarity-background": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            },
+            "url": {
+              "$ref": "#/definitions/Url"
+            }
+          },
+          "required": ["x", "y", "width", "height", "url"],
+          "additionalProperties": false
+        },
+        "rarity-label": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "fontSize": {
+              "type": "integer"
+            },
+            "maxWidth": {
+              "type": "integer"
+            },
+            "color": {
+              "$ref": "#/definitions/ColorValue"
+            }
+          },
+          "required": ["x", "y", "fontSize", "maxWidth", "color"],
+          "additionalProperties": false
+        },
+        "rarity-value": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "fontSize": {
+              "type": "integer"
+            },
+            "maxWidth": {
+              "type": "integer"
+            },
+            "color": {
+              "$ref": "#/definitions/Color"
+            }
+          },
+          "required": ["x", "y", "fontSize", "maxWidth", "color"],
+          "additionalProperties": false
+        },
+        "type-label": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "fontSize": {
+              "type": "integer"
+            },
+            "maxWidth": {
+              "type": "integer"
+            },
+            "color": {
+              "$ref": "#/definitions/ColorValue"
+            }
+          },
+          "required": ["x", "y", "fontSize", "maxWidth", "color"],
+          "additionalProperties": false
+        },
+        "type-value": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "fontSize": {
+              "type": "integer"
+            },
+            "maxWidth": {
+              "type": "integer"
+            },
+            "color": {
+              "$ref": "#/definitions/ColorValue"
+            }
+          },
+          "required": ["x", "y", "fontSize", "maxWidth", "color"],
+          "additionalProperties": false
+        },
+        "description": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "maxWidth": {
+              "type": "integer"
+            },
+            "fontSize": {
+              "type": "integer"
+            },
+            "lineHeight": {
+              "type": "integer"
+            },
+            "color": {
+              "$ref": "#/definitions/ColorValue"
+            }
+          },
+          "required": ["x", "y", "maxWidth", "fontSize", "lineHeight", "color"],
+          "additionalProperties": false
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "gapX": {
+              "type": "integer"
+            },
+            "gapY": {
+              "type": "integer"
+            },
+            "maxItems": {
+              "type": "integer",
+              "min": 1,
+              "max": 20
+            },
+            "itemsPerRow": {
+              "type": "integer",
+              "min": 1,
+              "max": 10
+            },
+            "items": {
+              "type": "object",
+              "properties": {
+                "width": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "evenBackgroundColor": {
+                  "$ref": "#/definitions/ColorValue"
+                },
+                "oddBackgroundColor": {
+                  "$ref": "#/definitions/ColorValue"
+                },
+                "icon": {
+                  "type": "object",
+                  "properties": {
+                    "dx": {
+                      "type": "integer"
+                    },
+                    "dy": {
+                      "type": "integer"
+                    },
+                    "width": {
+                      "type": "integer"
+                    },
+                    "height": {
+                      "type": "integer"
+                    },
+                    "backgroundColor": {
+                      "$ref": "#/definitions/ColorValue"
+                    }
+                  },
+                  "required": ["dx", "dy", "width", "height"],
+                  "additionalProperties": false
+                },
+                "name": {
+                  "type": "object",
+                  "properties": {
+                    "dx": {
+                      "type": "integer"
+                    },
+                    "dy": {
+                      "type": "integer"
+                    },
+                    "fontSize": {
+                      "type": "integer"
+                    },
+                    "maxWidth": {
+                      "type": "integer"
+                    },
+                    "color": {
+                      "$ref": "#/definitions/ColorValue"
+                    }
+                  },
+                  "required": ["dx", "dy", "fontSize", "maxWidth", "color"],
+                  "additionalProperties": false
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "dx": {
+                      "type": "integer"
+                    },
+                    "dy": {
+                      "type": "integer"
+                    },
+                    "fontSize": {
+                      "type": "integer"
+                    },
+                    "maxWidth": {
+                      "type": "integer"
+                    },
+                    "color": {
+                      "$ref": "#/definitions/ColorValue"
+                    }
+                  },
+                  "required": ["dx", "dy", "fontSize", "maxWidth", "color"],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "width",
+                "height",
+                "evenBackgroundColor",
+                "oddBackgroundColor",
+                "icon",
+                "name",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "gapX",
+            "gapY",
+            "maxItems",
+            "itemsPerRow",
+            "items"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "card-name",
+        "image",
+        "elixir-cost",
+        "rarity-background",
+        "rarity-label",
+        "rarity-value",
+        "type-label",
+        "type-value",
+        "description",
+        "stats"
+      ],
+      "additionalProperties": false
+    },
+    "i18n": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]{2}$": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "rarity-label": {
+              "type": "string"
+            },
+            "rarity-common": {
+              "type": "string"
+            },
+            "rarity-rare": {
+              "type": "string"
+            },
+            "rarity-epic": {
+              "type": "string"
+            },
+            "rarity-legendary": {
+              "type": "string"
+            },
+            "rarity-champion": {
+              "type": "string"
+            },
+            "type-label": {
+              "type": "string"
+            },
+            "type-troop": {
+              "type": "string"
+            },
+            "type-building": {
+              "type": "string"
+            },
+            "type-spell": {
+              "type": "string"
+            },
+            "type-tower-troop": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["name", "width", "height", "fields"],
+  "additionalProperties": false
+}

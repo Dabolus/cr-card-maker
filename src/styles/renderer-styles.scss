@@ -1,0 +1,89 @@
+input,
+textarea,
+select,
+button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+dialog {
+  border: none;
+  padding: 1rem;
+  box-sizing: border-box;
+
+  &.fullscreen {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+  }
+
+  & > form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    & > .dialog-title {
+      flex: 0;
+      margin: 0;
+    }
+
+    & > .dialog-content {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    & > .dialog-actions {
+      flex: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 1rem;
+
+      & > button {
+        cursor: pointer;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        color: #fff;
+        text-shadow:
+          -1px -1px 0 #000,
+          1px -1px 0 #000,
+          -1px 2px 0 #000,
+          1px 2px 0 #000;
+        transition: background-color 0.3s;
+
+        &.primary-action {
+          background-color: #db853e;
+          &:hover {
+            background-color: #b26a2c;
+          }
+        }
+
+        &.secondary-action {
+          background-color: #1976d2;
+          &:hover {
+            background-color: #1565c0;
+          }
+        }
+      }
+    }
+  }
+}
+
+#card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  container-type: inline-size;
+
+  & > * {
+    position: absolute;
+  }
+}

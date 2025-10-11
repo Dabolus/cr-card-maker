@@ -4,3 +4,5 @@ import '../styles/main.scss';
 
 setupI18n();
 setupRouting();
+
+import('./pages/create');

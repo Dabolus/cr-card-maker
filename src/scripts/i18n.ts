@@ -7,6 +7,8 @@ const localesCache: Record<
   Promise<{ default: typeof import('../locales/en.json') }>
 > = {};
 
+let currentLocaleData: typeof import('../locales/en.json');
+
 const getLocaleData = async (locale: string) => {
   if (!(locale in localesCache)) {
     localesCache[locale] = import(`../locales/${locale}.json`);
@@ -15,12 +17,37 @@ const getLocaleData = async (locale: string) => {
   return localeData;
 };
 
-const updateView = async (locale: string) => {
-  const localeData = await getLocaleData(locale);
+export const t = (
+  key: string,
+  params: Record<string, unknown> = {},
+  localeData: Record<string, string> = currentLocaleData,
+) => {
+  const rawTranslation = localeData[key];
 
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n')!;
-    el.textContent = localeData[key as keyof typeof localeData];
+  if (!rawTranslation) {
+    console.warn(`Missing localization for key: ${key}`);
+    return key;
+  }
+
+  return Object.entries(params).reduce(
+    (str, [placeholder, value]) =>
+      str.replaceAll(`{{${placeholder}}}`, String(value)),
+    rawTranslation,
+  );
+};
+
+const updateView = () => {
+  document.querySelectorAll('[data-i18n],[data-i18n-title]').forEach((el) => {
+    if (el.hasAttribute('data-i18n-title')) {
+      const key = el.getAttribute('data-i18n-title')!;
+      const value = t(key);
+      el.setAttribute('title', value);
+    }
+    if (el.hasAttribute('data-i18n')) {
+      const key = el.getAttribute('data-i18n')!;
+      const value = t(key);
+      el.textContent = value;
+    }
   });
 };
 
@@ -35,10 +62,13 @@ export const getLocale = async () => {
 
 export const setLocale = async (locale: string) => {
   const newLocale = supportedLocales.includes(locale) ? locale : 'en';
-  await Promise.all([updateView(newLocale), set('locale', newLocale)]);
+  currentLocaleData = await getLocaleData(newLocale);
+  updateView();
+  await set('locale', newLocale);
 };
 
 export const setupI18n = async () => {
   const locale = await getLocale();
-  await updateView(locale);
+  currentLocaleData = await getLocaleData(locale);
+  updateView();
 };

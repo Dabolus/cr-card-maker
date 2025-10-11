@@ -1,0 +1,42 @@
+.page#create {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & > #template-select-container {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(0 0 0 / 0.24);
+    border: 1px solid #000;
+
+    & > label,
+    & > select {
+      font: inherit;
+      color: #fff;
+      text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 2px 0 #000,
+        1px 2px 0 #000;
+    }
+
+    & > select {
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      margin-left: 0.5rem;
+      padding: 0 0.5rem;
+    }
+  }
+
+  & > #card-editor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex: 1;
+  }
+}

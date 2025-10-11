@@ -30,9 +30,23 @@
   </head>
   <body>
     <div id="content">
-      <div class="page" id="cards" role="tabpanel" tabindex="0" aria-labelledby="cards-tab" aria-hidden="true"></div>
-      <div class="page" id="create" role="tabpanel" tabindex="0" aria-labelledby="create-tab" aria-hidden="true"></div>
-      <div class="page" id="info" role="tabpanel" tabindex="0" aria-labelledby="info-tab" aria-hidden="true"></div>
+      <div class="page" id="cards" role="tabpanel" tabindex="0" aria-labelledby="cards-tab" aria-hidden="true">
+        Cards
+      </div>
+      <div class="page" id="create" role="tabpanel" tabindex="0" aria-labelledby="create-tab" aria-hidden="true">
+        <div id="template-select-container">
+          <label data-i18n="template-label"></label>
+          <select id="template-select">
+            <option value="" selected data-i18n="loading"></option>
+          </select>
+        </div>
+        <div id="card-editor">
+          <div class="loader-indeterminate" role="progressbar"></div>
+        </div>
+      </div>
+      <div class="page" id="info" role="tabpanel" tabindex="0" aria-labelledby="info-tab" aria-hidden="true">
+        Info
+      </div>
     </div>
     <nav class="navbar">
       <div id="overlay"></div>

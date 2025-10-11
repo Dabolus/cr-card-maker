@@ -1,0 +1,31 @@
+@use 'theme';
+
+// Indeterminate progress bar
+.loader-indeterminate {
+  --loader-bg: no-repeat linear-gradient(#{theme.$secondary-color} 0 0);
+  appearance: none;
+  height: 0.5em;
+  width: 15em;
+  background: var(--loader-bg), var(--loader-bg), theme.$primary-color;
+  background-size: 60% 100%;
+  border-radius: 0.25em;
+  animation: loader-indeterminate 3s infinite;
+}
+
+@keyframes loader-indeterminate {
+  0% {
+    background-position:
+      -150% 0,
+      -150% 0;
+  }
+  66% {
+    background-position:
+      250% 0,
+      -150% 0;
+  }
+  100% {
+    background-position:
+      250% 0,
+      250% 0;
+  }
+}

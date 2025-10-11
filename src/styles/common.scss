@@ -1,0 +1,32 @@
+@use 'navbar';
+@use 'loader';
+
+body {
+  overflow: hidden;
+}
+
+#content {
+  height: 100%;
+  display: flex;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+  scroll-snap-type: mandatory;
+  // Alternative scroll snap for older browsers
+  scroll-snap-points-x: repeat(100vw);
+  scroll-snap-type: x mandatory;
+}
+
+.page {
+  display: inline-block;
+  min-width: 100vw;
+  min-height: calc(100% - navbar.$height);
+  background:
+    radial-gradient(transparent, rgba(0, 0, 20, 0.4)) no-repeat,
+    url(../images/bg.svg) repeat;
+  background-size:
+    cover,
+    97px 100px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding-bottom: navbar.$height;
+}

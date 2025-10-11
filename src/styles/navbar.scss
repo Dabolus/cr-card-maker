@@ -1,9 +1,9 @@
 @use 'theme';
 @use 'sass:math';
 
-$navbar-height: 80px;
-$navbar-pages: 3;
-$item-width: math.div(1, $navbar-pages + 1) * 100vw;
+$height: 80px;
+$pages: 3;
+$item-width: math.div(1, $pages + 1) * 100vw;
 $selected-item-width: $item-width * 2;
 
 .navbar {
@@ -15,12 +15,15 @@ $selected-item-width: $item-width * 2;
   bottom: 0;
   width: 100vw;
   overflow: hidden;
-  height: $navbar-height;
+  height: $height;
   background: linear-gradient(#6f809c, #505a6e 15%, #394150);
   cursor: pointer;
   font-family: theme.$font-title;
   text-align: center;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 2px 0 #000,
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 2px 0 #000,
     1px 2px 0 #000;
   width: 100%;
 
@@ -29,7 +32,7 @@ $selected-item-width: $item-width * 2;
     bottom: 0;
     left: 0;
     width: $selected-item-width;
-    height: $navbar-height;
+    height: $height;
     box-sizing: border-box;
     border-top: 3px solid rgb(132, 143, 166);
     border-left: 1px solid #3a4454;
@@ -45,7 +48,7 @@ $selected-item-width: $item-width * 2;
     > [role='tab'] {
       flex: 1;
       list-style: none;
-      height: $navbar-height;
+      height: $height;
       border-top: 3px solid #848fa6;
       border-left: 1px solid #3a4454;
       border-right: 1px solid #5b6776;

@@ -2,20 +2,29 @@
   "name": "cr-card-maker",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "bun run generate-types && vite",
+    "dev:public": "bun run dev --host 0.0.0.0",
+    "build": "bun run generate-types && tsc && vite build",
     "serve": "vite preview",
-    "upgrade-interactive": "ncu -ui"
+    "upgrade-interactive": "ncu -ui",
+    "generate-types": "json2ts ./src/templates/\\$schema.json -o ./src/templates/generated/types.ts"
   },
   "dependencies": {
+    "cropperjs": "^2.0.1",
     "idb": "^8.0.3",
-    "pwa-helpers": "^0.9.1"
+    "pwa-helpers": "^0.9.1",
+    "sortablejs": "^1.15.6"
   },
   "devDependencies": {
+    "@types/sortablejs": "^1.15.8",
+    "json-schema-to-typescript": "^15.0.4",
     "npm-check-updates": "^19.0.0",
+    "prettier": "^3.6.2",
     "sass": "^1.93.2",
     "typescript": "^5.9.3",
-    "vite": "^7.1.9"
+    "vite": "^7.1.9",
+    "vite-bundle-analyzer": "^1.2.3",
+    "vite-plugin-mkcert": "^1.17.9"
   },
   "packageManager": "bun@1.2.23"
 }
