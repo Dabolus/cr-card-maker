@@ -3,13 +3,15 @@ import { fitFontSize, getCanvasColor } from './utils';
 import type { DrawCanvasPartParams } from './types';
 
 export interface DrawRarityTypeParams extends DrawCanvasPartParams {
-  backgroundImage: HTMLImageElement;
+  rarityBackgroundImage: HTMLImageElement | null;
+  typeBackgroundImage: HTMLImageElement | null;
 }
 
 export const drawRarityType = ({
   options,
   ctx,
-  backgroundImage,
+  rarityBackgroundImage,
+  typeBackgroundImage,
 }: DrawRarityTypeParams) => {
   const i18n =
     options.template.i18n?.[
@@ -18,19 +20,34 @@ export const drawRarityType = ({
 
   // First of all, draw the rarity background, which changes based on the rarity
   ctx.save();
-  ctx.drawImage(
-    backgroundImage,
-    options.template.fields['rarity-background'].x,
-    options.template.fields['rarity-background'].y,
-    options.template.fields['rarity-background'].width,
-    options.template.fields['rarity-background'].height,
-  );
+  const rarityBackgroundField = options.template.fields['rarity-background'];
+  if (rarityBackgroundField && rarityBackgroundImage) {
+    ctx.drawImage(
+      rarityBackgroundImage,
+      rarityBackgroundField.x,
+      rarityBackgroundField.y,
+      rarityBackgroundField.width,
+      rarityBackgroundField.height,
+    );
+  }
+  const typeBackgroundField = options.template.fields['type-background'];
+  if (typeBackgroundField && typeBackgroundImage) {
+    ctx.drawImage(
+      typeBackgroundImage,
+      typeBackgroundField.x,
+      typeBackgroundField.y,
+      typeBackgroundField.width,
+      typeBackgroundField.height,
+    );
+  }
   // Ok, now we can draw the text
   ctx.textBaseline = 'hanging';
   // First of all, draw the labels
+  ctx.textAlign = options.template.fields['rarity-label'].textAlign || 'left';
   ctx.fillStyle = getCanvasColor(
     ctx,
     options.template.fields['rarity-label'].color,
+    { rarity: options.rarity },
   );
   fitFontSize(
     ctx,
@@ -44,9 +61,11 @@ export const drawRarityType = ({
     options.template.fields['rarity-label'].x,
     options.template.fields['rarity-label'].y,
   );
+  ctx.textAlign = options.template.fields['type-label'].textAlign || 'left';
   ctx.fillStyle = getCanvasColor(
     ctx,
     options.template.fields['type-label'].color,
+    { rarity: options.rarity },
   );
   fitFontSize(
     ctx,
@@ -63,8 +82,9 @@ export const drawRarityType = ({
   // Then the rarity value
   ctx.lineWidth = 5;
   ctx.strokeStyle = 'black';
-  ctx.shadowOffsetY = 5;
+  ctx.shadowOffsetY = options.template.fields['rarity-value'].fontSize * 0.07;
   ctx.shadowColor = 'black';
+  ctx.textAlign = options.template.fields['rarity-value'].textAlign || 'left';
   const rarityValueFontSize = fitFontSize(
     ctx,
     t(`rarity-${options.rarity}`, {}, i18n),
@@ -96,8 +116,9 @@ export const drawRarityType = ({
   ctx.lineWidth = 5;
   ctx.strokeStyle = 'black';
   ctx.fillStyle = 'white';
-  ctx.shadowOffsetY = 5;
+  ctx.shadowOffsetY = options.template.fields['type-value'].fontSize * 0.07;
   ctx.shadowColor = 'black';
+  ctx.textAlign = options.template.fields['type-value'].textAlign || 'left';
   const typeValueFontSize = fitFontSize(
     ctx,
     t(`type-${options.cardType}`, {}, i18n),
@@ -109,6 +130,7 @@ export const drawRarityType = ({
     ctx,
     options.template.fields['type-value'].color,
     {
+      rarity: options.rarity,
       gradientX: options.template.fields['type-value'].x,
       gradientY: options.template.fields['type-value'].y,
       gradientWidth: typeValueFontSize.metrics.width,

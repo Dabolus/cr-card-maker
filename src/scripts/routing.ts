@@ -19,7 +19,7 @@ export const setupRouting = () => {
     { focus = false, scroll = false } = {},
   ) => {
     const previousIndex = tabs.findIndex(
-      item => item.getAttribute('aria-selected') === 'true',
+      (item) => item.getAttribute('aria-selected') === 'true',
     );
     const newIndex = typeof index === 'function' ? index(previousIndex) : index;
 
@@ -114,17 +114,17 @@ export const setupRouting = () => {
 
   let scrollingHandle: number | undefined;
 
-  tablist.addEventListener('keydown', event => {
+  tablist.addEventListener('keydown', (event) => {
     switch (event.key) {
       case 'ArrowLeft':
-        goToPageIndex(previousIndex => Math.max(previousIndex - 1, 0), {
+        goToPageIndex((previousIndex) => Math.max(previousIndex - 1, 0), {
           focus: true,
           scroll: true,
         });
         break;
       case 'ArrowRight':
         goToPageIndex(
-          previousIndex => Math.min(previousIndex + 1, tabs.length - 1),
+          (previousIndex) => Math.min(previousIndex + 1, tabs.length - 1),
           {
             focus: true,
             scroll: true,

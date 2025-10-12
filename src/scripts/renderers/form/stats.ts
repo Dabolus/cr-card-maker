@@ -206,12 +206,15 @@ export const drawStats = ({
   styles,
   form,
 }: DrawFormPartParams) => {
+  const statsOptions = options.template.fields.stats;
+  if (!statsOptions) {
+    return;
+  }
   let currentStats =
     options.stats?.map<CardStatWithId>((stat) => ({
       ...stat,
       id: crypto.randomUUID(),
     })) ?? [];
-  const statsOptions = options.template.fields.stats;
   const statsWidth =
     statsOptions.itemsPerRow * (statsOptions.items.width + statsOptions.gapX) -
     statsOptions.gapX;

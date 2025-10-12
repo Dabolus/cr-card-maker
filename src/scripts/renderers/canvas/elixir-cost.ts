@@ -29,9 +29,11 @@ export const drawElixirCost = ({
   ctx.lineWidth = 6;
   ctx.fillStyle = '#FFE9FF';
   ctx.strokeStyle = '#760088';
-  ctx.shadowOffsetY = 5;
+  ctx.shadowOffsetY = options.template.fields['elixir-cost'].fontSize * 0.07;
   ctx.shadowColor = '#760088';
-  ctx.strokeText(options.elixirCost.toString(), 52, 62);
-  ctx.fillText(options.elixirCost.toString(), 52, 62);
+  const elixirX = options.template.fields['elixir-cost'].width / 2;
+  const elixirY = options.template.fields['elixir-cost'].height / 2;
+  ctx.strokeText(options.elixirCost.toString(), elixirX, elixirY);
+  ctx.fillText(options.elixirCost.toString(), elixirX, elixirY);
   ctx.restore();
 };

@@ -1,6 +1,30 @@
 import { t } from '../../i18n';
 import { css } from './utils';
-import type { DrawFormPartParams } from './types';
+import type { DrawFormOptions, DrawFormPartParams } from './types';
+
+const guessInputAlignment = ({
+  options,
+  translation,
+}: {
+  options: DrawFormOptions;
+  translation: string | undefined;
+}) => {
+  // If the translation for the card name is just the value (and so the text input),
+  // then we use the provided alignment (or default to center)
+  if (!translation || translation === '{{cardName}}') {
+    return options.template.fields['card-name'].textAlign || 'center';
+  }
+  // If the translation contains the value at the start, we align left
+  if (translation.startsWith('{{cardName}}')) {
+    return 'left';
+  }
+  // If the translation contains the value at the end, we align right
+  if (translation.endsWith('{{cardName}}')) {
+    return 'right';
+  }
+  // Otherwise, we default to center
+  return 'center';
+};
 
 export const drawName = ({
   options,
@@ -57,6 +81,10 @@ export const drawName = ({
 
       & > input {
         min-width: 6rem;
+        text-align: ${guessInputAlignment({
+          options,
+          translation: i18n.name,
+        })};
       }
     }
   `);
@@ -79,14 +107,14 @@ export const drawName = ({
     i18n,
   );
   cardName
-    .querySelector('select[name="level"]')!
-    .addEventListener('change', (e) => {
+    .querySelector('select[name="level"]')
+    ?.addEventListener('change', (e) => {
       const newLevel = parseInt((e.target as HTMLSelectElement).value, 10);
       options.onChange?.({ ...options, level: newLevel }, 'level', newLevel);
     });
   cardName
-    .querySelector('input[name="cardName"]')!
-    .addEventListener('input', (e) => {
+    .querySelector('input[name="cardName"]')
+    ?.addEventListener('input', (e) => {
       const newName = (e.target as HTMLInputElement).value;
       options.onChange?.(
         { ...options, cardName: newName },

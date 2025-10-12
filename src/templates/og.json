@@ -3,6 +3,7 @@
   "name": "OG",
   "width": 1432,
   "height": 1794,
+  "background": "/cards-assets/backgrounds/og.png",
   "supported-rarities": ["common", "rare", "epic", "legendary"],
   "supported-types": ["troop", "building", "spell"],
   "fields": {
@@ -32,11 +33,11 @@
       "width": 773,
       "height": 157,
       "url": {
-        "common": "/cards-assets/rarity-backgrounds/common.svg",
-        "rare": "/cards-assets/rarity-backgrounds/rare.svg",
-        "epic": "/cards-assets/rarity-backgrounds/epic.svg",
-        "legendary": "/cards-assets/rarity-backgrounds/legendary.svg",
-        "champion": "/cards-assets/rarity-backgrounds/champion.svg"
+        "common": "/cards-assets/rarity-backgrounds/og/common.svg",
+        "rare": "/cards-assets/rarity-backgrounds/og/rare.svg",
+        "epic": "/cards-assets/rarity-backgrounds/og/epic.svg",
+        "legendary": "/cards-assets/rarity-backgrounds/og/legendary.svg",
+        "champion": "/cards-assets/rarity-backgrounds/og/champion.svg"
       }
     },
     "rarity-label": {
@@ -79,6 +80,7 @@
       "maxWidth": 702,
       "fontSize": 42,
       "lineHeight": 54,
+      "maxLines": 5,
       "color": "#333"
     },
     "stats": {

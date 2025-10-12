@@ -17,6 +17,14 @@
       },
       "minItems": 1
     },
+    "TextAlign": {
+      "type": "string",
+      "enum": ["left", "right", "center"]
+    },
+    "TextBaseline": {
+      "type": "string",
+      "enum": ["top", "middle", "bottom"]
+    },
     "Color": {
       "oneOf": [
         {
@@ -89,6 +97,9 @@
     "height": {
       "type": "integer"
     },
+    "background": {
+      "type": "string"
+    },
     "supported-rarities": {
       "type": "array",
       "items": {
@@ -123,11 +134,33 @@
             "maxWidth": {
               "type": "integer"
             },
+            "textAlign": {
+              "$ref": "#/definitions/TextAlign"
+            },
             "color": {
               "$ref": "#/definitions/ColorValue"
             }
           },
           "required": ["x", "y", "fontSize", "maxWidth", "color"],
+          "additionalProperties": false
+        },
+        "level": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "fontSize": {
+              "type": "integer"
+            },
+            "color": {
+              "$ref": "#/definitions/Color"
+            }
+          },
+          "required": ["x", "y", "fontSize", "color"],
           "additionalProperties": false
         },
         "image": {
@@ -208,8 +241,11 @@
             "maxWidth": {
               "type": "integer"
             },
+            "textAlign": {
+              "$ref": "#/definitions/TextAlign"
+            },
             "color": {
-              "$ref": "#/definitions/ColorValue"
+              "$ref": "#/definitions/Color"
             }
           },
           "required": ["x", "y", "fontSize", "maxWidth", "color"],
@@ -230,11 +266,36 @@
             "maxWidth": {
               "type": "integer"
             },
+            "textAlign": {
+              "$ref": "#/definitions/TextAlign"
+            },
             "color": {
               "$ref": "#/definitions/Color"
             }
           },
           "required": ["x", "y", "fontSize", "maxWidth", "color"],
+          "additionalProperties": false
+        },
+        "type-background": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            },
+            "url": {
+              "$ref": "#/definitions/Url"
+            }
+          },
+          "required": ["x", "y", "width", "height", "url"],
           "additionalProperties": false
         },
         "type-label": {
@@ -252,8 +313,11 @@
             "maxWidth": {
               "type": "integer"
             },
+            "textAlign": {
+              "$ref": "#/definitions/TextAlign"
+            },
             "color": {
-              "$ref": "#/definitions/ColorValue"
+              "$ref": "#/definitions/Color"
             }
           },
           "required": ["x", "y", "fontSize", "maxWidth", "color"],
@@ -274,8 +338,11 @@
             "maxWidth": {
               "type": "integer"
             },
+            "textAlign": {
+              "$ref": "#/definitions/TextAlign"
+            },
             "color": {
-              "$ref": "#/definitions/ColorValue"
+              "$ref": "#/definitions/Color"
             }
           },
           "required": ["x", "y", "fontSize", "maxWidth", "color"],
@@ -299,11 +366,30 @@
             "lineHeight": {
               "type": "integer"
             },
+            "maxLines": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            },
+            "textAlign": {
+              "$ref": "#/definitions/TextAlign"
+            },
+            "textBaseline": {
+              "$ref": "#/definitions/TextBaseline"
+            },
             "color": {
               "$ref": "#/definitions/ColorValue"
             }
           },
-          "required": ["x", "y", "maxWidth", "fontSize", "lineHeight", "color"],
+          "required": [
+            "x",
+            "y",
+            "maxWidth",
+            "fontSize",
+            "lineHeight",
+            "maxLines",
+            "color"
+          ],
           "additionalProperties": false
         },
         "stats": {
@@ -441,13 +527,10 @@
         "card-name",
         "image",
         "elixir-cost",
-        "rarity-background",
         "rarity-label",
         "rarity-value",
         "type-label",
-        "type-value",
-        "description",
-        "stats"
+        "type-value"
       ],
       "additionalProperties": false
     },
@@ -458,6 +541,9 @@
           "type": "object",
           "properties": {
             "name": {
+              "type": "string"
+            },
+            "level": {
               "type": "string"
             },
             "rarity-label": {
@@ -500,6 +586,6 @@
       "additionalProperties": false
     }
   },
-  "required": ["name", "width", "height", "fields"],
+  "required": ["name", "width", "height", "background", "fields"],
   "additionalProperties": false
 }

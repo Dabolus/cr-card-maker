@@ -2,15 +2,13 @@ import type { Color } from '../../../templates/generated/types';
 import { wrappingSlice } from '../../utils';
 import { Rarity } from '../types';
 
-export const wrapText = (
+export const computeTextLines = (
   ctx: CanvasRenderingContext2D,
   text: string,
-  x: number,
-  y: number,
   maxWidth: number,
-  lineHeight: number,
-) => {
+): string[] => {
   const blocks = text.split('\n');
+  const lines: string[] = [];
   for (let block of blocks) {
     const words = block.split(' ');
     let line = '';
@@ -19,14 +17,41 @@ export const wrapText = (
       const metrics = ctx.measureText(testLine);
       const testWidth = metrics.width;
       if (testWidth > maxWidth && n > 0) {
-        ctx.fillText(line, x, y);
+        lines.push(line);
         line = words[n] + ' ';
-        y += lineHeight;
-      } else line = testLine;
+      } else {
+        line = testLine;
+      }
     }
+    lines.push(line);
+  }
+  return lines;
+};
+
+export const drawMultilineText = (
+  ctx: CanvasRenderingContext2D,
+  lines: string[],
+  x: number,
+  startY: number,
+  lineHeight: number,
+) => {
+  let y = startY;
+  for (let line of lines) {
     ctx.fillText(line, x, y);
     y += lineHeight;
   }
+};
+
+export const wrapText = (
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  maxWidth: number,
+  lineHeight: number,
+) => {
+  const lines = computeTextLines(ctx, text, maxWidth);
+  drawMultilineText(ctx, lines, x, y, lineHeight);
 };
 
 export const fitFontSize = (
@@ -75,10 +100,12 @@ export const getCanvasColor = (
     typeof color === 'string' || Array.isArray(color) ? color : color[rarity];
 
   if (Array.isArray(colorValue) && colorValue.length > 1) {
+    const startX =
+      ctx.textAlign === 'center' ? gradientX - gradientWidth / 2 : gradientX;
     const gradient = ctx.createLinearGradient(
-      gradientX,
+      startX,
       gradientY,
-      gradientX + gradientWidth,
+      startX + gradientWidth,
       gradientY,
     );
     const colorsToUseCount = Math.min(colorValue.length, gradientMaxColors);

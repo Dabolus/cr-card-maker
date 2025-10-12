@@ -13,7 +13,8 @@ export const waitImageLoaded = (
       resolve(img);
     } else {
       img.onload = () => resolve(img);
-      img.onerror = reject;
+      img.onerror = (event) =>
+        reject(new Error(`Failed to load image ${img.src}`, { cause: event }));
     }
   });
 

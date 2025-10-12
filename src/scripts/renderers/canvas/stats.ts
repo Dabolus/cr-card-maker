@@ -17,7 +17,7 @@ const drawStat = ({
   backgroundColor: string | CanvasGradient;
   x: number;
   y: number;
-  itemsConfig: TemplateSchema['fields']['stats']['items'];
+  itemsConfig: NonNullable<TemplateSchema['fields']['stats']>['items'];
 }) => {
   ctx.translate(x, y);
   // Background
@@ -93,8 +93,11 @@ const drawStat = ({
 
 export const drawStats = ({ options, ctx }: DrawCanvasPartParams) => {
   const statsConfig = options.template.fields.stats;
+  if (!statsConfig) {
+    return;
+  }
   options.stats?.forEach((stat, index) => {
-    if (index >= options.template.fields.stats.maxItems) {
+    if (index >= statsConfig.maxItems) {
       return;
     }
     ctx.save();
@@ -118,5 +121,5 @@ export const drawStats = ({ options, ctx }: DrawCanvasPartParams) => {
       itemsConfig: statsConfig.items,
     });
     ctx.restore();
-  }) ?? [];
+  });
 };

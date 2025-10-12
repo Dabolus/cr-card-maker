@@ -17,7 +17,7 @@ export const drawName = ({ options, ctx }: DrawCanvasPartParams) => {
     options.template.fields['card-name'].color,
   );
   ctx.strokeStyle = 'black';
-  ctx.shadowOffsetY = 5;
+  ctx.shadowOffsetY = options.template.fields['card-name'].fontSize * 0.07;
   ctx.shadowColor = 'black';
   const localizedCardName = t('name', options, i18n);
   fitFontSize(
