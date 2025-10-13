@@ -4,8 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script type="module" src="/src/scripts/main.ts"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1551168020317477" crossorigin="anonymous"></script>
     <link rel="preload" href="/src/fonts/supercell-magic_0.woff2" as="font" type="font/woff" crossorigin="anonymous" />
     <link rel="preload" href="/src/fonts/sc_ccbackbeatregular.woff2" as="font" type="font/woff" crossorigin="anonymous" />
+    <link rel="preload" href="/src/styles/pages/create.scss" as="style" />
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
     <meta name="author" content="Giorgio Garasto">
     <meta name="description" content="Welcome to Clash Royale Card Maker! With this simple tool you can create your own custom Clash Royale cards!">
@@ -37,6 +39,10 @@
         font-display: swap;
       }
 
+      * {
+        box-sizing: border-box;
+      }
+
       html, body {
         font-family: 'SC CCBackBeat', sans-serif;
         width: 100%;
@@ -49,21 +55,35 @@
   <body>
     <div id="content">
       <div class="page" id="cards" role="tabpanel" tabindex="0" aria-labelledby="cards-tab" aria-hidden="true">
-        Cards
+        <div class="loader-indeterminate loader-fullscreen" role="progressbar"></div>
       </div>
       <div class="page" id="create" role="tabpanel" tabindex="0" aria-labelledby="create-tab" aria-hidden="true">
-        <div id="template-select-container">
-          <label data-i18n="template-label"></label>
+        <header id="template-select-container">
+          <label data-i18n="template-label" for="template-select"></label>
           <select id="template-select">
-            <option value="" selected data-i18n="loading"></option>
+            <option value="standard-2" selected>Standard - Page 2</option>
+            <option value="standard-3">Standard - Page 3</option>
+            <option value="og">OG</option>
           </select>
-        </div>
-        <div id="card-editor">
+        </header>
+        <main id="card-editor">
           <div class="loader-indeterminate" role="progressbar"></div>
-        </div>
+        </main>
+        <footer id="actions">
+          <button id="download-button" class="sc-btn sc-btn-yellow" data-i18n-aria-label="download">
+            <svg viewBox="0 0 24 24">
+              <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+            </svg>
+          </button>
+          <button id="share-button" class="sc-btn sc-btn-yellow" data-i18n-aria-label="share" hidden>
+            <svg viewBox="0 0 24 24">
+              <path d="M16.75 9.9a3.23 3.23 0 1 0-3.15-2.66L9.3 9.61a3.23 3.23 0 1 0 0 4.87l4.3 2.44v.5a3.23 3.23 0 1 0 1-2.43l-4.3-2.37v-1.08l4.3-2.43q.93.72 2.15.79"/>
+            </svg>
+          </button>
+        </footer>
       </div>
       <div class="page" id="info" role="tabpanel" tabindex="0" aria-labelledby="info-tab" aria-hidden="true">
-        Info
+        <div class="loader-indeterminate loader-fullscreen" role="progressbar"></div>
       </div>
     </div>
     <nav class="navbar">

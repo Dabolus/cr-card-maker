@@ -14,12 +14,15 @@ export type DrawFormOptions = RendererBaseOptions & {
    * - the updated value
    */
   onChange?: (
-    newFormValues: Omit<DrawFormOptions, 'template' | 'onChange'>,
-    updatedKey: keyof Omit<DrawFormOptions, 'template' | 'onChange'>,
-    updatedValue: Omit<DrawFormOptions, 'template' | 'onChange'>[keyof Omit<
+    newFormValues: Omit<DrawFormOptions, 'template' | 'element' | 'onChange'>,
+    updatedKey: keyof Omit<
       DrawFormOptions,
-      'template' | 'onChange'
-    >],
+      'template' | 'element' | 'onChange'
+    >,
+    updatedValue: Omit<
+      DrawFormOptions,
+      'template' | 'element' | 'onChange'
+    >[keyof Omit<DrawFormOptions, 'template' | 'element' | 'onChange'>],
   ) => void;
 };
 

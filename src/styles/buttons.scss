@@ -1,0 +1,63 @@
+button {
+  cursor: pointer;
+
+  & > svg {
+    fill: currentColor;
+  }
+}
+
+.sc-btn {
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 3px;
+  border: 0;
+
+  &:active {
+    position: relative;
+    top: 2px;
+  }
+}
+
+.sc-btn-yellow {
+  margin: 9px 7px 14px;
+  background: linear-gradient(to bottom, #ffd053 5%, #ffbc2b 100%);
+  box-shadow:
+    0 2px 3px 0 #ff8907,
+    0 0 0 4px #ffa80c,
+    0 1px 0 4px #ffa80c,
+    0 -1px 2px 4px #ffd525,
+    0 -2px 0 5px #f4e684,
+    0 6px 0 4px #b06904,
+    0 3px 0 5px #f4e684,
+    0 -2px 0 7px #202020,
+    0 5px 0 7px #202020,
+    0 7px 0 7px #333;
+  color: #ffc;
+  text-shadow:
+    -1px 2px 0 #582d00,
+    0 2px 0 #582d00,
+    1px 2px 0 #582d00,
+    -1px -1px 0 #582d00,
+    1px -1px 0 #582d00,
+    -1px 1px 0 #582d00,
+    1px 1px 0 #582d00;
+
+  &:active {
+    box-shadow:
+      0 -2px 3px 0 #ff8907,
+      0 0 0 4px #ffa80c,
+      0 -1px 0 4px #ffa80c,
+      0 -1px 2px 4px #ffd525,
+      0 -2px 0 5px #f4e684,
+      0 6px 0 4px #b06904,
+      0 3px 0 5px #f4e684,
+      0 -2px 0 7px #202020,
+      0 5px 0 7px #202020,
+      0 7px 0 7px #333;
+    text-shadow:
+      -1px -1px 0 #582d00,
+      1px -1px 0 #582d00,
+      -1px 1px 0 #582d00,
+      1px 1px 0 #582d00;
+  }
+}

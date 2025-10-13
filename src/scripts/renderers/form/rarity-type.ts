@@ -88,21 +88,29 @@ export const drawRarityType = ({
 
   (['rarity', 'type'] as const).forEach((key) => {
     const labelField = options.template.fields[`${key}-label`];
+    const labelTextAlign = labelField.textAlign ?? 'left';
     styles.insertRule(css`
       #${key}-label {
-        left: ${toRelative(labelField.x - labelField.maxWidth / 2)};
+        left: ${toRelative(
+          labelField.x -
+            (labelTextAlign === 'center' ? labelField.maxWidth / 2 : 0),
+        )};
         top: ${toRelative(labelField.y)};
         font-family: 'Supercell Magic';
         white-space: nowrap;
         width: ${toRelative(labelField.maxWidth)};
         font-size: ${toRelative(labelField.fontSize)};
-        text-align: ${labelField.textAlign ?? 'left'};
+        text-align: ${labelTextAlign};
       }
     `);
     const valueField = options.template.fields[`${key}-value`];
+    const valueTextAlign = valueField.textAlign ?? 'left';
     styles.insertRule(css`
       #${key}-value {
-        left: ${toRelative(valueField.x - valueField.maxWidth / 2 - 24)};
+        left: ${toRelative(
+          valueField.x -
+            (valueTextAlign === 'center' ? valueField.maxWidth / 2 + 24 : 4),
+        )};
         top: ${toRelative(valueField.y - 4)};
         padding: ${toRelative(4)};
         white-space: nowrap;
@@ -111,7 +119,7 @@ export const drawRarityType = ({
         font-size: calc(
           ${toRelative(valueField.fontSize)} - (${rarityTypeShadowSize} * 2)
         );
-        text-align: ${valueField.textAlign ?? 'left'};
+        text-align: ${valueTextAlign};
         text-shadow:
           -${rarityTypeShadowSize} -${rarityTypeShadowSize} 0 #000,
           ${rarityTypeShadowSize} -${rarityTypeShadowSize} 0 #000,
@@ -157,10 +165,10 @@ export const drawRarityType = ({
     .join('');
   form.appendChild(typeValue);
 
-  const colorTargets: Array<{
+  const colorTargets: {
     element: HTMLElement;
     fieldKey: 'rarity-label' | 'rarity-value' | 'type-label' | 'type-value';
-  }> = [
+  }[] = [
     { element: rarityLabel, fieldKey: 'rarity-label' },
     { element: rarityValue, fieldKey: 'rarity-value' },
     { element: typeLabel, fieldKey: 'type-label' },

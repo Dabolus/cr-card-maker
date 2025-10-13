@@ -21,6 +21,7 @@ export const setupLayout = ({
 }: SetupLayoutParams) => {
   const toRelative = createToRelativeMapper(0, options.template.width);
   const container = options.element ?? document.createElement('div');
+  container.role = 'application';
   const shadow = container.attachShadow({ mode: 'open' });
   const styles = new CSSStyleSheet();
   const form = document.createElement('form');

@@ -12,6 +12,13 @@
   animation: loader-indeterminate 3s infinite;
 }
 
+.loader-fullscreen {
+  position: absolute;
+  top: calc(50% - 1em);
+  left: calc(50% - 7.5em);
+  z-index: 999;
+}
+
 @keyframes loader-indeterminate {
   0% {
     background-position:

@@ -1,4 +1,3 @@
-import Sortable from 'sortablejs/modular/sortable.core.esm.js';
 import { css } from './utils';
 import { t } from '../../i18n';
 import { icons, iconsImages, type Icon } from '../shared';
@@ -13,6 +12,10 @@ export interface DrawStatsParams extends DrawFormPartParams {
 export interface CardStatWithId extends CardStat {
   id: string;
 }
+
+const sortablePromise = import('sortablejs/modular/sortable.core.esm.js').then(
+  (mod) => mod.default,
+);
 
 const handleIconChange = ({
   form,
@@ -540,27 +543,27 @@ export const drawStats = ({
     statsContainer.appendChild(addStatButton);
   }
 
-  new Sortable(statsContainer, {
-    filter: '.add',
-    handle: '.move-stat',
-    delay: 200,
-    delayOnTouchOnly: true,
-    onMove: (evt) => {
-      if (evt.related.classList.contains('add') && evt.willInsertAfter) {
-        return false;
-      }
-      return true;
-    },
-    onEnd: (evt) => {
-      currentStats = currentStats
-        .toSpliced(evt.oldIndex!, 1)
-        .toSpliced(evt.newIndex!, 0, currentStats[evt.oldIndex!]);
-      options.onChange?.(
-        { ...options, stats: currentStats },
-        'stats',
-        currentStats,
-      );
-    },
-  });
   form.appendChild(statsContainer);
+
+  // Lazily setup Sortable.JS
+  sortablePromise.then((Sortable) => {
+    new Sortable(statsContainer, {
+      filter: '.add',
+      handle: '.move-stat',
+      delay: 200,
+      delayOnTouchOnly: true,
+      onMove: (evt) =>
+        !(evt.related.classList.contains('add') && evt.willInsertAfter),
+      onEnd: (evt) => {
+        currentStats = currentStats
+          .toSpliced(evt.oldIndex!, 1)
+          .toSpliced(evt.newIndex!, 0, currentStats[evt.oldIndex!]);
+        options.onChange?.(
+          { ...options, stats: currentStats },
+          'stats',
+          currentStats,
+        );
+      },
+    });
+  });
 };

@@ -8,23 +8,13 @@ const guessInputAlignment = ({
 }: {
   options: DrawFormOptions;
   translation: string | undefined;
-}) => {
-  // If the translation for the card name is just the value (and so the text input),
-  // then we use the provided alignment (or default to center)
-  if (!translation || translation === '{{cardName}}') {
-    return options.template.fields['card-name'].textAlign || 'center';
-  }
-  // If the translation contains the value at the start, we align left
-  if (translation.startsWith('{{cardName}}')) {
-    return 'left';
-  }
-  // If the translation contains the value at the end, we align right
-  if (translation.endsWith('{{cardName}}')) {
-    return 'right';
-  }
-  // Otherwise, we default to center
-  return 'center';
-};
+}) =>
+  !translation || translation === '{{cardName}}'
+    ? // If the translation for the card name is just the value (and so the text input),
+      // then we use the provided alignment (or default to center)
+      options.template.fields['card-name'].textAlign || 'center'
+    : // Otherwise, we align left to make it easier to read the text
+      'left';
 
 export const drawName = ({
   options,
