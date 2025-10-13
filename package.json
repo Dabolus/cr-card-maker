@@ -6,17 +6,20 @@
     "dev:public": "bun run dev --host 0.0.0.0",
     "build": "bun run generate-types && tsc && vite build",
     "serve": "vite preview",
+    "deploy": "firebase deploy",
     "upgrade-interactive": "ncu -ui",
     "generate-types": "json2ts ./src/templates/\\$schema.json -o ./src/templates/generated/types.ts"
   },
   "dependencies": {
     "cropperjs": "^2.0.1",
+    "firebase": "^12.4.0",
     "idb": "^8.0.3",
     "pwa-helpers": "^0.9.1",
     "sortablejs": "^1.15.6"
   },
   "devDependencies": {
     "@types/sortablejs": "^1.15.8",
+    "firebase-tools": "^14.19.1",
     "json-schema-to-typescript": "^15.0.4",
     "npm-check-updates": "^19.0.0",
     "prettier": "^3.6.2",

@@ -11,3 +11,5 @@ dist-ssr
 !.yarn/sdks
 !.yarn/versions
 src/templates/generated/
+.firebase/
+.firebaserc

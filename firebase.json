@@ -1,0 +1,73 @@
+{
+  "hosting": {
+    "public": "dist",
+    "cleanUrls": true,
+    "ignore": [
+      "firebase.json",
+      "package.json",
+      "tsconfig.json",
+      "bun.lock",
+      "**/.*",
+      "**/node_modules/**",
+      "src/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "SAMEORIGIN"
+          },
+          {
+            "key": "X-XSS-Protection",
+            "value": "1; mode=block"
+          },
+          {
+            "key": "Set-Cookie",
+            "value": "HttpOnly; Secure; SameSite=Strict"
+          },
+          {
+            "key": "Strict-Transport-Security",
+            "value": "max-age=31556926"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "no-referrer"
+          },
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src * data: blob: 'self' 'unsafe-eval' 'unsafe-inline'"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, no-cache, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "**/sw.js",
+        "headers": [
+          {
+            "key": "Service-Worker-Allowed",
+            "value": "/"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, no-cache, must-revalidate"
+          }
+        ]
+      }
+    ]
+  }
+}

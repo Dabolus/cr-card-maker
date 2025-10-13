@@ -46,3 +46,68 @@ export const readFileAsDataUrl = (file: File): Promise<string> =>
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
+
+const initializeAnalytics = async () => {
+  const [{ initializeApp }, mod] = await Promise.all([
+    import('firebase/app'),
+    import('firebase/analytics'),
+  ]);
+
+  const app = initializeApp({
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+  });
+  const instance = mod.getAnalytics(app);
+
+  return { instance, mod };
+};
+
+const analyticsPromise = initializeAnalytics();
+
+type FirebaseLogEventParameters = Parameters<
+  (typeof import('firebase/analytics'))['logEvent']
+>;
+
+export const logEvent = async (
+  eventName: FirebaseLogEventParameters[1],
+  eventParams?: FirebaseLogEventParameters[2],
+  options?: FirebaseLogEventParameters[3],
+) => {
+  const analytics = await analyticsPromise;
+
+  /* eslint-disable no-console */
+  if (import.meta.env.DEV) {
+    console.groupCollapsed('Analytics event');
+    console.info(`Name: ${eventName}`);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { offline, ...filteredParams } = eventParams as Record<
+      string,
+      unknown
+    >;
+
+    if (Object.keys(filteredParams).length > 0) {
+      console.info('Params:');
+      console.table(filteredParams);
+    }
+
+    console.groupEnd();
+    return;
+  }
+  /* eslint-enable no-console */
+
+  return analytics.mod.logEvent(
+    analytics.instance,
+    eventName,
+    {
+      ...eventParams,
+      offline: false,
+    },
+    options,
+  );
+};

@@ -1,6 +1,8 @@
-import { installRouter } from 'pwa-helpers';
+import { installRouter, updateMetadata } from 'pwa-helpers';
+import { logEvent } from './utils';
+import { t } from './i18n';
 
-export const setupRouting = () => {
+export const setupRouting = (i18nReadyPromise: Promise<void>) => {
   const menuOverlay =
     document.querySelector<HTMLDivElement>('.navbar #overlay')!;
   const tablist = document.querySelector<HTMLDivElement>(
@@ -14,6 +16,23 @@ export const setupRouting = () => {
     pagesContainer.querySelectorAll<HTMLDivElement>('.page'),
   );
 
+  const handlePageMetadataUpdate = async (pageHref: string) => {
+    await i18nReadyPromise;
+    const pageId = pageHref.slice(1);
+    const title = t(`page-${pageId}-title`);
+    const description = t(`page-${pageId}-description`);
+    updateMetadata({
+      title: `${title} - Clash Royale Card Maker`,
+      description,
+    });
+
+    logEvent('page_view', {
+      page_title: title,
+      page_location: location.href,
+      page_path: location.pathname,
+    });
+  };
+
   const goToPageIndex = (
     index: number | ((previousIndex: number) => number),
     { focus = false, scroll = false } = {},
@@ -25,6 +44,9 @@ export const setupRouting = () => {
 
     // Push the new path to the history only if necessary
     if (previousIndex < 0 || newIndex !== previousIndex) {
+      const newPageHref = tabs[newIndex].getAttribute('href') ?? '';
+      handlePageMetadataUpdate(newPageHref);
+
       // Update the item and its view with the proper accessibility attributes
       if (previousIndex >= 0) {
         // If the page we're about to hide contains the focused element,
@@ -49,7 +71,7 @@ export const setupRouting = () => {
       pages[newIndex].setAttribute('aria-hidden', 'false');
       pages[newIndex].setAttribute('tabindex', '0');
 
-      history.pushState({}, '', tabs[newIndex].getAttribute('href'));
+      history.pushState({}, '', newPageHref);
 
       if (focus) {
         tabs[newIndex].focus();
@@ -102,6 +124,8 @@ export const setupRouting = () => {
         newItemIndex = index;
       }
     });
+
+    handlePageMetadataUpdate(tabs[newItemIndex].getAttribute('href') ?? '');
 
     // Scroll to the correct section
     const scrollOptions: ScrollIntoViewOptions | undefined = event

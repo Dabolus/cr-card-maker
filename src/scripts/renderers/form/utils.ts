@@ -1,6 +1,5 @@
 import { wrappingSlice } from '../../utils';
-import type { Color } from '../../../templates/generated/types';
-import type { Rarity } from '../shared';
+import type { Color, Rarity } from '../../../templates/generated/types';
 
 export const getCssSimplifiedColor = (
   color: Color,
