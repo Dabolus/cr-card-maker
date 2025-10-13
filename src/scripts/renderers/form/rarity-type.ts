@@ -64,7 +64,7 @@ export const drawRarityType = ({
     const applyBackground = (rarity: Rarity) => {
       const src = images?.[rarity]?.src ?? getBackgroundSrc(field.url, rarity);
       element.style.background = src
-        ? `url('${src}') no-repeat center/100% 100%`
+        ? `url("${src}") no-repeat center/100% 100%`
         : '';
       element.style.backgroundSize = src ? 'contain' : '';
     };
@@ -102,7 +102,7 @@ export const drawRarityType = ({
     const valueField = options.template.fields[`${key}-value`];
     styles.insertRule(css`
       #${key}-value {
-        left: ${toRelative(valueField.x - valueField.maxWidth / 2 - 4)};
+        left: ${toRelative(valueField.x - valueField.maxWidth / 2 - 24)};
         top: ${toRelative(valueField.y - 4)};
         padding: ${toRelative(4)};
         white-space: nowrap;

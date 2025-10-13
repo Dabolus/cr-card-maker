@@ -25,7 +25,7 @@ export const drawElixirCost = ({
       top: ${toRelative(options.template.fields['elixir-cost'].y)};
       width: ${toRelative(options.template.fields['elixir-cost'].width)};
       height: ${toRelative(options.template.fields['elixir-cost'].height)};
-      background: url('${elixirImage.src}') no-repeat center/100% 100%;
+      background: url("${elixirImage.src}") no-repeat center/100% 100%;
       background-size: contain;
     }
   `);

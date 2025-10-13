@@ -80,11 +80,11 @@ export const drawRarityType = ({
     options.template.fields['type-label'].y,
   );
   // Then the rarity value
-  ctx.lineWidth = 5;
   ctx.strokeStyle = 'black';
-  ctx.shadowOffsetY = options.template.fields['rarity-value'].fontSize * 0.07;
   ctx.shadowColor = 'black';
   ctx.textAlign = options.template.fields['rarity-value'].textAlign || 'left';
+  ctx.lineWidth = options.template.fields['rarity-value'].fontSize * 0.1;
+  ctx.shadowOffsetY = options.template.fields['rarity-value'].fontSize * 0.07;
   const rarityValueFontSize = fitFontSize(
     ctx,
     t(`rarity-${options.rarity}`, {}, i18n),
@@ -113,12 +113,12 @@ export const drawRarityType = ({
     options.template.fields['rarity-value'].y,
   );
   // And finally the type
-  ctx.lineWidth = 5;
   ctx.strokeStyle = 'black';
   ctx.fillStyle = 'white';
-  ctx.shadowOffsetY = options.template.fields['type-value'].fontSize * 0.07;
   ctx.shadowColor = 'black';
   ctx.textAlign = options.template.fields['type-value'].textAlign || 'left';
+  ctx.lineWidth = options.template.fields['type-value'].fontSize * 0.1;
+  ctx.shadowOffsetY = options.template.fields['type-value'].fontSize * 0.07;
   const typeValueFontSize = fitFontSize(
     ctx,
     t(`type-${options.cardType}`, {}, i18n),

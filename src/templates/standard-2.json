@@ -1,9 +1,9 @@
 {
   "$schema": "./$schema.json",
-  "name": "Standard - Page 3",
+  "name": "Standard - Page 2",
   "width": 989,
   "height": 1240,
-  "background": "/cards-assets/backgrounds/standard-3.png",
+  "background": "/cards-assets/backgrounds/standard-2.png",
   "supported-rarities": ["common", "rare", "epic", "legendary"],
   "supported-types": ["troop", "building", "spell"],
   "fields": {
@@ -121,15 +121,40 @@
         "champion": ["#f9dd50", "#fdfadf"]
       }
     },
-    "description": {
-      "x": 495,
-      "y": 532,
-      "maxWidth": 760,
-      "fontSize": 40,
-      "lineHeight": 44,
-      "maxLines": 9,
-      "textBaseline": "middle",
-      "color": "#4a566b"
+    "stats": {
+      "x": 58,
+      "y": 486,
+      "gapX": 19,
+      "gapY": 6,
+      "maxItems": 14,
+      "itemsPerRow": 2,
+      "items": {
+        "width": 425,
+        "height": 85,
+        "oddBackground": "/cards-assets/backgrounds/standard-2-stat-bg.svg",
+        "evenBackground": "/cards-assets/backgrounds/standard-2-stat-bg.svg",
+        "icon": {
+          "dx": 8,
+          "dy": 4,
+          "width": 73,
+          "height": 73,
+          "backgroundColor": "#1d232e"
+        },
+        "name": {
+          "dx": 90,
+          "dy": 12,
+          "fontSize": 33,
+          "maxWidth": 330,
+          "color": "#384457"
+        },
+        "value": {
+          "dx": 90,
+          "dy": 51,
+          "fontSize": 33,
+          "maxWidth": 330,
+          "color": "#fff"
+        }
+      }
     }
   },
   "i18n": {

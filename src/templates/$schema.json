@@ -426,11 +426,11 @@
                 "height": {
                   "type": "integer"
                 },
-                "evenBackgroundColor": {
-                  "$ref": "#/definitions/ColorValue"
+                "evenBackground": {
+                  "type": "string"
                 },
-                "oddBackgroundColor": {
-                  "$ref": "#/definitions/ColorValue"
+                "oddBackground": {
+                  "type": "string"
                 },
                 "icon": {
                   "type": "object",
@@ -462,6 +462,9 @@
                     },
                     "dy": {
                       "type": "integer"
+                    },
+                    "fontFamily": {
+                      "type": "string"
                     },
                     "fontSize": {
                       "type": "integer"
@@ -499,15 +502,7 @@
                   "additionalProperties": false
                 }
               },
-              "required": [
-                "width",
-                "height",
-                "evenBackgroundColor",
-                "oddBackgroundColor",
-                "icon",
-                "name",
-                "value"
-              ],
+              "required": ["width", "height", "icon", "name", "value"],
               "additionalProperties": false
             }
           },

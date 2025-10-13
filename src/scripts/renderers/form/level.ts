@@ -29,8 +29,8 @@ export const drawLevel = ({
   styles.insertRule(css`
     #level {
       font-family: 'Supercell Magic';
-      left: ${toRelative(options.template.fields.level.x - 16)};
-      top: ${toRelative(options.template.fields.level.y - 16)};
+      left: ${toRelative(options.template.fields.level.x - 8)};
+      top: ${toRelative(options.template.fields.level.y - 8)};
       white-space: nowrap;
       display: flex;
       align-items: center;
@@ -53,7 +53,7 @@ export const drawLevel = ({
 
       & > select,
       & > input {
-        padding: ${toRelative(16)};
+        padding: ${toRelative(8)};
       }
 
       & > select {

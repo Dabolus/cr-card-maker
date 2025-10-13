@@ -93,8 +93,8 @@
       "items": {
         "width": 567,
         "height": 110,
-        "oddBackgroundColor": "#c2d3db",
-        "evenBackgroundColor": "#fdfefe",
+        "oddBackground": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23c2d3db'/%3E%3C/svg%3E",
+        "evenBackground": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23fdfefe'/%3E%3C/svg%3E",
         "icon": {
           "dx": 2,
           "dy": 3,
@@ -105,6 +105,7 @@
         "name": {
           "dx": 109,
           "dy": 16,
+          "fontFamily": "Supercell Magic",
           "fontSize": 40,
           "maxWidth": 440,
           "color": "#333"

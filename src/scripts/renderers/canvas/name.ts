@@ -11,14 +11,14 @@ export const drawName = ({ options, ctx }: DrawCanvasPartParams) => {
   ctx.save();
   ctx.textAlign = 'center';
   ctx.textBaseline = 'hanging';
-  ctx.lineWidth = 6;
   ctx.fillStyle = getCanvasColor(
     ctx,
     options.template.fields['card-name'].color,
   );
   ctx.strokeStyle = 'black';
-  ctx.shadowOffsetY = options.template.fields['card-name'].fontSize * 0.07;
   ctx.shadowColor = 'black';
+  ctx.lineWidth = options.template.fields['card-name'].fontSize * 0.1;
+  ctx.shadowOffsetY = options.template.fields['card-name'].fontSize * 0.07;
   const localizedCardName = t('name', options, i18n);
   fitFontSize(
     ctx,

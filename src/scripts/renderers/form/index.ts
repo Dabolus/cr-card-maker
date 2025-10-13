@@ -41,6 +41,8 @@ export const drawForm = async (options: DrawFormOptions) => {
     loadedElixirImage,
     loadedRarityBgImages,
     loadedTypeBgImages,
+    loadedStatsEvenBgImage,
+    loadedStatsOddBgImage,
   ] = await Promise.all([
     loadImage(options.image.src).catch(() => null),
     loadImage(options.template.background),
@@ -53,6 +55,12 @@ export const drawForm = async (options: DrawFormOptions) => {
       supportedRarities,
       options.template.fields['type-background'],
     ),
+    options.template.fields.stats?.items.evenBackground
+      ? loadImage(options.template.fields.stats.items.evenBackground)
+      : null,
+    options.template.fields.stats?.items.oddBackground
+      ? loadImage(options.template.fields.stats.items.oddBackground)
+      : null,
   ]);
 
   // Setup the layout
@@ -108,7 +116,14 @@ export const drawForm = async (options: DrawFormOptions) => {
   drawDescription({ options, toRelative, styles, form });
 
   // Draw the stats
-  drawStats({ options, toRelative, styles, form });
+  drawStats({
+    options,
+    toRelative,
+    styles,
+    form,
+    evenBackgroundImage: loadedStatsEvenBgImage,
+    oddBackgroundImage: loadedStatsOddBgImage,
+  });
 
   shadow.adoptedStyleSheets = [styles];
   shadow.appendChild(form);

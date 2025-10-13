@@ -26,11 +26,11 @@ export const drawElixirCost = ({
   ctx.font = `${options.template.fields['elixir-cost'].fontSize}px "Supercell Magic"`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.lineWidth = 6;
   ctx.fillStyle = '#FFE9FF';
   ctx.strokeStyle = '#760088';
-  ctx.shadowOffsetY = options.template.fields['elixir-cost'].fontSize * 0.07;
   ctx.shadowColor = '#760088';
+  ctx.lineWidth = options.template.fields['elixir-cost'].fontSize * 0.1;
+  ctx.shadowOffsetY = options.template.fields['elixir-cost'].fontSize * 0.07;
   const elixirX = options.template.fields['elixir-cost'].width / 2;
   const elixirY = options.template.fields['elixir-cost'].height / 2;
   ctx.strokeText(options.elixirCost.toString(), elixirX, elixirY);

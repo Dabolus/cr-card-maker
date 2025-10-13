@@ -19,6 +19,8 @@ export const drawCanvas = async (options: DrawCanvasOptions) => {
     loadedElixirImage,
     loadedRarityBgImage,
     loadedTypeBgImage,
+    loadedStatsEvenBgImage,
+    loadedStatsOddBgImage,
   ] = await Promise.all([
     loadImage(options.image.src).catch(() => null),
     loadImage(options.template.background),
@@ -28,6 +30,12 @@ export const drawCanvas = async (options: DrawCanvasOptions) => {
       : null,
     typeBackgroundField
       ? loadImage(typeBackgroundField.url, options.rarity)
+      : null,
+    options.template.fields.stats?.items.evenBackground
+      ? loadImage(options.template.fields.stats.items.evenBackground)
+      : null,
+    options.template.fields.stats?.items.oddBackground
+      ? loadImage(options.template.fields.stats.items.oddBackground)
       : null,
   ]);
 
@@ -58,7 +66,12 @@ export const drawCanvas = async (options: DrawCanvasOptions) => {
   drawDescription({ options, ctx });
 
   // Draw the stats
-  drawStats({ options, ctx });
+  drawStats({
+    options,
+    ctx,
+    evenBackgroundImage: loadedStatsEvenBgImage,
+    oddBackgroundImage: loadedStatsOddBgImage,
+  });
 
   return ctx.canvas;
 };

@@ -4,38 +4,42 @@ import type { $Schema as TemplateSchema } from '../../../templates/generated/typ
 import type { CardStat } from '../types';
 import type { DrawCanvasPartParams } from './types';
 
+export interface DrawStatsParams extends DrawCanvasPartParams {
+  evenBackgroundImage: HTMLImageElement | null;
+  oddBackgroundImage: HTMLImageElement | null;
+}
+
 const drawStat = ({
   ctx,
   stat,
-  backgroundColor,
+  background,
   x,
   y,
   itemsConfig,
 }: {
   ctx: CanvasRenderingContext2D;
   stat: CardStat;
-  backgroundColor: string | CanvasGradient;
+  background: HTMLImageElement | null;
   x: number;
   y: number;
   itemsConfig: NonNullable<TemplateSchema['fields']['stats']>['items'];
 }) => {
   ctx.translate(x, y);
   // Background
-  ctx.save();
-  ctx.fillStyle = backgroundColor;
-  ctx.beginPath();
-  ctx.rect(0, 0, itemsConfig.width, itemsConfig.height);
-  ctx.fill();
-  ctx.restore();
+  if (background) {
+    ctx.drawImage(background, 0, 0, itemsConfig.width, itemsConfig.height);
+  }
   // Name
   ctx.save();
   ctx.textAlign = 'left';
   ctx.textBaseline = 'hanging';
   ctx.fillStyle = getCanvasColor(ctx, itemsConfig.name.color);
+  const nameFontFamily = itemsConfig.name.fontFamily || 'SC CCBackBeat';
+  ctx.font = `${itemsConfig.name.fontSize}px "${nameFontFamily}"`;
   fitFontSize(
     ctx,
     stat.name,
-    'Supercell Magic',
+    nameFontFamily,
     itemsConfig.name.maxWidth,
     itemsConfig.name.fontSize,
   );
@@ -44,8 +48,8 @@ const drawStat = ({
   ctx.fillStyle = getCanvasColor(ctx, itemsConfig.value.color);
   ctx.strokeStyle = '#000';
   ctx.shadowColor = '#000';
-  ctx.lineWidth = 4;
-  ctx.shadowOffsetY = 4;
+  ctx.lineWidth = itemsConfig.value.fontSize * 0.14;
+  ctx.shadowOffsetY = itemsConfig.value.fontSize * 0.07;
   fitFontSize(
     ctx,
     stat.value.toString(),
@@ -91,7 +95,12 @@ const drawStat = ({
   }
 };
 
-export const drawStats = ({ options, ctx }: DrawCanvasPartParams) => {
+export const drawStats = ({
+  options,
+  ctx,
+  evenBackgroundImage,
+  oddBackgroundImage,
+}: DrawStatsParams) => {
   const statsConfig = options.template.fields.stats;
   if (!statsConfig) {
     return;
@@ -105,12 +114,8 @@ export const drawStats = ({ options, ctx }: DrawCanvasPartParams) => {
     drawStat({
       ctx,
       stat,
-      backgroundColor: getCanvasColor(
-        ctx,
-        (rowIndex + 1) % 2 === 0
-          ? statsConfig.items.evenBackgroundColor
-          : statsConfig.items.oddBackgroundColor,
-      ),
+      background:
+        (rowIndex + 1) % 2 === 0 ? evenBackgroundImage : oddBackgroundImage,
       x:
         statsConfig.x +
         (index % statsConfig.itemsPerRow) *

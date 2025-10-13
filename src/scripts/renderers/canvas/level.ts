@@ -1,5 +1,5 @@
 import { t } from '../../i18n';
-import { fitFontSize, getCanvasColor } from './utils';
+import { getCanvasColor } from './utils';
 import type { DrawCanvasPartParams } from './types';
 
 export const drawLevel = ({ options, ctx }: DrawCanvasPartParams) => {
@@ -15,10 +15,10 @@ export const drawLevel = ({ options, ctx }: DrawCanvasPartParams) => {
   ctx.save();
   ctx.textAlign = 'center';
   ctx.textBaseline = 'hanging';
-  ctx.lineWidth = 6;
   ctx.strokeStyle = 'black';
-  ctx.shadowOffsetY = options.template.fields.level.fontSize * 0.07;
   ctx.shadowColor = 'black';
+  ctx.lineWidth = options.template.fields.level.fontSize * 0.1;
+  ctx.shadowOffsetY = options.template.fields.level.fontSize * 0.07;
   ctx.font = `${options.template.fields.level.fontSize}px "Supercell Magic"`;
   const localizedCardName = t('level', options, i18n);
   const cardNameFontSize = ctx.measureText(localizedCardName);

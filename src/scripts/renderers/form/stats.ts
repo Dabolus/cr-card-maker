@@ -5,6 +5,11 @@ import { icons, iconsImages, type Icon } from '../shared';
 import type { CardStat } from '../types';
 import type { DrawFormPartParams } from './types';
 
+export interface DrawStatsParams extends DrawFormPartParams {
+  evenBackgroundImage: HTMLImageElement | null;
+  oddBackgroundImage: HTMLImageElement | null;
+}
+
 export interface CardStatWithId extends CardStat {
   id: string;
 }
@@ -205,7 +210,9 @@ export const drawStats = ({
   toRelative,
   styles,
   form,
-}: DrawFormPartParams) => {
+  evenBackgroundImage,
+  oddBackgroundImage,
+}: DrawStatsParams) => {
   const statsOptions = options.template.fields.stats;
   if (!statsOptions) {
     return;
@@ -267,7 +274,9 @@ export const drawStats = ({
             `,
           )
           .join(', ')} {
-          background-color: ${statsOptions.items.oddBackgroundColor};
+          background: ${oddBackgroundImage
+            ? `url("${oddBackgroundImage.src}")`
+            : ''};
         }
 
         ${Array.from({ length: statsOptions.itemsPerRow })
@@ -279,7 +288,9 @@ export const drawStats = ({
             `,
           )
           .join(', ')} {
-          background-color: ${statsOptions.items.evenBackgroundColor};
+          background: ${evenBackgroundImage
+            ? `url("${evenBackgroundImage.src}")`
+            : ''};
         }
 
         & > * {
@@ -288,16 +299,17 @@ export const drawStats = ({
 
         & > .stat-name {
           left: ${toRelative(statsOptions.items.name.dx - 2)};
-          top: ${toRelative(statsOptions.items.name.dy - 2)};
+          top: ${toRelative(statsOptions.items.name.dy - 8)};
           padding: ${toRelative(2)};
           width: ${toRelative(statsOptions.items.name.maxWidth)};
+          font-family: '${itemsConfig.name.fontFamily || 'SC CCBackBeat'}';
           font-size: ${toRelative(statsOptions.items.name.fontSize)};
           color: ${statsOptions.items.name.color};
         }
 
         & > .stat-value {
           left: ${toRelative(statsOptions.items.value.dx - 2)};
-          top: ${toRelative(statsOptions.items.value.dy - 2)};
+          top: ${toRelative(statsOptions.items.value.dy - 8)};
           padding: ${toRelative(2)};
           width: ${toRelative(statsOptions.items.value.maxWidth)};
         }
