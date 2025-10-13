@@ -1,0 +1,199 @@
+@use '../chat.scss';
+
+.page#info {
+  background: #3e517a;
+  line-height: 1.5;
+
+  .tabs > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 42px;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .tabs > ul > li {
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Supercell Magic';
+    padding: 8px 18px 6px 18px;
+    margin: 0 1px;
+    border-radius: 10px 10px 0 0;
+    border: 3px solid #7ea0b8;
+    font-size: 18px;
+    color: #3cf;
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 2px 0 #000,
+      1px 2px 0 #000;
+    background-color: #677e97;
+    transition:
+      0.2s background-color ease-in-out,
+      0.2s padding ease-in-out;
+  }
+
+  .tabs > ul > li:hover {
+    background-color: #82a0ba;
+  }
+
+  .tabs > ul > li[aria-selected='true'] {
+    padding-top: 6px;
+    background-color: #e2eff2;
+    border: 3px solid #fff;
+  }
+
+  .content {
+    position: absolute;
+    top: 44px;
+    left: 0;
+    width: 100vw;
+    min-height: calc(100vh - 104px);
+  }
+
+  .content > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .content > ul > li {
+    display: none;
+  }
+
+  .content > ul > li.selected {
+    display: block;
+  }
+
+  .chat-container {
+    position: absolute;
+    top: 82px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 186px);
+    overflow-y: auto;
+  }
+
+  .chat {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100vw - 32px);
+    max-width: 720px;
+    min-height: calc(100vh - 218px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin: 16px;
+  }
+
+  .chat-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background-color: #e2eff2;
+    display: flex;
+    align-items: center;
+    z-index: 3;
+  }
+
+  .chat-header img {
+    height: 82px;
+    padding: 4px;
+    width: auto;
+  }
+
+  .chat-header h3 {
+    color: white;
+    font-size: 20px;
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 2px 0 #000,
+      1px 2px 0 #000;
+  }
+
+  .info-box-container {
+    background-color: #e2eff2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 8px 0;
+    width: 100%;
+    height: calc(100% - 16px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & > ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    & > .info-box,
+    & > ul > li {
+      background-color: #fff;
+      border: 1px solid #999;
+      border-radius: 6px;
+      margin: 8px;
+      padding: 8px;
+      width: 90vw;
+      max-width: 720px;
+    }
+
+    & h3 {
+      float: left;
+      color: #999;
+      font-size: 16px;
+      font-family: 'Supercell Magic';
+      margin: 0;
+    }
+
+    & time {
+      float: right;
+      color: #999;
+      font-size: 10px;
+      font-family: 'SC CCBackBeat';
+      margin: 0;
+    }
+
+    & p,
+    & li {
+      color: #666;
+      font-size: 14px;
+      font-family: 'SC CCBackBeat';
+    }
+
+    @media (min-width: 720px) {
+      & h3 {
+        font-size: 20px;
+      }
+
+      & time {
+        font-size: 12px;
+      }
+
+      & p,
+      & li {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .changelog-header {
+    overflow: hidden;
+  }
+
+  p {
+    margin: 6px 0;
+  }
+}

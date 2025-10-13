@@ -4,5 +4,3 @@ import '../styles/main.scss';
 
 const i18nReadyPromise = setupI18n();
 setupRouting(i18nReadyPromise);
-
-import('./pages/create');

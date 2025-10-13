@@ -36,7 +36,7 @@ export const t = (
   );
 };
 
-const updateView = () => {
+export const updateView = () => {
   document.querySelectorAll('[data-i18n],[data-i18n-title]').forEach((el) => {
     if (el.hasAttribute('data-i18n-title')) {
       const key = el.getAttribute('data-i18n-title')!;

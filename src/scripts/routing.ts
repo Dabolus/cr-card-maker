@@ -1,6 +1,6 @@
 import { installRouter, updateMetadata } from 'pwa-helpers';
 import { loadFragment, logEvent } from './utils';
-import { t } from './i18n';
+import { t, updateView } from './i18n';
 import cardsFragmentUrl from '../fragments/pages/cards.html?url';
 import infoFragmentUrl from '../fragments/pages/info.html?url';
 
@@ -48,6 +48,7 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
     ]);
     if (fragmentContent) {
       document.querySelector(`.page#${pageId}`)!.innerHTML = fragmentContent;
+      updateView();
     }
     await scriptsModule.onPageLoad();
   };

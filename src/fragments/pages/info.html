@@ -1,1 +1,223 @@
-<h1>Info</h1>
+<nav class="tabs">
+  <ul role="tablist">
+    <li
+      id="info-tab-chat"
+      role="tab"
+      aria-selected="true"
+      aria-controls="info-tabpanel-chat"
+      tabindex="0"
+      data-i18n="info-tab-chat">
+    </li>
+    <li
+      id="info-tab-about"
+      role="tab"
+      aria-selected="false"
+      aria-controls="info-tabpanel-about"
+      tabindex="-1"
+      data-i18n="info-tab-about">
+    </li>
+    <li
+      id="info-tab-changelog"
+      role="tab"
+      aria-selected="false"
+      aria-controls="info-tabpanel-changelog"
+      tabindex="-1"
+      data-i18n="info-tab-changelog">
+    </li>
+    <li
+      id="info-tab-credits"
+      role="tab"
+      aria-selected="false"
+      aria-controls="info-tabpanel-credits"
+      tabindex="-1"
+      data-i18n="info-tab-credits">
+    </li>
+    <li
+      id="info-tab-special-thanks"
+      role="tab"
+      aria-selected="false"
+      aria-controls="info-tabpanel-special-thanks"
+      tabindex="-1"
+      data-i18n="info-tab-special-thanks">
+    </li>
+  </ul>
+</nav>
+<section class="content">
+  <ul role="group">
+    <li class="selected" id="info-tabpanel-chat" role="tabpanel" aria-labelledby="info-tab-chat">
+      <div class="chat-container">
+        <div class="chat">
+          <div class="chat-message-container">
+            <div class="chat-message">
+              <div class="chat-message-header">
+                <div class="chat-message-from">Dabolus</div>
+                <div class="chat-message-role" data-i18n="donation-message-role"></div>
+              </div>
+              <div class="chat-message-content">
+                <p data-i18n="donation-message-content-1"></p>
+                <p data-i18n="donation-message-content-2"></p>
+                <p data-i18n="donation-message-content-3"></p>
+              </div>
+              <div class="chat-message-date" data-i18n="donation-message-date"></div>
+            </div>
+          </div>
+          <div class="chat-request-container">
+            <div class="chat-request-header">
+              <div>
+                <div class="chat-request-from">Dabolus</div>
+                <div class="request-header" data-i18n="donation-request-header"></div>
+              </div>
+              <img src="../assets/navbar/info.svg">
+            </div>
+            <div class="chat-request-content">
+            <div class="dollar-image"></div>
+            <label for="donationInput" class="donation-text">[[donationText]]</label>
+            <input id="donationInput" type="number" min="0.05" step="0.05" value="{{donationAmount::input}}"
+            title="[[donationText]]">
+            <a class="donation-button" href$="[[donationLink]]" target="_blank">[[donationButtonText]]</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-header">
+        <img src="/icons/android-chrome-192x192.png">
+        <h3>CR Card Maker Clan</h3>
+      </div>
+    </li>
+    <li id="info-tabpanel-about" role="tabpanel" aria-labelledby="info-tab-about">
+      <div class="info-box-container">
+        <div class="info-box">
+          <p>Hi Chief! Welcome to Clash Royale Card Maker!</p>
+          <p>Clash Royale is a freemium mobile strategy video game developed and published by Supercell. The game combines elements from collectible card games, tower defense, and multiplayer online battle arena. The game was released globally on March 2, 2016.</p>
+          <p>Thanks to this simple web tool, you can create your own Clash Royale card! You can use it to give a better idea when you create a new card for the forum or even just for fun!</p>
+          <p>This web tool was created by Giorgio Garasto, a 19-yearold student who loves making websites and also loves Clash Royale. Anyway, since he is a student, he works hard to keep this web tool up and working. So, if you like its work, please consider donating using the button on the lower-right side of the page.</p>
+          <p>Thank you!</p>
+        </div>
+      </div>
+    </li>
+    <li id="info-tabpanel-changelog" role="tabpanel" aria-labelledby="info-tab-changelog">
+      <div class="info-box-container">
+        <ul>
+          <li>
+            <div class="changelog-header">
+              <h3>1.2.0</h3>
+              <time datetime="2017-08-23">2017-08-23</time>
+            </div>
+            <p>
+              Added Spanish translation
+            </p>
+          </li>
+          <li>
+            <div class="changelog-header">
+              <h3>1.1.0</h3>
+              <time datetime="2016-11-24">2016-11-24</time>
+            </div>
+            <p>
+              Added Portuguese translation (thanks to <a href="http://supr.cl/RoyaleDicas" target="CRD">Clash Royale
+              Dicas</a>!).<br>
+              Started translating the whole website in the various languages.<br>
+              Fixed the undefined type of troop problem that some users had.<br>
+              Lots of bugfixes and improvements as suggested by you!
+            </p>
+          </li>
+          <li>
+            <div class="changelog-header">
+              <h3>1.0.0 - Finally out of the beta!</h3>
+              <time datetime="2016-11-07">2016-11-07</time>
+            </div>
+            <p>
+              The created cards are now in HD.<br>
+              You can now choose various options to save your card or to automatically upload it to imgur!<br>
+              Resize and crop the card image as you wish!<br>
+              Drag and drop the card properties to change their order.<br>
+              Added Japanese translation (thanks to WCF20 for the translation).<br>
+              Finally fixed the problems with Safari.<br>
+              Many other fixes and enhancements.
+            </p>
+          </li>
+          <li>
+            <div class="changelog-header">
+              <h3>0.4.1b</h3>
+              <time datetime="2016-10-26">2016-10-26</time>
+            </div>
+            <p>
+              Fixed compatibility issues with older browsers.<br>
+              Added some missing icons.
+            </p>
+          </li>
+          <li>
+            <div class="changelog-header">
+              <h3>0.4.0b</h3>
+              <time datetime="2016-10-25">2016-10-25</time>
+            </div>
+            <p>Added an awesome info menu.</p>
+          </li>
+          <li>
+            <div class="changelog-header">
+              <h3>0.3.0b</h3>
+              <time datetime="2016-10-24">2016-10-24</time>
+            </div>
+            <p>
+              Choose if you want the property icon background and the info button.<br>
+              Restyled the donate process.
+            </p>
+          </li>
+          <li>
+            <div class="changelog-header">
+              <h3>0.2.0b</h3>
+              <time datetime="2016-10-23">2016-10-23</time>
+            </div>
+            <p>
+              Added the possibility to switch the card language.<br>
+              Now it is possible to export and import the cards in JSON format.
+            </p>
+          </li>
+          <li>
+            <div class="changelog-header">
+              <h3>0.1.1b</h3>
+              <time datetime="2016-10-21">2016-10-21</time>
+            </div>
+            <p>Icons hotfix.</p>
+          </li>
+          <li>
+            <div class="changelog-header">
+              <h3>0.1.0b</h3>
+              <time datetime="2016-10-21">2016-10-21</time>
+            </div>
+            <p>Initial release.</p>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li id="info-tabpanel-credits" role="tabpanel" aria-labelledby="info-tab-credits">
+      <div class="info-box-container">
+        <div class="info-box">
+          <p>First of all, a lot of credits go to Supercell for its incredible support to its fan community. I couldn't do anything without their Fan Kit and their forum.</p>
+          <p>Then, I'd like to thank my parents for supporting me in this little project and for making the first donation!<br>Thanks a lot dad.</p>
+          <p>A lot of thanks also go to WCF20 and to <a href="http://supr.cl/RoyaleDicas" target="CRD">Clash Royale Dicas</a> for translating the website respectively in Japanese and in Portoguese.</p>
+          <p>Another person that helped me A LOT is Beez Nguyên. He started giving me suggestions to improve the website from the very beginning and he never stopped! The website is so stable and usable also thanks to him.</p>
+          <p>Last but not least, I'd like to thank Londync for giving me the idea and to everyone on the forum who supported me a lot!</p>
+          <p>If you encounter some problems or have an idea/question/suggestion, please, contact me on <a href="https://github.com/Dabolus/cr-card-maker" target="GitHubRepo">GitHub</a>.</p>
+        </div>
+      </div>
+    </li>
+    <li id="info-tabpanel-special-thanks" role="tabpanel" aria-labelledby="info-tab-special-thanks">
+      <div class="info-box-container">
+        <div class="info-box">
+          <p>I want to give a special thank to all those people who supported me with a donation ❤</p>
+          <ul>
+            <li>Luigi</li>
+            <li>Vince</li>
+            <li>Tony</li>
+            <li>Henry</li>
+            <li>Jacob</li>
+            <li>Mohamad</li>
+            <li>Adam</li>
+            <li>Jayden</li>
+          </ul>
+          <p><i>Surnames are excluded for privacy reasons.</i></p>
+        </div>
+      </div>
+    </li>
+  </ul>
+</section>

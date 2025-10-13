@@ -1,3 +1,24 @@
 export const onPageLoad = async () => {
-  console.log('Info');
+  let selectedTabIndex = 0;
+  const tabs = document.querySelectorAll(
+    '.page#info .tabs > ul > li[role=tab]',
+  );
+  const tabsViews = document.querySelectorAll('.content > ul > li');
+
+  const _changeTab = (newTabIndex: number) => {
+    if (selectedTabIndex === newTabIndex) {
+      return;
+    }
+    tabs[selectedTabIndex].setAttribute('aria-selected', 'false');
+    tabs[selectedTabIndex].setAttribute('tabindex', '-1');
+    tabs[newTabIndex].setAttribute('aria-selected', 'true');
+    tabs[newTabIndex].setAttribute('tabindex', '0');
+    tabsViews[selectedTabIndex].className = '';
+    tabsViews[newTabIndex].className = 'selected';
+    selectedTabIndex = newTabIndex;
+  };
+
+  for (let i = 0; i < tabs.length; i++) {
+    tabs[i].addEventListener('click', () => _changeTab(i));
+  }
 };

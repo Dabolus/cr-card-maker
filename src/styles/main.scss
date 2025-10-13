@@ -2,6 +2,15 @@
 @use 'loader';
 @use 'buttons';
 
+a {
+  color: #4780f7;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 body {
   overflow: hidden;
 }
