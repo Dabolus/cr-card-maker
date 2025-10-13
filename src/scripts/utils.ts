@@ -3,6 +3,21 @@ import type { Url } from '../templates/generated/types';
 export const wrappingSlice = <T>(arr: T[], start: number, end: number): T[] =>
   [...arr, ...arr].slice(start, end < start ? end + arr.length : end);
 
+const fragmentsCache = new Map<string, string>();
+
+export const loadFragment = async (url: string): Promise<string> => {
+  if (fragmentsCache.has(url)) {
+    return fragmentsCache.get(url)!;
+  }
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to load fragment from ${url}: ${res.statusText}`);
+  }
+  const text = await res.text();
+  fragmentsCache.set(url, text);
+  return text;
+};
+
 const imagesCache = new Map<string, HTMLImageElement>();
 
 export const waitImageLoaded = (

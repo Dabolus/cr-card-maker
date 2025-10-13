@@ -1,6 +1,13 @@
 import { installRouter, updateMetadata } from 'pwa-helpers';
-import { logEvent } from './utils';
+import { loadFragment, logEvent } from './utils';
 import { t } from './i18n';
+import cardsFragmentUrl from '../fragments/pages/cards.html?url';
+import infoFragmentUrl from '../fragments/pages/info.html?url';
+
+const pageToFragmentUrl: Partial<Record<string, string>> = {
+  cards: cardsFragmentUrl,
+  info: infoFragmentUrl,
+};
 
 export const setupRouting = (i18nReadyPromise: Promise<void>) => {
   const menuOverlay =
@@ -16,9 +23,8 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
     pagesContainer.querySelectorAll<HTMLDivElement>('.page'),
   );
 
-  const handlePageMetadataUpdate = async (pageHref: string) => {
+  const updatePageMetadata = async (pageId: string) => {
     await i18nReadyPromise;
-    const pageId = pageHref.slice(1);
     const title = t(`page-${pageId}-title`);
     const description = t(`page-${pageId}-description`);
     updateMetadata({
@@ -33,6 +39,19 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
     });
   };
 
+  const loadPageContent = async (pageId: string) => {
+    const [fragmentContent, scriptsModule] = await Promise.all([
+      pageToFragmentUrl[pageId] && loadFragment(pageToFragmentUrl[pageId]),
+      import(`./pages/${pageId}.ts`),
+      import(`../styles/pages/${pageId}.scss`),
+      i18nReadyPromise,
+    ]);
+    if (fragmentContent) {
+      document.querySelector(`.page#${pageId}`)!.innerHTML = fragmentContent;
+    }
+    await scriptsModule.onPageLoad();
+  };
+
   const goToPageIndex = (
     index: number | ((previousIndex: number) => number),
     { focus = false, scroll = false } = {},
@@ -45,7 +64,9 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
     // Push the new path to the history only if necessary
     if (previousIndex < 0 || newIndex !== previousIndex) {
       const newPageHref = tabs[newIndex].getAttribute('href') ?? '';
-      handlePageMetadataUpdate(newPageHref);
+      const newPageId = newPageHref.slice(1);
+      updatePageMetadata(newPageId);
+      loadPageContent(newPageId);
 
       // Update the item and its view with the proper accessibility attributes
       if (previousIndex >= 0) {
@@ -125,7 +146,9 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
       }
     });
 
-    handlePageMetadataUpdate(tabs[newItemIndex].getAttribute('href') ?? '');
+    const newPageId = tabs[newItemIndex].getAttribute('href')?.slice(1) ?? '';
+    updatePageMetadata(newPageId);
+    loadPageContent(newPageId);
 
     // Scroll to the correct section
     const scrollOptions: ScrollIntoViewOptions | undefined = event
