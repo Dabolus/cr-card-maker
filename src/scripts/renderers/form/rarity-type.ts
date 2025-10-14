@@ -137,6 +137,7 @@ export const drawRarityType = ({
   const rarityValue = document.createElement('select');
   rarityValue.id = 'rarity-value';
   rarityValue.name = 'rarity';
+  rarityValue.setAttribute('aria-label', t('rarity-label'));
   rarityValue.innerHTML = (options.template['supported-rarities'] ?? rarities)
     .map(
       (r) =>
@@ -155,6 +156,7 @@ export const drawRarityType = ({
   const typeValue = document.createElement('select');
   typeValue.id = 'type-value';
   typeValue.name = 'cardType';
+  typeValue.setAttribute('aria-label', t('type-label'));
   typeValue.innerHTML = (options.template['supported-types'] ?? types)
     .map(
       (type) =>

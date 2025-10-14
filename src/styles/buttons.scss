@@ -42,7 +42,12 @@ button {
     -1px 1px 0 #582d00,
     1px 1px 0 #582d00;
 
-  &:active {
+  &:hover {
+    background: linear-gradient(to bottom, #ffdc70 5%, #ffbc2b 100%);
+  }
+
+  &:active,
+  &[aria-expanded='true'] {
     box-shadow:
       0 -2px 3px 0 #ff8907,
       0 0 0 4px #ffa80c,
@@ -59,5 +64,51 @@ button {
       1px -1px 0 #582d00,
       -1px 1px 0 #582d00,
       1px 1px 0 #582d00;
+  }
+}
+
+.dropdown-menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  list-style: none;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border: none;
+
+  &.sc-btn-yellow {
+    border-radius: 3px;
+    box-shadow:
+      0 -1px 0 1px #202020,
+      0 1px 0 2px #202020;
+  }
+
+  & li > button {
+    font-family: inherit;
+    white-space: nowrap;
+    width: 100%;
+
+    &.sc-btn-yellow {
+      border-radius: 0;
+      margin: 7px 6px 10px;
+      width: calc(100% - 12px);
+      box-shadow:
+        0 2px 3px 0 #ff8907,
+        0 0 0 4px #ffa80c,
+        0 1px 0 4px #ffa80c,
+        0 -1px 2px 4px #ffd525,
+        0 -2px 0 5px #f4e684;
+    }
+  }
+
+  & li:first-child > button.sc-btn-yellow {
+    border-radius: 3px 3px 0 0;
+  }
+
+  & li:last-child > button.sc-btn-yellow {
+    border-radius: 0 0 3px 3px;
   }
 }

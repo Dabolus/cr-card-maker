@@ -41,23 +41,3 @@ body {
   scroll-snap-stop: always;
   padding-bottom: navbar.$height;
 }
-
-#actions {
-  flex: 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0.5rem;
-  gap: 0.5rem;
-
-  & > button {
-    width: 3.2rem;
-    height: 3rem;
-
-    & > svg {
-      stroke: #582d00;
-      stroke-width: 1px;
-    }
-  }
-}

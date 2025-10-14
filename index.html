@@ -75,16 +75,37 @@
           <div class="loader-indeterminate" role="progressbar"></div>
         </main>
         <footer id="actions">
-          <button id="download-button" class="sc-btn sc-btn-yellow" data-i18n-aria-label="download">
-            <svg viewBox="0 0 24 24">
-              <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
-            </svg>
-          </button>
-          <button id="share-button" class="sc-btn sc-btn-yellow" data-i18n-aria-label="share" hidden>
-            <svg viewBox="0 0 24 24">
-              <path d="M16.75 9.9a3.23 3.23 0 1 0-3.15-2.66L9.3 9.61a3.23 3.23 0 1 0 0 4.87l4.3 2.44v.5a3.23 3.23 0 1 0 1-2.43l-4.3-2.37v-1.08l4.3-2.43q.93.72 2.15.79"/>
-            </svg>
-          </button>
+          <div class="dropdown-menu-container">
+            <button id="actions-button" class="sc-btn sc-btn-yellow" aria-controls="actions-button-menu" aria-haspopup="true" aria-expanded="false" data-i18n-aria-label="actions">
+              <svg viewBox="0 0 24 24"><path d="M3 19.5v-3h18v3zm0-6v-3h18v3zm0-6v-3h18v3z"/></svg>
+            </button>
+            <ul id="actions-button-menu" role="menu" class="dropdown-menu sc-btn-yellow" aria-labelledby="actions-button" hidden>
+              <li>
+                <button id="save-button" class="sc-btn sc-btn-yellow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                  </svg>
+                  <span data-i18n="save"></span>
+                </button>
+              </li>
+              <li>
+                <button id="download-button" class="sc-btn sc-btn-yellow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                  </svg>
+                  <span data-i18n="download"></span>
+                </button>
+              </li>
+              <li>
+                <button id="share-button" class="sc-btn sc-btn-yellow">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M16.75 9.9a3.23 3.23 0 1 0-3.15-2.66L9.3 9.61a3.23 3.23 0 1 0 0 4.87l4.3 2.44v.5a3.23 3.23 0 1 0 1-2.43l-4.3-2.37v-1.08l4.3-2.43q.93.72 2.15.79"/>
+                  </svg>
+                  <span data-i18n="share"></span>
+                </button>
+              </li>
+            </ul>
+          </div>
         </footer>
       </div>
       <div class="page" id="info" role="tabpanel" tabindex="0" aria-labelledby="info-tab" aria-hidden="true">

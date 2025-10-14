@@ -1,4 +1,5 @@
 {
+  "actions": "Actions",
   "add_stat": "Add stat",
   "cancel": "Cancel",
   "card-name-placeholder": "Name",
@@ -17,6 +18,8 @@
   "donation-request-header": "Requesting Donation!",
   "donation-request-text": "You are donating:",
   "dont-crop": "Don't crop",
+  "download": "Download",
+  "elixir-cost-label": "Elixir cost",
   "image-fit-contain": "Contain",
   "image-fit-cover": "Cover",
   "image-fit-fill": "Fill",
@@ -26,6 +29,7 @@
   "info-tab-chat": "Chat",
   "info-tab-credits": "Credits",
   "info-tab-special-thanks": "Special thanks",
+  "level-label": "Level",
   "loading": "Loading…",
   "move": "Move",
   "no-cards": "You didn't save any card yet.",
@@ -35,7 +39,10 @@
   "page-create-title": "Create",
   "page-info-description": "Learn more about the Clash Royale Card Maker, its author and its story.",
   "page-info-title": "Info",
+  "rarity-label": "Rarity",
+  "save": "Save",
   "select-icon": "Select icon",
+  "share": "Share",
   "show-icon-background": "Show icon background",
   "stat-icon-area-damage": "Area Damage",
   "stat-icon-boost": "Boost",
@@ -70,5 +77,6 @@
   "stat-name-placeholder": "Name",
   "stat-value-placeholder": "Value",
   "template-label": "Template:",
+  "type-label": "Type",
   "update-notification": "App updated! Press here to reload."
 }

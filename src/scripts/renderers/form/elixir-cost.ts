@@ -1,9 +1,6 @@
 import { css } from './utils';
+import { t } from '../../i18n';
 import type { DrawFormPartParams } from './types';
-
-export interface DrawElixirCostParams extends DrawFormPartParams {
-  elixirImage: HTMLImageElement;
-}
 
 export const drawElixirCost = ({
   options,
@@ -68,6 +65,7 @@ export const drawElixirCost = ({
   const elixirCost = document.createElement('select');
   elixirCost.id = 'elixir-cost';
   elixirCost.name = 'elixirCost';
+  elixirCost.setAttribute('aria-label', t('elixir-cost-label'));
   elixirCost.innerHTML = Array.from({ length: 12 }, (_, i) => {
     const val = i === 0 ? '?' : (i - 1).toString();
     return `<option value="${val}"${

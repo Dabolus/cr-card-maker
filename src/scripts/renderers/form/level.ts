@@ -71,7 +71,7 @@ export const drawLevel = ({
     'level',
     {
       level: `
-          <select name="level">
+          <select name="level" aria-label="${t('level-label')}">
             ${Array.from(
               { length: 15 },
               (_, i) =>
