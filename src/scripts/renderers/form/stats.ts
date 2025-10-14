@@ -1,13 +1,8 @@
 import { css } from './utils';
 import { t } from '../../i18n';
-import { icons, iconsImages, type Icon } from '../shared';
+import { getIconImageSrc, icons, type Icon } from '../shared';
 import type { CardStat } from '../types';
 import type { DrawFormPartParams } from './types';
-
-export interface DrawStatsParams extends DrawFormPartParams {
-  evenBackgroundImage: HTMLImageElement | null;
-  oddBackgroundImage: HTMLImageElement | null;
-}
 
 export interface CardStatWithId extends CardStat {
   id: string;
@@ -43,7 +38,7 @@ const handleIconChange = ({
         .map(
           (icon) => `
             <label class="icon-option">
-              <img src="${iconsImages[icon].src}" title="${t(`stat-icon-${icon}`)}"/>
+              <img src="${getIconImageSrc(icon)}" title="${t(`stat-icon-${icon}`)}"/>
               <input type="radio" name="icon" value="${icon}" ${icon === currentStatState.icon ? 'checked' : ''} hidden>
             </label>
           `,
@@ -165,17 +160,17 @@ const generateStat = ({
     statContainer.appendChild(iconBg);
   }
 
-  if (stat.icon in iconsImages) {
+  if (icons.includes(stat.icon)) {
     const icon = document.createElement('img');
     icon.classList.add('stat-icon');
-    icon.src = iconsImages[stat.icon].src;
+    icon.src = getIconImageSrc(stat.icon);
     icon.addEventListener('click', async () => {
       const iconChangeResult = await handleIconChange({
         form,
         currentStatState,
       });
       currentStatState = { ...currentStatState, ...iconChangeResult };
-      icon.src = iconsImages[currentStatState.icon].src;
+      icon.src = getIconImageSrc(currentStatState.icon);
       // If the icon background is disabled in the new icon, remove it
       if (!currentStatState.showIconBackground || !iconBackgroundEnabled) {
         statContainer.querySelector('.stat-icon-bg')?.remove();
@@ -213,9 +208,7 @@ export const drawStats = ({
   toRelative,
   styles,
   form,
-  evenBackgroundImage,
-  oddBackgroundImage,
-}: DrawStatsParams) => {
+}: DrawFormPartParams) => {
   const statsOptions = options.template.fields.stats;
   if (!statsOptions) {
     return;
@@ -277,8 +270,8 @@ export const drawStats = ({
             `,
           )
           .join(', ')} {
-          background: ${oddBackgroundImage
-            ? `url("${oddBackgroundImage.src}")`
+          background: ${options.template.fields.stats?.items.oddBackground
+            ? `url("${options.template.fields.stats?.items.oddBackground}")`
             : ''};
         }
 
@@ -291,8 +284,8 @@ export const drawStats = ({
             `,
           )
           .join(', ')} {
-          background: ${evenBackgroundImage
-            ? `url("${evenBackgroundImage.src}")`
+          background: ${options.template.fields.stats?.items.evenBackground
+            ? `url("${options.template.fields.stats?.items.evenBackground}")`
             : ''};
         }
 

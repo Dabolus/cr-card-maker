@@ -9,9 +9,15 @@ import type { DrawCanvasPartParams } from './types';
 
 export interface DrawImageParams extends DrawCanvasPartParams {
   image: HTMLImageElement | null;
+  shapeImage: HTMLImageElement;
 }
 
-export const drawImage = ({ options, ctx, image }: DrawImageParams) => {
+export const drawImage = ({
+  options,
+  ctx,
+  image,
+  shapeImage,
+}: DrawImageParams) => {
   ctx.save();
 
   const shapeConfig = shapesConfig[raritiesConfig[options.rarity].shape];
@@ -30,8 +36,8 @@ export const drawImage = ({ options, ctx, image }: DrawImageParams) => {
   ctx.save();
   if (shapeConfig.image.clip) {
     const clip = shapeConfig.image.clip(
-      shapeConfig.frame.image.width,
-      shapeConfig.frame.image.height,
+      shapeConfig.frame.width,
+      shapeConfig.frame.height,
     );
     ctx.beginPath();
     ctx.moveTo(clip[0].x, clip[0].y);
@@ -101,11 +107,11 @@ export const drawImage = ({ options, ctx, image }: DrawImageParams) => {
 
   // Draw the frame of the image
   ctx.drawImage(
-    shapeConfig.frame.image,
+    shapeImage,
     0,
     0,
-    shapeConfig.frame.image.width,
-    shapeConfig.frame.image.height,
+    shapeConfig.frame.width,
+    shapeConfig.frame.height,
   );
   ctx.restore();
 };

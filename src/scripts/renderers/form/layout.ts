@@ -4,7 +4,6 @@ import type { DrawFormOptions } from './types';
 
 export interface SetupLayoutParams {
   options: DrawFormOptions;
-  backgroundImage: HTMLImageElement;
 }
 
 export interface SetupLayoutResult {
@@ -15,10 +14,7 @@ export interface SetupLayoutResult {
   form: HTMLFormElement;
 }
 
-export const setupLayout = ({
-  options,
-  backgroundImage,
-}: SetupLayoutParams) => {
+export const setupLayout = ({ options }: SetupLayoutParams) => {
   const toRelative = createToRelativeMapper(0, options.template.width);
   const container = options.element ?? document.createElement('div');
   container.role = 'application';
@@ -31,7 +27,7 @@ export const setupLayout = ({
   styles.replaceSync(rendererStyles);
   styles.insertRule(css`
     #card {
-      background: url(${backgroundImage.src}) no-repeat center/100% 100%;
+      background: url(${options.template.background}) no-repeat center/100% 100%;
     }
   `);
   styles.insertRule(css`

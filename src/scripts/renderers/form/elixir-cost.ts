@@ -7,8 +7,7 @@ export const drawElixirCost = ({
   toRelative,
   styles,
   form,
-  elixirImage,
-}: DrawElixirCostParams) => {
+}: DrawFormPartParams) => {
   const elixirShadowSize = toRelative(
     options.template.fields['card-name'].fontSize * 0.04,
   );
@@ -22,7 +21,7 @@ export const drawElixirCost = ({
       top: ${toRelative(options.template.fields['elixir-cost'].y)};
       width: ${toRelative(options.template.fields['elixir-cost'].width)};
       height: ${toRelative(options.template.fields['elixir-cost'].height)};
-      background: url("${elixirImage.src}") no-repeat center/100% 100%;
+      background: url('/cards-assets/elixir.png') no-repeat center/100% 100%;
       background-size: contain;
     }
   `);

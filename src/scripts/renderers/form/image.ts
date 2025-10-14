@@ -4,6 +4,7 @@ import {
   shapesConfig,
   frameContainerNominalWidth,
   frameContainerNominalHeight,
+  getShapeImageSrc,
 } from '../shared';
 import { css, createToRelativeMapper } from './utils';
 import { loadImage, readFileAsDataUrl } from '../../utils';
@@ -11,10 +12,6 @@ import { t } from '../../i18n';
 import type { DrawFormOptions, DrawFormPartParams } from './types';
 import type { ImageFit, Rarity } from '../types';
 import type { CropperSelection } from 'cropperjs';
-
-export interface DrawImageParams extends DrawFormPartParams {
-  image: HTMLImageElement | null;
-}
 
 // Lazy-load CropperJS
 const cropperJsPromise = import('cropperjs').then((mod) => mod.default);
@@ -24,7 +21,7 @@ const handleImageEdit = async ({
   form,
   fileDataUrl,
 }: {
-  options: DrawImageParams['options'];
+  options: DrawFormPartParams['options'];
   form: HTMLFormElement;
   fileDataUrl: string;
 }): Promise<{ image: HTMLImageElement; fit: ImageFit }> => {
@@ -139,8 +136,7 @@ export const drawImage = ({
   toRelative,
   styles,
   form,
-  image,
-}: DrawImageParams): {
+}: DrawFormPartParams): {
   updateRarityFrame: (rarity: Rarity) => void;
 } => {
   // Draw the contour of the image
@@ -261,13 +257,10 @@ export const drawImage = ({
 
     const frameLeft = shapeConfig.frame.offsetX * scale;
     const frameTop = shapeConfig.frame.offsetY * scale;
-    const frameWidth = shapeConfig.frame.image.width * scale;
-    const frameHeight = shapeConfig.frame.image.height * scale;
+    const frameWidth = shapeConfig.frame.width * scale;
+    const frameHeight = shapeConfig.frame.height * scale;
 
-    const toFrameRelative = createToRelativeMapper(
-      0,
-      shapeConfig.frame.image.width,
-    );
+    const toFrameRelative = createToRelativeMapper(0, shapeConfig.frame.width);
 
     cardImageShape.style.left = toContainerRelative(frameLeft);
     cardImageShape.style.top = toContainerRelative(frameTop);
@@ -276,7 +269,7 @@ export const drawImage = ({
 
     if (shapeConfig.image.clip) {
       const clipCoordinates = shapeConfig.image
-        .clip(shapeConfig.frame.image.width, shapeConfig.frame.image.height)
+        .clip(shapeConfig.frame.width, shapeConfig.frame.height)
         .map(
           (coord) => `${toFrameRelative(coord.x)} ${toFrameRelative(coord.y)}`,
         )
@@ -300,10 +293,10 @@ export const drawImage = ({
     cardImageFrame.style.top = toContainerRelative(frameTop);
     cardImageFrame.style.width = toContainerRelative(frameWidth);
     cardImageFrame.style.height = toContainerRelative(frameHeight);
-    cardImageFrame.style.backgroundImage = `url("${shapeConfig.frame.image.src}")`;
+    cardImageFrame.style.backgroundImage = `url("${getShapeImageSrc(shapeKey)}")`;
   };
 
-  cardImage.src = image?.src ?? options.image.src ?? '';
+  cardImage.src = options.image?.src ?? '';
 
   const setImageFit = (fit: ImageFit) => {
     cardImage.style.objectFit = fit;

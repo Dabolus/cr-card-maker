@@ -11,15 +11,6 @@ export const shapes = [
 
 export type Shape = (typeof shapes)[number];
 
-export const shapesImages: Record<Shape, HTMLImageElement> = Object.fromEntries(
-  await Promise.all(
-    shapes.map(async (shape) => [
-      shape,
-      await loadImage(`/cards-assets/shapes/${shape}.png`),
-    ]),
-  ),
-);
-
 export const raritiesConfig: Record<
   Rarity,
   {
@@ -90,7 +81,8 @@ export const shapesConfig: Record<
       ];
     };
     frame: {
-      image: HTMLImageElement;
+      width: number;
+      height: number;
       offsetX: number;
       offsetY: number;
     };
@@ -98,7 +90,8 @@ export const shapesConfig: Record<
 > = {
   normal: {
     frame: {
-      image: shapesImages.normal,
+      width: 280,
+      height: 345,
       offsetX: 0,
       offsetY: 20,
     },
@@ -123,7 +116,8 @@ export const shapesConfig: Record<
   },
   legendary: {
     frame: {
-      image: shapesImages.legendary,
+      width: 279,
+      height: 381,
       offsetX: 0.5,
       offsetY: 2,
     },
@@ -148,7 +142,8 @@ export const shapesConfig: Record<
   },
   champion: {
     frame: {
-      image: shapesImages.champion,
+      width: 256,
+      height: 375,
       offsetX: 12,
       offsetY: 5,
     },
@@ -171,7 +166,8 @@ export const shapesConfig: Record<
   },
   'tower-troop': {
     frame: {
-      image: shapesImages['tower-troop'],
+      width: 259,
+      height: 362,
       offsetX: 10.5,
       offsetY: 11.5,
     },
@@ -186,7 +182,8 @@ export const shapesConfig: Record<
   },
   ruler: {
     frame: {
-      image: shapesImages.ruler,
+      width: 238,
+      height: 341,
       offsetX: 21,
       offsetY: 22,
     },
@@ -236,15 +233,27 @@ export const icons = [
 
 export type Icon = (typeof icons)[number];
 
-export const iconsImages: Record<Icon, HTMLImageElement> = Object.fromEntries(
-  await Promise.all(
-    icons.map(async (icon) => [
-      icon,
-      await loadImage(`/cards-assets/icons/${icon}.png`),
-    ]),
-  ),
-);
-
 export const imageFitOptions = ['contain', 'fill', 'cover'] as const;
 
 export type ImageFit = (typeof imageFitOptions)[number];
+
+export const getShapeImageSrc = (shape: Shape): string =>
+  `/cards-assets/shapes/${shape}.png`;
+
+export const getShapeImage = async (shape: Shape): Promise<HTMLImageElement> =>
+  await loadImage(getShapeImageSrc(shape));
+
+export const getIconImageSrc = (icon: Icon): string =>
+  `/cards-assets/icons/${icon}.png`;
+
+export const getIconsImages = async (
+  neededIcons: Icon[],
+): Promise<Record<Icon, HTMLImageElement>> =>
+  Object.fromEntries(
+    await Promise.all(
+      neededIcons.map(async (icon) => [
+        icon,
+        await loadImage(getIconImageSrc(icon)),
+      ]),
+    ),
+  );

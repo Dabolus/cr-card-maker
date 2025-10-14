@@ -1,5 +1,5 @@
 import { fitFontSize, getCanvasColor } from './utils';
-import { iconsImages } from '../shared';
+import type { Icon } from '../shared';
 import type { $Schema as TemplateSchema } from '../../../templates/generated/types';
 import type { CardStat } from '../types';
 import type { DrawCanvasPartParams } from './types';
@@ -7,6 +7,7 @@ import type { DrawCanvasPartParams } from './types';
 export interface DrawStatsParams extends DrawCanvasPartParams {
   evenBackgroundImage: HTMLImageElement | null;
   oddBackgroundImage: HTMLImageElement | null;
+  iconsImages: Record<Icon, HTMLImageElement>;
 }
 
 const drawStat = ({
@@ -16,6 +17,7 @@ const drawStat = ({
   x,
   y,
   itemsConfig,
+  iconsImages,
 }: {
   ctx: CanvasRenderingContext2D;
   stat: CardStat;
@@ -23,6 +25,7 @@ const drawStat = ({
   x: number;
   y: number;
   itemsConfig: NonNullable<TemplateSchema['fields']['stats']>['items'];
+  iconsImages: Record<Icon, HTMLImageElement>;
 }) => {
   ctx.translate(x, y);
   // Background
@@ -100,6 +103,7 @@ export const drawStats = ({
   ctx,
   evenBackgroundImage,
   oddBackgroundImage,
+  iconsImages,
 }: DrawStatsParams) => {
   const statsConfig = options.template.fields.stats;
   if (!statsConfig) {
@@ -124,6 +128,7 @@ export const drawStats = ({
         statsConfig.y +
         rowIndex * (statsConfig.items.height + statsConfig.gapY),
       itemsConfig: statsConfig.items,
+      iconsImages,
     });
     ctx.restore();
   });

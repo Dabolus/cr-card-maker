@@ -6,8 +6,6 @@ import type { Rarity } from '../types';
 import type { Url } from '../../../templates/generated/types';
 
 export interface DrawRarityTypeParams extends DrawFormPartParams {
-  rarityBackgroundImages: Partial<Record<Rarity, HTMLImageElement>> | null;
-  typeBackgroundImages: Partial<Record<Rarity, HTMLImageElement>> | null;
   onRarityChange: (rarity: Rarity) => void;
 }
 
@@ -16,8 +14,6 @@ export const drawRarityType = ({
   toRelative,
   styles,
   form,
-  rarityBackgroundImages,
-  typeBackgroundImages,
   onRarityChange,
 }: DrawRarityTypeParams) => {
   const i18n =
@@ -43,7 +39,6 @@ export const drawRarityType = ({
     field:
       | { x: number; y: number; width: number; height: number; url: Url }
       | undefined,
-    images: Partial<Record<Rarity, HTMLImageElement>> | null,
   ) => {
     if (!field) {
       return;
@@ -62,7 +57,7 @@ export const drawRarityType = ({
     form.appendChild(element);
 
     const applyBackground = (rarity: Rarity) => {
-      const src = images?.[rarity]?.src ?? getBackgroundSrc(field.url, rarity);
+      const src = getBackgroundSrc(field.url, rarity);
       element.style.background = src
         ? `url("${src}") no-repeat center/100% 100%`
         : '';
@@ -77,14 +72,9 @@ export const drawRarityType = ({
   const updateRarityBackground = setupBackground(
     'rarity',
     rarityBackgroundField,
-    rarityBackgroundImages,
   );
 
-  const updateTypeBackground = setupBackground(
-    'type',
-    typeBackgroundField,
-    typeBackgroundImages,
-  );
+  const updateTypeBackground = setupBackground('type', typeBackgroundField);
 
   (['rarity', 'type'] as const).forEach((key) => {
     const labelField = options.template.fields[`${key}-label`];

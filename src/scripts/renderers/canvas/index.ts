@@ -7,6 +7,7 @@ import { drawElixirCost } from './elixir-cost';
 import { drawRarityType } from './rarity-type';
 import { drawDescription } from './description';
 import { drawStats } from './stats';
+import { getIconsImages, getShapeImage, raritiesConfig } from '../shared';
 import type { DrawCanvasOptions } from './types';
 
 export const drawCanvas = async (options: DrawCanvasOptions) => {
@@ -17,6 +18,8 @@ export const drawCanvas = async (options: DrawCanvasOptions) => {
     loadedImage,
     loadedBgImage,
     loadedElixirImage,
+    loadedIconsImages,
+    loadedShapeImage,
     loadedRarityBgImage,
     loadedTypeBgImage,
     loadedStatsEvenBgImage,
@@ -25,6 +28,8 @@ export const drawCanvas = async (options: DrawCanvasOptions) => {
     loadImage(options.image.src).catch(() => null),
     loadImage(options.template.background),
     loadImage('/cards-assets/elixir.png'),
+    getIconsImages(options.stats?.map((item) => item.icon) ?? []),
+    getShapeImage(raritiesConfig[options.rarity].shape),
     rarityBackgroundField
       ? loadImage(rarityBackgroundField.url, options.rarity)
       : null,
@@ -49,7 +54,7 @@ export const drawCanvas = async (options: DrawCanvasOptions) => {
   drawLevel({ options, ctx });
 
   // Draw the image (if possible)
-  drawImage({ options, ctx, image: loadedImage });
+  drawImage({ options, ctx, image: loadedImage, shapeImage: loadedShapeImage });
 
   // Draw the elixir cost
   drawElixirCost({ options, ctx, elixirImage: loadedElixirImage });
@@ -71,6 +76,7 @@ export const drawCanvas = async (options: DrawCanvasOptions) => {
     ctx,
     evenBackgroundImage: loadedStatsEvenBgImage,
     oddBackgroundImage: loadedStatsOddBgImage,
+    iconsImages: loadedIconsImages,
   });
 
   return ctx.canvas;

@@ -1,6 +1,7 @@
 import type {
   $Schema as TemplateSchema,
   Rarity,
+  Type,
 } from '../../templates/generated/types';
 import type { Icon, ImageFit } from './shared';
 
@@ -97,7 +98,7 @@ export type RendererBaseOptions = {
    * - spell
    * - tower-troop
    */
-  cardType: 'troop' | 'building' | 'spell' | 'tower-troop';
+  cardType: Type;
   /**
    * The elixir cost of the card.
    *
