@@ -1,0 +1,139 @@
+@use '../theme';
+
+.page#cards {
+  display: flex;
+  flex-direction: column;
+
+  & > h1 {
+    font-size: 1.5rem;
+    flex: 0;
+    color: theme.$text-on-primary;
+    text-shadow: 2px 2px 4px black;
+    margin: 0.5rem 0.5rem 0;
+  }
+}
+
+#cards-list {
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(2rem, 12rem));
+  gap: 0.5rem;
+  padding: 0.5rem;
+  justify-content: center;
+  align-content: start;
+
+  @media (min-width: 50.5rem) {
+    grid-template-columns: repeat(auto-fit, minmax(2rem, 12rem));
+  }
+}
+
+#cards-list > .card-preview {
+  cursor: pointer;
+  position: relative;
+  aspect-ratio: 296 / 387;
+  container-type: inline-size;
+
+  & > * {
+    position: absolute;
+  }
+
+  & > .card-preview-image-container {
+    $frame-container-nominal-width: 280;
+    left: #{calc(16 / $frame-container-nominal-width) + 'cqw'};
+    top: #{calc(2 / $frame-container-nominal-width) + 'cqw'};
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    container-type: inline-size;
+
+    & > .card-preview-image-shape,
+    & > .card-preview-image-frame {
+      position: absolute;
+    }
+
+    & > .card-preview-image-frame {
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    & > .card-preview-image-shape {
+      container-type: inline-size;
+
+      & > .card-preview-image-viewport {
+        position: absolute;
+        background-color: #fff;
+        overflow: hidden;
+        pointer-events: none;
+
+        & > .card-preview-image {
+          width: 100%;
+          height: 100%;
+          object-position: center;
+          display: block;
+        }
+      }
+    }
+  }
+
+  & > .card-preview-elixir {
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    width: calc(100cqw * 63 / 296);
+    height: calc(100cqw * 75 / 296);
+
+    & > .card-preview-elixir-drop {
+      position: absolute;
+      inset: 0;
+      background: url('/cards-assets/elixir.png') no-repeat center/100% 100%;
+    }
+
+    & > .card-preview-elixir-cost {
+      --card-elixir-font-size: calc(100cqw * 41 / 296);
+      --card-elixir-shadow: calc(var(--card-elixir-font-size) * 0.04);
+      --card-elixir-shadow-bottom: calc(var(--card-elixir-font-size) * 0.12);
+      position: relative;
+      font-family: 'Supercell Magic';
+      color: #ffe9ff;
+      text-align: center;
+      font-size: var(--card-elixir-font-size);
+      text-shadow:
+        calc(var(--card-elixir-shadow) * -1)
+          calc(var(--card-elixir-shadow) * -1) 0 #760088,
+        var(--card-elixir-shadow) calc(var(--card-elixir-shadow) * -1) 0 #760088,
+        calc(var(--card-elixir-shadow) * -1) var(--card-elixir-shadow-bottom) 0
+          #760088,
+        var(--card-elixir-shadow) var(--card-elixir-shadow-bottom) 0 #760088;
+    }
+  }
+}
+
+#card-preview-dialog {
+  border: none;
+  padding: 0;
+  background: none;
+  height: 100vh;
+  cursor: pointer;
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+  }
+
+  &[open] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  & > canvas {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}

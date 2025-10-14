@@ -1,10 +1,10 @@
 import standard2Template from '../../templates/standard-2.json' with { type: 'json' };
 import placeholderImageUrl from '../../images/placeholder.svg';
 import { drawForm } from '../renderers/form';
-import type { RendererBaseOptions } from '../renderers/types';
-import type { $Schema as TemplateSchema } from '../../templates/generated/types';
 import { t } from '../i18n';
 import { loadImage } from '../utils';
+import type { RendererBaseOptions } from '../renderers/types';
+import type { $Schema as TemplateSchema } from '../../templates/generated/types';
 
 const defaultParams: RendererBaseOptions = {
   template: standard2Template as unknown as TemplateSchema,
@@ -34,7 +34,7 @@ const renderImage = async (params: RendererBaseOptions) => {
 };
 
 const handleSave = async (params: RendererBaseOptions, templateId: string) => {
-  const { db } = await import('../db');
+  const { cardsCollection } = await import('../db');
   const cardImage = await loadImage(params.image.src)
     .then((img) => {
       const canvas = document.createElement('canvas');
@@ -48,7 +48,7 @@ const handleSave = async (params: RendererBaseOptions, templateId: string) => {
     })
     .catch(() => null);
   const parsedElixirCost = Number(params.elixirCost);
-  db.put('cards', {
+  cardsCollection.addCard({
     id: crypto.randomUUID(),
     templateId: templateId,
     language: params.language,

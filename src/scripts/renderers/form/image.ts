@@ -276,10 +276,6 @@ export const drawImage = ({
         .join(', ');
       const clipPath = `polygon(${clipCoordinates})`;
       cardImageShape.style.clipPath = clipPath;
-      cardImageShape.style.setProperty('-webkit-clip-path', clipPath);
-    } else {
-      cardImageShape.style.clipPath = '';
-      cardImageShape.style.removeProperty('-webkit-clip-path');
     }
 
     cardImageViewport.style.left = toFrameRelative(

@@ -62,3 +62,37 @@ export const db = await openDB<CRCMDBSchema>(dbName, dbVersion, {
     cardsStore.createIndex('byUpdatedAt', 'updatedAt');
   },
 });
+
+class CardsCollection extends EventTarget {
+  async addCard(card: CRCMDBSchema['cards']['value']) {
+    await db.add('cards', card);
+    this.dispatchEvent(new Event('change'));
+  }
+
+  async updateCard(card: CRCMDBSchema['cards']['value']) {
+    await db.put('cards', card);
+    this.dispatchEvent(new Event('change'));
+  }
+
+  async deleteCard(cardId: string) {
+    await db.delete('cards', cardId);
+    this.dispatchEvent(new Event('change'));
+  }
+
+  async getCards() {
+    return await db.getAll('cards');
+  }
+}
+
+export interface CardsCollectionEventMap {
+  change: Event;
+}
+
+declare interface CardsCollection {
+  addEventListener<K extends keyof CardsCollectionEventMap>(
+    type: K,
+    listener: (event: CardsCollectionEventMap[K]) => void,
+  ): void;
+}
+
+export const cardsCollection = new CardsCollection();
