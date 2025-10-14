@@ -62,19 +62,24 @@
             </div>
           </div>
           <div class="chat-request-container">
-            <div class="chat-request-header">
-              <div>
-                <div class="chat-request-from">Dabolus</div>
-                <div class="request-header" data-i18n="donation-request-header"></div>
+            <div class="chat-request">
+              <div class="chat-request-header">
+                <div>
+                  <div class="chat-request-from">Dabolus</div>
+                  <div class="request-header" data-i18n="donation-request-header"></div>
+                </div>
+                <img src="/src/images/navbar/info.svg">
               </div>
-              <img src="../assets/navbar/info.svg">
-            </div>
-            <div class="chat-request-content">
-            <div class="dollar-image"></div>
-            <label for="donationInput" class="donation-text">[[donationText]]</label>
-            <input id="donationInput" type="number" min="0.05" step="0.05" value="{{donationAmount::input}}"
-            title="[[donationText]]">
-            <a class="donation-button" href$="[[donationLink]]" target="_blank">[[donationButtonText]]</a>
+              <div class="chat-request-content">
+                <div class="dollar-image">
+                  <div class="dollar-card-frame"></div>
+                </div>
+                <div class="donation-input-container">
+                  <label for="donation-input" class="donation-text" data-i18n="donation-request-text"></label>
+                  <input id="donation-input" type="number" min="0.05" step="0.05" value="5.00" data-i18n-title="donation-request-text">
+                </div>
+                <a id="donation-button" href="https://www.paypal.me/GiorgioGarasto/5.00usd" target="_blank" data-i18n="donation-request-button-text"></a>
+              </div>
             </div>
           </div>
         </div>

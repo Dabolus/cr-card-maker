@@ -8,11 +8,11 @@
 
 .chat-message {
   transform: perspective(1px);
-  background-color: #4376a9;
-  padding: 6px 16px;
+  background-color: #f2f8fe;
+  padding: 14px 18px;
   border-radius: 12px;
   margin: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .chat-message:before {
@@ -23,7 +23,7 @@
   top: 16px;
   left: 0;
   border-width: 10px 15px 10px 0;
-  border-color: transparent #4376a9 transparent transparent;
+  border-color: transparent #f2f8fe transparent transparent;
   transform: translateX(-15px);
 }
 
@@ -33,29 +33,24 @@
 
 .chat-message-from {
   float: left;
-  color: #6cf;
-  text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 2px 0 #000,
-    1px 2px 0 #000;
+  color: #4295f7;
   font-size: 16px;
 }
 
 .chat-message-role {
   float: right;
-  color: #6cf;
+  color: #a4abbb;
   font-size: 12px;
 }
 
 .chat-message-content {
-  color: #fff;
+  color: #566278;
   padding: 6px;
   font-size: 12px;
 }
 
 .chat-message-date {
-  color: #39f;
+  color: #8f9ab2;
   font-size: 8px;
 }
 
@@ -69,23 +64,36 @@
 
 .chat-request {
   width: calc(100% - 30px);
-  height: 144px;
   margin: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  background-color: #f3e2ce;
+  border: 2px solid #333d6d;
+  background-color: #8ba0de;
   border-radius: 12px;
 }
 
 .chat-request-header {
   width: 100%;
-  border-radius: 12px 12px 0 0;
-  background-color: #e5c39b;
+  border-radius: 10px 10px 0 0;
+  background-color: #935cf6;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 6px 8px;
+  text-align: center;
+  border: 2px solid #b288f7;
+  box-shadow:
+    -1px 2px 0 #8e61d9,
+    1px 2px 0 #8e61d9,
+    -2px -1px 0 #38098c,
+    2px -1px 0 #38098c,
+    -2px 4px 0 #38098c,
+    2px 4px 0 #38098c,
+    0 7px 0 rgba(0, 0, 0, 0.2);
+
+  & > div {
+    flex: 1;
+  }
 
   & > img {
+    flex: 0;
     height: 36px;
     width: auto;
   }
@@ -93,7 +101,7 @@
 
 .chat-request-from {
   font-size: 14px;
-  color: white;
+  color: #fff;
   text-shadow:
     -1px -1px 0 #000,
     1px -1px 0 #000,
@@ -101,83 +109,93 @@
     1px 2px 0 #000;
 }
 
-// .request-header {
-//   font-size: 16px;
-//   color: #ffc;
-//   text-shadow:
-//     -1px -1px 0 #000,
-//     1px -1px 0 #000,
-//     -1px 2px 0 #000,
-//     1px 2px 0 #000;
-//   margin-top: -6px;
-// }
-
-.chat-request-content {
-  position: relative;
-
-  & > * {
-    position: absolute;
-  }
+.request-header {
+  font-size: 16px;
+  color: #e3cffc;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 2px 0 #000,
+    1px 2px 0 #000;
 }
 
-// .dollar-image {
-//   top: 10px;
-//   left: 10px;
-//   width: 50px;
-//   height: 64px;
-//   background: #5d712e url(../assets/dollar.svg) no-repeat center;
-//   background-size: contain;
-//   border: 1px solid black;
-//   border-radius: 6px;
-// }
+.chat-request-content {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px 12px;
+  gap: 8px;
+}
 
-// .donation-text {
-//   left: 64px;
-//   top: 10px;
-//   font-size: 14px;
-//   color: #666;
-// }
+.dollar-image,
+.dollar-card-frame {
+  width: 52px;
+  height: 64px;
+}
 
-// #donationInput {
-//   left: 64px;
-//   top: 32px;
-//   width: calc(100% - 72px);
-//   background-color: #d9c9cb;
-//   border: 0;
-//   border-radius: 6px;
-//   padding: 4px;
-//   color: #de9cff;
-//   font-size: 16px;
-//   text-shadow:
-//     -1px -1px 0 #000,
-//     1px -1px 0 #000,
-//     -1px 2px 0 #000,
-//     1px 2px 0 #000;
-// }
+.dollar-image {
+  flex: 0;
+  margin-top: 22px;
+  background: #5d712e url(../images/dollar.svg) no-repeat center/contain;
+  border-radius: 6px;
+}
 
-// .donation-button {
-//   cursor: pointer;
-//   text-decoration: none;
-//   text-align: center;
-//   padding: 0 18px;
-//   background-color: #38e448;
-//   border-radius: 5px;
-//   border: 0;
-//   box-shadow:
-//     0 4px 0 0 #138d26,
-//     0 0 0 1px #000,
-//     0 4px 0 1px #000;
-//   color: white;
-//   text-shadow:
-//     -1px -1px 0 #000,
-//     1px -1px 0 #000,
-//     -1px 2px 0 #000,
-//     1px 2px 0 #000;
-//   top: 30px;
-//   right: 6px;
-// }
+.dollar-card-frame {
+  background: url('/cards-assets/shapes/normal.png') no-repeat center/contain;
+}
 
-// .donation-button:active {
-//   box-shadow: 0 0 0 1px #000;
-//   top: 32px;
-// }
+.donation-text {
+  font-size: 12px;
+  color: #fff;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 2px 0 #000,
+    1px 2px 0 #000;
+}
+
+.donation-input-container {
+  flex: 1;
+}
+
+#donation-input {
+  font: inherit;
+  width: 100%;
+  background-color: #5c6ea6;
+  border: 0;
+  border-radius: 6px;
+  padding: 4px;
+  color: #de9cff;
+  font-size: 16px;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 2px 0 #000,
+    1px 2px 0 #000;
+}
+
+#donation-button {
+  cursor: pointer;
+  flex: 0;
+  margin-top: 25px;
+  text-decoration: none;
+  text-align: center;
+  padding: 1px 18px;
+  background-color: #38e448;
+  border-radius: 5px;
+  border: 0;
+  box-shadow:
+    0 4px 0 0 #138d26,
+    0 0 0 1px #000,
+    0 4px 0 1px #000;
+  color: #fff;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 2px 0 #000,
+    1px 2px 0 #000;
+
+  &:active {
+    box-shadow: 0 0 0 1px #000;
+    transform: translateY(2px);
+  }
+}

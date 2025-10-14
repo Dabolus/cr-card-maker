@@ -21,4 +21,14 @@ export const onPageLoad = async () => {
   for (let i = 0; i < tabs.length; i++) {
     tabs[i].addEventListener('click', () => _changeTab(i));
   }
+
+  const donationInput =
+    document.querySelector<HTMLInputElement>('#donation-input')!;
+  const donationButton =
+    document.querySelector<HTMLAnchorElement>('#donation-button')!;
+
+  donationInput.addEventListener('input', () => {
+    const value = parseFloat(donationInput.value) || 5;
+    donationButton.href = `https://www.paypal.me/GiorgioGarasto/${value.toFixed(2)}usd`;
+  });
 };
