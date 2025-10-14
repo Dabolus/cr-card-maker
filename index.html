@@ -3,13 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" src="/src/scripts/main.ts"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1551168020317477" crossorigin="anonymous"></script>
     <link rel="preload" href="/src/fonts/supercell-magic_0.woff2" as="font" type="font/woff" crossorigin="anonymous" />
     <link rel="preload" href="/src/fonts/sc_ccbackbeatregular.woff2" as="font" type="font/woff" crossorigin="anonymous" />
-    <link rel="preload" href="/src/scripts/pages/create.ts" as="script" type="module" />
-    <link rel="preload" href="/src/styles/pages/create.scss" as="style" />
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+    <!-- Load the default assets with high priority to reduce LCP time -->
+    <link rel="preload" fetchpriority="high" as="image" href="/cards-assets/backgrounds/standard-2.png" type="image/png">
+    <link rel="preload" fetchpriority="high" as="image" href="/cards-assets/rarity-backgrounds/standard/common.png" type="image/png">
+    <link rel="preload" fetchpriority="high" as="image" href="/cards-assets/shapes/normal.png" type="image/png">
+    <link rel="preload" fetchpriority="high" as="image" href="/cards-assets/elixir.png" type="image/png">
     <meta name="author" content="Giorgio Garasto">
     <meta name="description" content="Welcome to Clash Royale Card Maker! With this simple tool you can create your own custom Clash Royale cards!">
     <meta name="copyright" content="Giorgio Garasto">
@@ -52,6 +54,8 @@
         padding: 0;
       }
     </style>
+    <script type="module" src="/src/scripts/main.ts"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1551168020317477" crossorigin="anonymous"></script>
   </head>
   <body>
     <div id="content">

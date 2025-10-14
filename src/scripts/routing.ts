@@ -9,6 +9,8 @@ const pageToFragmentUrl: Partial<Record<string, string>> = {
   info: infoFragmentUrl,
 };
 
+const loadedPages = new Set<string>();
+
 export const setupRouting = (i18nReadyPromise: Promise<void>) => {
   const menuOverlay =
     document.querySelector<HTMLDivElement>('.navbar #overlay')!;
@@ -40,6 +42,10 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
   };
 
   const loadPageContent = async (pageId: string) => {
+    if (loadedPages.has(pageId)) {
+      return;
+    }
+    loadedPages.add(pageId);
     const [fragmentContent, scriptsModule] = await Promise.all([
       pageToFragmentUrl[pageId] && loadFragment(pageToFragmentUrl[pageId]),
       import(`./pages/${pageId}.ts`),
