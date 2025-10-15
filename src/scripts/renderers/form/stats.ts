@@ -271,8 +271,8 @@ export const drawStats = ({
             `,
           )
           .join(', ')} {
-          background: ${options.template.fields.stats?.items.oddBackground
-            ? `url("${options.template.fields.stats?.items.oddBackground}")`
+          background: ${statsOptions?.items.oddBackground
+            ? `url("${statsOptions?.items.oddBackground}")`
             : ''};
         }
 
@@ -285,8 +285,8 @@ export const drawStats = ({
             `,
           )
           .join(', ')} {
-          background: ${options.template.fields.stats?.items.evenBackground
-            ? `url("${options.template.fields.stats?.items.evenBackground}")`
+          background: ${statsOptions?.items.evenBackground
+            ? `url("${statsOptions?.items.evenBackground}")`
             : ''};
         }
 

@@ -7,12 +7,47 @@ import {
   shapesConfig,
 } from '../renderers/shared';
 import { createToRelativeMapper } from '../renderers/form/utils';
+import type { $Schema as TemplateSchema } from '../../templates/generated/types';
 
 type StoredCard = CRCMDBSchema['cards']['value'];
+
+let openedCardReference: StoredCard | null = null;
+let openedTemplateReference: TemplateSchema | null = null;
+
+const renderImage = async (
+  card: StoredCard,
+  template: TemplateSchema,
+  page: number,
+  cardPreviewDialog: HTMLDialogElement,
+) => {
+  const { drawCanvas } = await import('../renderers/canvas');
+  const imageUrl = card.image.src ? URL.createObjectURL(card.image.src) : '';
+  const canvas = await drawCanvas({
+    template,
+    language: card.language,
+    cardName: card.cardName,
+    rarity: card.rarity,
+    level: card.level,
+    cardType: card.cardType,
+    elixirCost: card.elixirCost === null ? '?' : card.elixirCost,
+    description: card.description,
+    image: {
+      src: imageUrl,
+      fit: card.image.fit,
+    },
+    stats: card.stats,
+    page,
+  });
+  if (imageUrl) {
+    URL.revokeObjectURL(imageUrl);
+  }
+  cardPreviewDialog.querySelector('canvas')?.replaceWith(canvas);
+};
 
 const createCardPreviewElement = (
   card: StoredCard,
   cardPreviewDialog: HTMLDialogElement,
+  cardPreviewConfigSelectsContainer: HTMLDivElement,
 ) => {
   const cardElement = document.createElement('article');
   cardElement.classList.add('card-preview');
@@ -108,43 +143,47 @@ const createCardPreviewElement = (
   cardElement.appendChild(elixirElement);
 
   cardElement.addEventListener('click', async () => {
-    const [{ drawCanvas }, { default: template }] = await Promise.all([
-      import('../renderers/canvas'),
-      import(`../../templates/${card.templateId}.json`),
-    ]);
-    const imageUrl = card.image.src ? URL.createObjectURL(card.image.src) : '';
-    const canvas = await drawCanvas({
-      template,
-      language: card.language,
-      cardName: card.cardName,
-      rarity: card.rarity,
-      level: card.level,
-      cardType: card.cardType,
-      elixirCost: card.elixirCost === null ? '?' : card.elixirCost,
-      description: card.description,
-      image: {
-        src: imageUrl,
-        fit: card.image.fit,
-      },
-      stats: card.stats,
-    });
-    if (imageUrl) {
-      URL.revokeObjectURL(imageUrl);
+    const { default: template } = (await import(
+      `../../templates/${card.templateId}.json`
+    )) as { default: TemplateSchema };
+
+    openedCardReference = card;
+    openedTemplateReference = template;
+
+    await renderImage(card, template, 1, cardPreviewDialog);
+
+    if (template.pages && template.pages.length > 1) {
+      const pageSelect = cardPreviewDialog.querySelector<HTMLSelectElement>(
+        '#card-preview-page-select',
+      )!;
+      pageSelect.innerHTML = template.pages
+        .map((page, i) => `<option value="${i + 1}">${page.name}</option>`)
+        .join('');
+      pageSelect.value = '1';
+      cardPreviewConfigSelectsContainer.hidden = false;
+    } else {
+      cardPreviewConfigSelectsContainer.hidden = true;
     }
-    cardPreviewDialog.innerHTML = '';
-    cardPreviewDialog.appendChild(canvas);
+
     cardPreviewDialog.showModal();
   });
 
   return cardElement;
 };
 
-const updateCardsList = async (cardPreviewDialog: HTMLDialogElement) => {
+const updateCardsList = async (
+  cardPreviewDialog: HTMLDialogElement,
+  cardPreviewConfigSelectsContainer: HTMLDivElement,
+) => {
   const cards = await cardsCollection.getCards();
   const listContainer = document.querySelector('#cards-list')!;
   listContainer.innerHTML = '';
   cards.forEach((card) => {
-    const cardElement = createCardPreviewElement(card, cardPreviewDialog);
+    const cardElement = createCardPreviewElement(
+      card,
+      cardPreviewDialog,
+      cardPreviewConfigSelectsContainer,
+    );
     listContainer.appendChild(cardElement);
   });
 };
@@ -153,11 +192,34 @@ export const onPageLoad = async () => {
   const cardPreviewDialog = document.querySelector<HTMLDialogElement>(
     '#card-preview-dialog',
   )!;
-  cardPreviewDialog.addEventListener('click', () => {
-    cardPreviewDialog.close();
+  const cardPreviewConfigSelectsContainer =
+    cardPreviewDialog.querySelector<HTMLDivElement>(
+      '#card-preview-config-selects-container',
+    )!;
+  const cardPreviewPageSelect =
+    cardPreviewDialog.querySelector<HTMLSelectElement>(
+      '#card-preview-page-select',
+    )!;
+  cardPreviewDialog.addEventListener('click', (e) => {
+    // Avoid closing the dialog when clicking on the page selector
+    if (e.target !== cardPreviewPageSelect) {
+      cardPreviewDialog.close();
+    }
+  });
+  cardPreviewPageSelect.addEventListener('change', async (e) => {
+    if (!openedCardReference || !openedTemplateReference) {
+      return;
+    }
+    const selectedPage = Number((e.target as HTMLSelectElement).value);
+    await renderImage(
+      openedCardReference,
+      openedTemplateReference,
+      selectedPage,
+      cardPreviewDialog,
+    );
   });
   cardsCollection.addEventListener('change', () =>
-    updateCardsList(cardPreviewDialog),
+    updateCardsList(cardPreviewDialog, cardPreviewConfigSelectsContainer),
   );
-  await updateCardsList(cardPreviewDialog);
+  await updateCardsList(cardPreviewDialog, cardPreviewConfigSelectsContainer);
 };
