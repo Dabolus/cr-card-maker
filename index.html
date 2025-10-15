@@ -53,6 +53,10 @@
         margin: 0;
         padding: 0;
       }
+
+      [hidden] {
+        display: none !important;
+      }
     </style>
     <script type="module" src="/src/scripts/main.ts"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1551168020317477" crossorigin="anonymous"></script>
@@ -63,12 +67,21 @@
         <div class="loader-indeterminate loader-fullscreen" role="progressbar"></div>
       </div>
       <div class="page" id="create" role="tabpanel" tabindex="0" aria-labelledby="create-tab" aria-hidden="true">
-        <header id="template-select-container">
-          <label data-i18n="template-label" for="template-select"></label>
-          <select id="template-select">
-            <option value="standard" selected>Standard</option>
-            <option value="og">OG</option>
-          </select>
+        <header id="card-config-selects-container">
+          <div>
+            <label data-i18n="template-label" for="template-select"></label>
+            <select id="template-select">
+              <option value="standard" selected>Standard</option>
+              <option value="og">OG</option>
+            </select>
+          </div>
+          <div id="page-select-container">
+            <label data-i18n="page-label" for="page-select"></label>
+            <select id="page-select">
+              <option value="1" selected>Stats</option>
+              <option value="2">Description</option>
+            </select>
+          </div>
         </header>
         <main id="card-editor">
           <div class="loader-indeterminate" role="progressbar"></div>

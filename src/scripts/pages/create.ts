@@ -100,14 +100,26 @@ export const onPageLoad = async () => {
   const cardEditor = document.querySelector<HTMLDivElement>('#card-editor')!;
 
   const renderForm = async () => {
-    const cardElement = await drawForm({
+    const result = await drawForm({
       ...currentParams,
       onChange: (_, key, val) => {
         (currentParams as Record<string, unknown>)[key] = val;
       },
     });
-    cardEditor.firstElementChild?.replaceWith(cardElement);
+    cardEditor.firstElementChild?.replaceWith(result.element);
+    return result;
   };
+
+  let renderResult = await renderForm();
+
+  const pageSelectContainer = document.querySelector<HTMLDivElement>(
+    '#page-select-container',
+  )!;
+  const pageSelect = document.querySelector<HTMLSelectElement>('#page-select')!;
+  pageSelect.addEventListener('change', async (e) => {
+    const selectedPage = Number((e.target as HTMLSelectElement).value);
+    await renderResult.setPage(selectedPage);
+  });
 
   const templateSelect =
     document.querySelector<HTMLSelectElement>('#template-select')!;
@@ -116,10 +128,20 @@ export const onPageLoad = async () => {
     currentParams.template = await import(
       `../../templates/${selectedTemplateId}.json`
     ).then((mod) => mod.default);
-    await renderForm();
+    if (
+      currentParams.template.pages &&
+      currentParams.template.pages.length > 1
+    ) {
+      pageSelectContainer.hidden = false;
+      pageSelect.innerHTML = currentParams.template.pages
+        .map((page, i) => `<option value="${i + 1}">${page.name}</option>`)
+        .join('');
+      pageSelect.value = '1';
+    } else {
+      pageSelectContainer.hidden = true;
+    }
+    renderResult = await renderForm();
   });
-
-  await renderForm();
 
   const actionsButton =
     document.querySelector<HTMLButtonElement>('#actions-button')!;
