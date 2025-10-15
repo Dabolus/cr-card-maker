@@ -9,6 +9,7 @@ $selected-item-width: $item-width * 2;
 .navbar {
   display: block;
   position: fixed;
+  z-index: 10;
   margin: 0;
   padding: 0;
   left: 0;

@@ -45,7 +45,6 @@
 
 .chat-message-content {
   color: #566278;
-  padding: 6px;
   font-size: 12px;
 }
 
@@ -71,11 +70,10 @@
 }
 
 .chat-request-header {
+  position: relative;
   width: 100%;
   border-radius: 10px 10px 0 0;
   background-color: #935cf6;
-  display: flex;
-  align-items: center;
   padding: 6px 8px;
   text-align: center;
   border: 2px solid #b288f7;
@@ -88,14 +86,13 @@
     2px 4px 0 #38098c,
     0 7px 0 rgba(0, 0, 0, 0.2);
 
-  & > div {
-    flex: 1;
-  }
-
-  & > img {
-    flex: 0;
-    height: 36px;
-    width: auto;
+  & > .info-icon {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 42px;
+    height: 42px;
+    background-image: url(../images/navbar/info.svg);
   }
 }
 
@@ -110,7 +107,7 @@
 }
 
 .request-header {
-  font-size: 16px;
+  font-size: 14px;
   color: #e3cffc;
   text-shadow:
     -1px -1px 0 #000,
