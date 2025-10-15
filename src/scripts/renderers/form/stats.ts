@@ -442,7 +442,7 @@ export const drawStats = ({
   const addStatButton = document.createElement('button');
   addStatButton.type = 'button';
   addStatButton.classList.add('add');
-  addStatButton.innerHTML = `+ ${t('add_stat')}`;
+  addStatButton.innerHTML = `+ ${t('add-stat')}`;
   addStatButton.addEventListener('click', () => {
     if (currentStats.length >= statsOptions.maxItems) {
       return;
