@@ -41,3 +41,30 @@ body {
   scroll-snap-stop: always;
   padding-bottom: navbar.$height;
 }
+
+#global-notification {
+  position: fixed;
+  top: -64px;
+  left: 0;
+  box-sizing: border-box;
+  font-size: 14px;
+  z-index: 1000;
+  background-color: #e0f5ff;
+  color: #666;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 16px 24px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  text-align: center;
+  transition: transform 0.24s ease-in-out;
+  transform: translateY(0);
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  &[aria-hidden='false'] {
+    transform: translateY(64px);
+  }
+}

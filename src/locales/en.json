@@ -41,6 +41,9 @@
   "page-info-description": "Learn more about the Clash Royale Card Maker, its author and its story.",
   "page-info-title": "Info",
   "page-label": "Page:",
+  "pwa-offline-ready": "App is ready for offline usage.",
+  "pwa-update-available": "New version available! Refresh to use it now.",
+  "pwa-updated": "App has been updated.",
   "rarity-label": "Rarity",
   "save": "Save",
   "saved-cards": "Saved Cards",
@@ -80,6 +83,5 @@
   "stat-name-placeholder": "Name",
   "stat-value-placeholder": "Value",
   "template-label": "Template:",
-  "type-label": "Type",
-  "update-notification": "App updated! Press here to reload."
+  "type-label": "Type"
 }

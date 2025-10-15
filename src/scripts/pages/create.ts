@@ -3,6 +3,7 @@ import placeholderImageUrl from '../../images/placeholder.svg';
 import { drawForm } from '../renderers/form';
 import { t } from '../i18n';
 import { loadImage } from '../utils';
+import { showNotification } from '../notifications';
 import type { RendererBaseOptions } from '../renderers/types';
 import type { $Schema as TemplateSchema } from '../../templates/generated/types';
 import type { DrawCanvasOptions } from '../renderers/canvas/types';
@@ -71,7 +72,7 @@ const handleSave = async (params: RendererBaseOptions, templateId: string) => {
     createdAt: new Date(),
     updatedAt: new Date(),
   });
-  alert(t('card-saved'));
+  showNotification({ message: t('card-saved') });
 };
 
 const handleDownload = async (params: RendererBaseOptions) => {

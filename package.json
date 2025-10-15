@@ -1,6 +1,6 @@
 {
   "name": "cr-card-maker",
-  "version": "0.0.0",
+  "version": "3.0.0",
   "scripts": {
     "dev": "bun run generate-types && vite",
     "dev:public": "bun run dev --host 0.0.0.0",
@@ -16,7 +16,10 @@
     "firebase": "^12.4.0",
     "idb": "^8.0.3",
     "pwa-helpers": "^0.9.1",
-    "sortablejs": "^1.15.6"
+    "sortablejs": "^1.15.6",
+    "workbox-core": "^7.3.0",
+    "workbox-precaching": "^7.3.0",
+    "workbox-routing": "^7.3.0"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.7",
@@ -31,7 +34,8 @@
     "vite-bundle-analyzer": "^1.2.3",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-mkcert": "^1.17.9",
-    "vite-plugin-preload": "^0.4.4"
+    "vite-plugin-preload": "^0.4.4",
+    "vite-plugin-pwa": "^1.1.0"
   },
   "packageManager": "bun@1.2.23"
 }
