@@ -1,6 +1,6 @@
 import { css } from './utils';
 import { t } from '../../i18n';
-import { getIconImageSrc, icons, type Icon } from '../shared';
+import { getIconImageSrc, getTemplateField, icons, type Icon } from '../shared';
 import type { CardStat } from '../types';
 import type { DrawFormPartParams } from './types';
 
@@ -208,8 +208,9 @@ export const drawStats = ({
   toRelative,
   styles,
   form,
+  page,
 }: DrawFormPartParams) => {
-  const statsOptions = options.template.fields.stats;
+  const statsOptions = getTemplateField(options.template, 'stats', page);
   if (!statsOptions) {
     return;
   }
@@ -226,10 +227,10 @@ export const drawStats = ({
     maxRows * (statsOptions.items.height + statsOptions.gapY) -
     statsOptions.gapY;
   const statValueShadowSize = toRelative(
-    options.template.fields['card-name'].fontSize * 0.03,
+    statsOptions.items.value.fontSize * 0.03,
   );
   const statValueShadowBottomSize = toRelative(
-    options.template.fields['card-name'].fontSize * 0.09,
+    statsOptions.items.value.fontSize * 0.09,
   );
   const itemsConfig = statsOptions.items;
   const iconBgWidth = itemsConfig.icon.width - 10;

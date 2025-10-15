@@ -5,6 +5,7 @@ import {
   frameContainerNominalWidth,
   frameContainerNominalHeight,
   getShapeImageSrc,
+  getTemplateField,
 } from '../shared';
 import { css, createToRelativeMapper } from './utils';
 import { loadImage, readFileAsDataUrl } from '../../utils';
@@ -12,6 +13,7 @@ import { t } from '../../i18n';
 import type { DrawFormOptions, DrawFormPartParams } from './types';
 import type { ImageFit, Rarity } from '../types';
 import type { CropperSelection } from 'cropperjs';
+import type { Fields } from '../../../templates/generated/types';
 
 // Lazy-load CropperJS
 const cropperJsPromise = import('cropperjs').then((mod) => mod.default);
@@ -20,10 +22,12 @@ const handleImageEdit = async ({
   options,
   form,
   fileDataUrl,
+  imageField,
 }: {
   options: DrawFormPartParams['options'];
   form: HTMLFormElement;
   fileDataUrl: string;
+  imageField: NonNullable<Fields['image']>;
 }): Promise<{ image: HTMLImageElement; fit: ImageFit }> => {
   const { resolve, promise } = Promise.withResolvers<{
     image: HTMLImageElement;
@@ -40,8 +44,7 @@ const handleImageEdit = async ({
   dialogForm.method = 'dialog';
 
   const cropperCanvas = document.createElement('cropper-canvas');
-  const aspectRatio =
-    options.template.fields.image.width / options.template.fields.image.height;
+  const aspectRatio = imageField.width / imageField.height;
   cropperCanvas.innerHTML = `
       <cropper-image src="${fileDataUrl}" alt="Picture" rotatable scalable skewable translatable></cropper-image>
       <cropper-shade hidden></cropper-shade>
@@ -136,17 +139,24 @@ export const drawImage = ({
   toRelative,
   styles,
   form,
+  page,
 }: DrawFormPartParams): {
   updateRarityFrame: (rarity: Rarity) => void;
 } => {
+  const imageField = getTemplateField(options.template, 'image', page);
+  if (!imageField) {
+    return {
+      updateRarityFrame: () => {},
+    };
+  }
   // Draw the contour of the image
   styles.insertRule(css`
     #card-image-container {
       cursor: pointer;
-      left: ${toRelative(options.template.fields.image.x)};
-      top: ${toRelative(options.template.fields.image.y)};
-      width: ${toRelative(options.template.fields.image.width)};
-      height: ${toRelative(options.template.fields.image.height)};
+      left: ${toRelative(imageField.x)};
+      top: ${toRelative(imageField.y)};
+      width: ${toRelative(imageField.width)};
+      height: ${toRelative(imageField.height)};
       container-type: inline-size;
 
       & > #card-image-shape,
@@ -243,8 +253,8 @@ export const drawImage = ({
   container.appendChild(cardImageFrame);
 
   const containerSize = {
-    width: options.template.fields.image.width,
-    height: options.template.fields.image.height,
+    width: imageField.width,
+    height: imageField.height,
   };
   const toContainerRelative = createToRelativeMapper(0, containerSize.width);
 
@@ -311,7 +321,12 @@ export const drawImage = ({
     const fileDataUrl = await readFileAsDataUrl(file);
     // Reset the input
     imageInput.value = '';
-    const editResult = await handleImageEdit({ options, form, fileDataUrl });
+    const editResult = await handleImageEdit({
+      options,
+      form,
+      fileDataUrl,
+      imageField,
+    });
     cardImage.src = editResult.image.src;
     setImageFit(editResult.fit);
     const newImageData: DrawFormOptions['image'] = {

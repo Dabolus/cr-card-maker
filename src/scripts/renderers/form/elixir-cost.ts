@@ -1,5 +1,6 @@
 import { css } from './utils';
 import { t } from '../../i18n';
+import { getTemplateField } from '../shared';
 import type { DrawFormPartParams } from './types';
 
 export const drawElixirCost = ({
@@ -7,20 +8,25 @@ export const drawElixirCost = ({
   toRelative,
   styles,
   form,
+  page,
 }: DrawFormPartParams) => {
-  const elixirShadowSize = toRelative(
-    options.template.fields['card-name'].fontSize * 0.04,
+  const elixirCostField = getTemplateField(
+    options.template,
+    'elixir-cost',
+    page,
   );
-  const elixirShadowBottomSize = toRelative(
-    options.template.fields['card-name'].fontSize * 0.12,
-  );
+  if (!elixirCostField) {
+    return;
+  }
+  const elixirShadowSize = toRelative(elixirCostField.fontSize * 0.04);
+  const elixirShadowBottomSize = toRelative(elixirCostField.fontSize * 0.12);
   // Let's draw the elixir drop...
   styles.insertRule(css`
     #elixir-drop {
-      left: ${toRelative(options.template.fields['elixir-cost'].x)};
-      top: ${toRelative(options.template.fields['elixir-cost'].y)};
-      width: ${toRelative(options.template.fields['elixir-cost'].width)};
-      height: ${toRelative(options.template.fields['elixir-cost'].height)};
+      left: ${toRelative(elixirCostField.x)};
+      top: ${toRelative(elixirCostField.y)};
+      width: ${toRelative(elixirCostField.width)};
+      height: ${toRelative(elixirCostField.height)};
       background: url('/cards-assets/elixir.png') no-repeat center/100% 100%;
       background-size: contain;
     }
@@ -34,10 +40,10 @@ export const drawElixirCost = ({
     #elixir-cost {
       cursor: pointer;
       appearance: none;
-      left: ${toRelative(options.template.fields['elixir-cost'].x)};
-      top: ${toRelative(options.template.fields['elixir-cost'].y)};
-      width: ${toRelative(options.template.fields['elixir-cost'].width)};
-      height: ${toRelative(options.template.fields['elixir-cost'].height)};
+      left: ${toRelative(elixirCostField.x)};
+      top: ${toRelative(elixirCostField.y)};
+      width: ${toRelative(elixirCostField.width)};
+      height: ${toRelative(elixirCostField.height)};
       background: transparent;
       text-align: center;
       text-align-last: center;
@@ -45,9 +51,7 @@ export const drawElixirCost = ({
       &,
       & option {
         font-family: 'Supercell Magic';
-        font-size: ${toRelative(
-          options.template.fields['elixir-cost'].fontSize,
-        )};
+        font-size: ${toRelative(elixirCostField.fontSize)};
         color: #ffe9ff;
         text-shadow:
           -${elixirShadowSize} -${elixirShadowSize} 0 #760088,

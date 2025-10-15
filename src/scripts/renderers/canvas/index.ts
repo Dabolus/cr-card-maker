@@ -1,5 +1,6 @@
 import { loadImage } from '../../utils';
 import { setupLayout } from './layout';
+import { drawPageBackground } from './page-background';
 import { drawName } from './name';
 import { drawLevel } from './level';
 import { drawImage } from './image';
@@ -19,7 +20,6 @@ export const drawCanvas = async ({
   page = 1,
   ...options
 }: DrawCanvasOptions) => {
-  console.log({ page });
   const rarityBackgroundField = getTemplateField(
     options.template,
     'rarity-background',
@@ -30,14 +30,12 @@ export const drawCanvas = async ({
     'type-background',
     page,
   );
-  const backgroundField =
-    options.template.background ??
-    options.template.pages?.[page - 1]?.background;
   const statsField = getTemplateField(options.template, 'stats', page);
 
   const [
     loadedImage,
-    loadedBgImage,
+    loadedCardBgImage,
+    loadedPageBgImage,
     loadedElixirImage,
     loadedIconsImages,
     loadedShapeImage,
@@ -47,7 +45,10 @@ export const drawCanvas = async ({
     loadedStatsOddBgImage,
   ] = await Promise.all([
     loadImage(options.image.src).catch(() => null),
-    backgroundField ? loadImage(backgroundField) : null,
+    options.template.background ? loadImage(options.template.background) : null,
+    options.template.pages?.[page - 1]?.background
+      ? loadImage(options.template.pages?.[page - 1]?.background)
+      : null,
     loadImage('/cards-assets/elixir.png'),
     getIconsImages(options.stats?.map((item) => item.icon) ?? []),
     getShapeImage(raritiesConfig[options.rarity].shape),
@@ -66,7 +67,18 @@ export const drawCanvas = async ({
   ]);
 
   // Setup the layout
-  const { ctx } = setupLayout({ options, backgroundImage: loadedBgImage });
+  const { ctx } = setupLayout({
+    options,
+    cardBackgroundImage: loadedCardBgImage,
+  });
+
+  // Draw the page background
+  drawPageBackground({
+    options,
+    ctx,
+    page,
+    pageBackgroundImage: loadedPageBgImage,
+  });
 
   // Draw the card name
   drawName({ options, ctx, page });

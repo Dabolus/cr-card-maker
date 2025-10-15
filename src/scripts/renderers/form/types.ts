@@ -2,6 +2,11 @@ import type { RendererBaseOptions } from '../types';
 
 export type DrawFormOptions = RendererBaseOptions & {
   /**
+   * The default page number to render (1-based).
+   * If not provided, the first page will be rendered.
+   */
+  defaultPage?: number;
+  /**
    * The container element to draw the form in.
    * If not provided, a new div element will be created and returned.
    */
@@ -31,4 +36,5 @@ export interface DrawFormPartParams {
   toRelative: (pixels: number) => string;
   styles: CSSStyleSheet;
   form: HTMLFormElement;
+  page: number;
 }

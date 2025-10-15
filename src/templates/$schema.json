@@ -528,6 +528,7 @@
       "items": {
         "type": "object",
         "properties": {
+          "name": { "type": "string" },
           "x": { "type": "integer" },
           "y": { "type": "integer" },
           "width": { "type": "integer" },
@@ -537,7 +538,15 @@
             "$ref": "#/definitions/Fields"
           }
         },
-        "required": ["x", "y", "width", "height", "background", "fields"]
+        "required": [
+          "name",
+          "x",
+          "y",
+          "width",
+          "height",
+          "background",
+          "fields"
+        ]
       }
     },
     "i18n": {

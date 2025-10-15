@@ -1,6 +1,6 @@
 import { t } from '../../i18n';
 import { css, getCssSimplifiedColor } from './utils';
-import { rarities, types } from '../shared';
+import { getTemplateField, rarities, types } from '../shared';
 import type { DrawFormOptions, DrawFormPartParams } from './types';
 import type { Rarity } from '../types';
 import type { Url } from '../../../templates/generated/types';
@@ -14,6 +14,7 @@ export const drawRarityType = ({
   toRelative,
   styles,
   form,
+  page,
   onRarityChange,
 }: DrawRarityTypeParams) => {
   const i18n =
@@ -21,14 +22,16 @@ export const drawRarityType = ({
       options.language as keyof typeof options.template.i18n
     ] ?? {};
 
-  const rarityBackgroundField = options.template.fields['rarity-background'];
-  const typeBackgroundField = options.template.fields['type-background'];
-
-  const rarityTypeShadowSize = toRelative(
-    options.template.fields['card-name'].fontSize * 0.03,
+  const rarityBackgroundField = getTemplateField(
+    options.template,
+    'rarity-background',
+    page,
   );
-  const rarityTypeShadowBottomSize = toRelative(
-    options.template.fields['card-name'].fontSize * 0.09,
+
+  const typeBackgroundField = getTemplateField(
+    options.template,
+    'type-background',
+    page,
   );
 
   const getBackgroundSrc = (url: Url, rarity: Rarity): string | undefined =>
@@ -77,46 +80,52 @@ export const drawRarityType = ({
   const updateTypeBackground = setupBackground('type', typeBackgroundField);
 
   (['rarity', 'type'] as const).forEach((key) => {
-    const labelField = options.template.fields[`${key}-label`];
-    const labelTextAlign = labelField.textAlign ?? 'left';
-    styles.insertRule(css`
-      #${key}-label {
-        left: ${toRelative(
-          labelField.x -
-            (labelTextAlign === 'center' ? labelField.maxWidth / 2 : 0),
-        )};
-        top: ${toRelative(labelField.y)};
-        font-family: 'Supercell Magic';
-        white-space: nowrap;
-        width: ${toRelative(labelField.maxWidth)};
-        font-size: ${toRelative(labelField.fontSize)};
-        text-align: ${labelTextAlign};
-      }
-    `);
-    const valueField = options.template.fields[`${key}-value`];
-    const valueTextAlign = valueField.textAlign ?? 'left';
-    styles.insertRule(css`
-      #${key}-value {
-        left: ${toRelative(
-          valueField.x -
-            (valueTextAlign === 'center' ? valueField.maxWidth / 2 + 24 : 4),
-        )};
-        top: ${toRelative(valueField.y - 4)};
-        padding: ${toRelative(4)};
-        white-space: nowrap;
-        width: ${toRelative(valueField.maxWidth + 40)};
-        font-family: 'Supercell Magic';
-        font-size: calc(
-          ${toRelative(valueField.fontSize)} - (${rarityTypeShadowSize} * 2)
-        );
-        text-align: ${valueTextAlign};
-        text-shadow:
-          -${rarityTypeShadowSize} -${rarityTypeShadowSize} 0 #000,
-          ${rarityTypeShadowSize} -${rarityTypeShadowSize} 0 #000,
-          -${rarityTypeShadowSize} ${rarityTypeShadowBottomSize} 0 #000,
-          ${rarityTypeShadowSize} ${rarityTypeShadowBottomSize} 0 #000;
-      }
-    `);
+    const labelField = getTemplateField(options.template, `${key}-label`, page);
+    if (labelField) {
+      const labelTextAlign = labelField.textAlign ?? 'left';
+      styles.insertRule(css`
+        #${key}-label {
+          left: ${toRelative(
+            labelField.x -
+              (labelTextAlign === 'center' ? labelField.maxWidth / 2 : 0),
+          )};
+          top: ${toRelative(labelField.y)};
+          font-family: 'Supercell Magic';
+          white-space: nowrap;
+          width: ${toRelative(labelField.maxWidth)};
+          font-size: ${toRelative(labelField.fontSize)};
+          text-align: ${labelTextAlign};
+        }
+      `);
+    }
+    const valueField = getTemplateField(options.template, `${key}-value`, page);
+    if (valueField) {
+      const valueShadowSize = toRelative(valueField.fontSize * 0.03);
+      const valueShadowBottomSize = toRelative(valueField.fontSize * 0.09);
+      const valueTextAlign = valueField.textAlign ?? 'left';
+      styles.insertRule(css`
+        #${key}-value {
+          left: ${toRelative(
+            valueField.x -
+              (valueTextAlign === 'center' ? valueField.maxWidth / 2 + 24 : 4),
+          )};
+          top: ${toRelative(valueField.y - 4)};
+          padding: ${toRelative(4)};
+          white-space: nowrap;
+          width: ${toRelative(valueField.maxWidth + 40)};
+          font-family: 'Supercell Magic';
+          font-size: calc(
+            ${toRelative(valueField.fontSize)} - (${valueShadowSize} * 2)
+          );
+          text-align: ${valueTextAlign};
+          text-shadow:
+            -${valueShadowSize} -${valueShadowSize} 0 #000,
+            ${valueShadowSize} -${valueShadowSize} 0 #000,
+            -${valueShadowSize} ${valueShadowBottomSize} 0 #000,
+            ${valueShadowSize} ${valueShadowBottomSize} 0 #000;
+        }
+      `);
+    }
   });
 
   const rarityLabel = document.createElement('div');
@@ -169,7 +178,7 @@ export const drawRarityType = ({
 
   const applyColors = (rarity: Rarity) => {
     colorTargets.forEach(({ element, fieldKey }) => {
-      const field = options.template.fields[fieldKey];
+      const field = getTemplateField(options.template, fieldKey, page);
       if (!field?.color) {
         return;
       }

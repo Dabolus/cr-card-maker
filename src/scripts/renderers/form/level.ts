@@ -1,5 +1,6 @@
 import { t } from '../../i18n';
 import { css, getCssSimplifiedColor } from './utils';
+import { getTemplateField } from '../shared';
 import type { DrawFormPartParams } from './types';
 import type { Rarity } from '../types';
 
@@ -8,10 +9,13 @@ export const drawLevel = ({
   toRelative,
   styles,
   form,
+  page,
 }: DrawFormPartParams): {
   updateLevelTextColor: (rarity: Rarity) => void;
 } => {
-  if (!options.template.fields.level) {
+  const levelField = getTemplateField(options.template, 'level', page);
+
+  if (!levelField) {
     return { updateLevelTextColor: () => {} };
   }
 
@@ -20,17 +24,13 @@ export const drawLevel = ({
       options.language as keyof typeof options.template.i18n
     ] ?? {};
 
-  const levelShadowSize = toRelative(
-    options.template.fields.level.fontSize * 0.04,
-  );
-  const levelShadowBottomSize = toRelative(
-    options.template.fields.level.fontSize * 0.12,
-  );
+  const levelShadowSize = toRelative(levelField.fontSize * 0.04);
+  const levelShadowBottomSize = toRelative(levelField.fontSize * 0.12);
   styles.insertRule(css`
     #level {
       font-family: 'Supercell Magic';
-      left: ${toRelative(options.template.fields.level.x - 8)};
-      top: ${toRelative(options.template.fields.level.y - 8)};
+      left: ${toRelative(levelField.x - 8)};
+      top: ${toRelative(levelField.y - 8)};
       white-space: nowrap;
       display: flex;
       align-items: center;
@@ -40,10 +40,10 @@ export const drawLevel = ({
       &,
       & > select,
       & > input {
-        color: ${getCssSimplifiedColor(options.template.fields.level.color, {
+        color: ${getCssSimplifiedColor(levelField.color, {
           rarity: options.rarity,
         })};
-        font-size: ${toRelative(options.template.fields.level.fontSize)};
+        font-size: ${toRelative(levelField.fontSize)};
         text-shadow:
           -${levelShadowSize} -${levelShadowSize} 0 #000,
           ${levelShadowSize} -${levelShadowSize} 0 #000,
@@ -93,10 +93,7 @@ export const drawLevel = ({
 
   return {
     updateLevelTextColor: (rarity: Rarity) => {
-      const updatedColor = getCssSimplifiedColor(
-        options.template.fields.level!.color,
-        { rarity },
-      );
+      const updatedColor = getCssSimplifiedColor(levelField!.color, { rarity });
       level.style.color = updatedColor;
       levelSelect.style.color = updatedColor;
     },

@@ -1,5 +1,6 @@
 import { t } from '../../i18n';
 import { css } from './utils';
+import { getTemplateField } from '../shared';
 import type { DrawFormPartParams } from './types';
 
 export const drawDescription = ({
@@ -7,8 +8,14 @@ export const drawDescription = ({
   toRelative,
   styles,
   form,
+  page,
 }: DrawFormPartParams) => {
-  if (!options.template.fields.description) {
+  const descriptionField = getTemplateField(
+    options.template,
+    'description',
+    page,
+  );
+  if (!descriptionField) {
     return;
   }
   styles.insertRule(css`
@@ -17,22 +24,17 @@ export const drawDescription = ({
       background-color: rgba(0, 0, 0, 0.12);
       border-radius: ${toRelative(8)};
       left: ${toRelative(
-        options.template.fields.description.x -
-          options.template.fields.description.maxWidth / 2 -
-          16,
+        descriptionField.x - descriptionField.maxWidth / 2 - 16,
       )};
-      top: ${toRelative(options.template.fields.description.y - 16)};
-      width: ${toRelative(options.template.fields.description.maxWidth)};
+      top: ${toRelative(descriptionField.y - 16)};
+      width: ${toRelative(descriptionField.maxWidth)};
       height: ${toRelative(
-        options.template.fields.description.lineHeight *
-          options.template.fields.description.maxLines,
+        descriptionField.lineHeight * descriptionField.maxLines,
       )};
       overflow-y: auto;
-      font-size: ${toRelative(options.template.fields.description.fontSize)};
-      line-height: ${toRelative(
-        options.template.fields.description.lineHeight,
-      )};
-      color: ${options.template.fields.description.color};
+      font-size: ${toRelative(descriptionField.fontSize)};
+      line-height: ${toRelative(descriptionField.lineHeight)};
+      color: ${descriptionField.color};
       resize: none;
       display: flex;
       flex-direction: column;
@@ -40,10 +42,9 @@ export const drawDescription = ({
         top: 'flex-start',
         middle: 'center',
         bottom: 'flex-end',
-      }[options.template.fields.description.textBaseline || 'top']};
-      text-align: ${options.template.fields.description.textAlign || 'center'};
-      text-align-last: ${options.template.fields.description.textAlign ||
-      'center'};
+      }[descriptionField.textBaseline || 'top']};
+      text-align: ${descriptionField.textAlign || 'center'};
+      text-align-last: ${descriptionField.textAlign || 'center'};
       padding: ${toRelative(16)};
 
       &[aria-placeholder]:empty:before {

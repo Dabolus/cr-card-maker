@@ -26,6 +26,11 @@ export const setupLayout = ({ options }: SetupLayoutParams) => {
   // Start with the common, static styles for the renderer
   styles.replaceSync(rendererStyles);
   styles.insertRule(css`
+    :host {
+      aspect-ratio: ${options.template.width} / ${options.template.height};
+    }
+  `);
+  styles.insertRule(css`
     #card {
       background: url(${options.template.background}) no-repeat center/100% 100%;
     }

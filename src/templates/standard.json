@@ -123,6 +123,7 @@
   },
   "pages": [
     {
+      "name": "Stats",
       "x": 0,
       "y": 0,
       "width": 989,
@@ -167,6 +168,7 @@
       }
     },
     {
+      "name": "Description",
       "x": 0,
       "y": 0,
       "width": 989,
