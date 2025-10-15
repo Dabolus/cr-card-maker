@@ -1,0 +1,557 @@
+@import url(fonts.css);
+.sc-btn,
+tbody {
+    cursor: pointer
+}
+.bubble,
+.contact {
+    transition: .3s transform
+}
+.sc-btn,
+a.sc-btn:active,
+a.sc-btn:hover,
+a.sc-btn:link,
+a.sc-btn:visited {
+    text-decoration: none;
+    color: #fff
+}
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: "SC CCBackBeat"
+}
+.buttonText,
+.control-label,
+.form-control,
+.form-control-file,
+.modal-title,
+.sc-btn,
+th {
+    font-family: "Supercell Magic"
+}
+body {
+    padding-top: 70px;
+    background-image: url(../img/bg.jpg);
+    background-size: 97px 100px;
+    background-repeat: repeat
+}
+@media (min-width: 768px) {
+    table {
+        width: 50%!important
+    }
+}
+.white {
+    color: #fff!important
+}
+.black-3d-border {
+    text-shadow: -1px 2px 0 #000, 0 2px 0 #000, 1px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000!important
+}
+.sc-btn {
+    font-size: 16px;
+    padding: 10px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 3px;
+    border: 0
+}
+.sc-btn:active {
+    position: relative;
+    top: 2px
+}
+#btnInfo,
+#donate,
+#footer,
+#cmbCountries {
+    position: fixed
+}
+#file-select {
+    margin: 10px 0 15px 5px
+}
+.sc-btn-yellow {
+    background-color: #FFD053;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(.05, #FFD053), color-stop(1, #FFBC2B));
+    background: -moz-linear-gradient(top, #FFD053 5%, #FFBC2B 100%);
+    background: -webkit-linear-gradient(top, #FFD053 5%, #FFBC2B 100%);
+    background: -o-linear-gradient(top, #FFD053 5%, #FFBC2B 100%);
+    background: -ms-linear-gradient(top, #FFD053 5%, #FFBC2B 100%);
+    background: linear-gradient(to bottom, #FFD053 5%, #FFBC2B 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#FFD053', endColorstr='#FFBC2B', GradientType=0);
+    box-shadow: 0 2px 3px 0 #FF8907, 0 0 0 4px #FFA80C, 0 1px 0 4px #FFA80C, 0 -1px 2px 4px #FFD525, 0 -2px 0 5px #F4E684, 0 6px 0 4px #B06904, 0 3px 0 5px #F4E684, 0 -2px 0 7px #202020, 0 5px 0 7px #202020, 0 7px 0 7px #333;
+    color: #FFC;
+    text-shadow: -1px 2px 0 #582d00, 0 2px 0 #582d00, 1px 2px 0 #582d00, -1px -1px 0 #582d00, 1px -1px 0 #582d00, -1px 1px 0 #582d00, 1px 1px 0 #582d00
+}
+.sc-btn-yellow:active {
+    box-shadow: 0 -2px 3px 0 #FF8907, 0 0 0 4px #FFA80C, 0 -1px 0 4px #FFA80C, 0 -1px 2px 4px #FFD525, 0 -2px 0 5px #F4E684, 0 6px 0 4px #B06904, 0 3px 0 5px #F4E684, 0 -2px 0 7px #202020, 0 5px 0 7px #202020, 0 7px 0 7px #333;
+    text-shadow: -1px -1px 0 #582d00, 1px -1px 0 #582d00, -1px 1px 0 #582d00, 1px 1px 0 #582d00
+}
+.sc-btn-red {
+    background-color: #FC4144;
+    box-shadow: 0 0 3px 0 #FC4144, 0 0 0 4px #E72424, 0 1px 0 4px #E72424, 0 -1px 2px 4px #FE4A5D, 0 -2px 0 5px #EC8A95, 0 6px 0 4px #9C1414, 0 3px 0 5px #9C1414, 0 -2px 0 7px #202020, 0 5px 0 7px #202020, 0 7px 0 7px #333;
+    color: #fff;
+    text-shadow: -1px 2px 0 #000, 0 2px 0 #000, 1px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000
+}
+.sc-btn-red:active {
+    box-shadow: 0 0 3px 0 #FC4144, 0 0 0 4px #E72424, 0 -1px 0 4px #E72424, 0 -1px 2px 4px #FE4A5D, 0 -2px 0 5px #EC8A95, 0 6px 0 4px #9C1414, 0 3px 0 5px #9C1414, 0 -2px 0 7px #202020, 0 5px 0 7px #202020, 0 7px 0 7px #333;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000
+}
+.sc-btn-table {
+    font-size: 20px;
+    padding: 0;
+    width: 25px;
+    height: 20px;
+    border-radius: 8px;
+    margin: 5px
+}
+.sc-navbar,
+.sc-panel {
+    border: 1px solid rgba(100, 100, 100, .4)!important
+}
+.sc-btn-modal {
+    padding: 0;
+    width: 100px;
+    height: 27px;
+    margin: 10px
+}
+.sc-btn-save {
+    margin: 20px;
+    width: 160px
+}
+#txtDescription {
+    resize: none
+}
+#fcImage {
+    display: none
+}
+#filename {
+    font-family: "SC CCBackBeat";
+    color: #555;
+    border-left: 2px solid #d3d3d3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.donation-button,
+.donation-description,
+.donation-msg,
+.donation-subtitle,
+.donation-title {
+    font-family: "Supercell Magic"
+}
+.fnone,
+.tableicon {
+    width: 24px!important
+}
+#footer {
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    background-color: #00008b;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(.05, #00008b), color-stop(1, rgba(0, 0, 255, 0)));
+    background: -moz-linear-gradient(bottom, #00008b 5%, rgba(0, 0, 255, 0) 100%);
+    background: -webkit-linear-gradient(bottom, #00008b 5%, rgba(0, 0, 255, 0) 100%);
+    background: -o-linear-gradient(bottom, #00008b 5%, rgba(0, 0, 255, 0) 100%);
+    background: -ms-linear-gradient(bottom, #00008b 5%, rgba(0, 0, 255, 0) 100%);
+    background: linear-gradient(to top, #00008b 5%, rgba(0, 0, 255, 0) 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='rgba(0, 0, 255, 0)', endColorstr='darkblue', GradientType=0)
+}
+.sc-panel {
+    background-color: rgba(0, 50, 90, .4)!important;
+    margin: 0;
+    width: 100%;
+    height: 100%
+}
+.sc-navbar {
+    background-color: rgba(0, 30, 70, .4)!important
+}
+#logo {
+    height: 50px;
+    padding: 5px
+}
+.navbar-center {
+    text-align: center
+}
+.donate-header {
+    background-color: #E4C29A
+}
+.navbar {
+    height: 50px!important
+}
+#btnInfo {
+    top: 15px;
+    right: 15px;
+    background-color: transparent;
+    color: transparent;
+    border: 0;
+    padding: 0;
+    z-index: 1030
+}
+#btnInfo:active {
+    top: 16px
+}
+#btnInfo>img {
+    width: 20px
+}
+@keyframes shake {
+    from, to {
+        transform: translate3d(0, 0, 0)
+    }
+    45%,
+    5% {
+        transform: translate3d(-.25px, 0, 0)
+    }
+    10%,
+    40% {
+        transform: translate3d(.5px, 0, 0)
+    }
+    15%,
+    25%,
+    35% {
+        transform: translate3d(-1px, 0, 0)
+    }
+    20%,
+    30% {
+        transform: translate3d(1px, 0, 0)
+    }
+}
+@keyframes handRotate {
+    from, to {
+        transform: rotate(0)
+    }
+    45%,
+    5% {
+        transform: rotate(-.5deg)
+    }
+    10%,
+    40% {
+        transform: rotate(1deg)
+    }
+    15%,
+    25%,
+    35% {
+        transform: rotate(-2deg)
+    }
+    20%,
+    30% {
+        transform: rotate(2deg)
+    }
+}
+#donate {
+    right: 0;
+    bottom: 0;
+    z-index: 1030
+}
+#btnDonate>img {
+    animation: shake 3.28s cubic-bezier(.36, .07, .19, .97) both;
+    animation-iteration-count: infinite
+}
+#lHand,
+#rHand {
+    animation: handRotate 3.28s cubic-bezier(.36, .07, .19, .97) both;
+    animation-iteration-count: infinite
+}
+@media (min-width: 992px) {
+    #lHand,
+    #rHand {
+        position: absolute;
+        height: 45px
+    }
+    #donate {
+        width: 240px;
+        height: 200px
+    }
+    #cryingKing {
+        position: absolute;
+        width: 240px;
+        padding: 0 40px
+    }
+    #btnDonate,
+    #btnDonate>img {
+        width: 130px
+    }
+    #btnDonate {
+        position: absolute;
+        top: 115px;
+        left: 50px;
+        background-color: transparent;
+        border: 0;
+        transform: rotate(-15deg)
+    }
+    #btnDonate:hover {
+        transform: rotate(-15deg) scale(1.1)
+    }
+    #btnDonate:active {
+        transform: rotate(-15deg) scale(.9)
+    }
+    #rHand {
+        top: 130px;
+        left: 10px;
+        transform: rotate(-30deg)
+    }
+    #lHand {
+        top: 90px;
+        left: 175px;
+        transform: rotate(-25deg)
+    }
+    #card-canvas {
+        width: 510px;
+        height: 640px;
+    }
+}
+@media (max-width: 991px) {
+    #lHand,
+    #rHand {
+        position: absolute;
+        height: 25px;
+        transform: rotate(-25deg)
+    }
+    #donate {
+        width: 120px;
+        height: 100px
+    }
+    #cryingKing {
+        position: absolute;
+        width: 120px;
+        padding: 0 20px
+    }
+    #btnDonate {
+        position: absolute;
+        top: 55px;
+        left: 22px;
+        background-color: transparent;
+        border: 0;
+        transform: rotate(-12deg)
+    }
+    #btnDonate>img {
+        width: 65px
+    }
+    #btnDonate:hover {
+        transform: rotate(-12deg) scale(1.1)
+    }
+    #btnDonate:active {
+        transform: rotate(-12deg) scale(.9)
+    }
+    #rHand {
+        top: 65px;
+        left: 5px
+    }
+    #lHand {
+        top: 45px;
+        left: 87.5px
+    }
+    #card-canvas {
+        width: calc(100% - 20px);
+        height: auto;
+        margin-top: 50px
+    }
+}
+.donation-image,
+.donation-subtitle,
+.donation-title {
+    left: 10px;
+    position: absolute
+}
+.modal-donation {
+    width: 410px;
+    height: 170px
+}
+.donation-header {
+    height: 44px;
+    background-color: #E4C098;
+    padding: 15px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px
+}
+.donation-title {
+    top: -7px;
+    font-size: 15px;
+    color: #fff
+}
+.donation-subtitle {
+    top: 13px;
+    font-size: 15px;
+    color: #FFC
+}
+.donation-body {
+    height: 99px;
+    background-color: #F2E2CE
+}
+.donation-image {
+    top: 10px;
+    width: 63px;
+    height: 81px;
+    border: 1px solid #000;
+    border-radius: 10px
+}
+.donation-msg {
+    position: absolute;
+    left: 88px;
+    top: 4px;
+    color: #666
+}
+.donation-amount {
+    position: absolute;
+    left: 87px;
+    top: 23px;
+    width: 70%;
+    height: 30px;
+    background-color: #fff;
+    border-radius: 5px;
+    color: #DE9CFF;
+    border: 0;
+    padding-left: 5px
+}
+.donation-button,
+.donation-description {
+    color: #fff
+}
+.donation-href {
+    position: absolute;
+    right: 7px;
+    top: 22px
+}
+.donation-button {
+    width: 96px;
+    height: 26px;
+    background-color: #38E448;
+    border-radius: 5px;
+    border: 0;
+    box-shadow: 0 4px 0 0 #138D26, 0 0 0 1px #000, 0 4px 0 1px #000
+}
+.donation-href:active {
+    top: 26px
+}
+.donation-button:active {
+    box-shadow: 0 0 0 1px #000
+}
+.donation-description {
+    position: absolute;
+    left: 88px;
+    top: 64px
+}
+.donation-footer {
+    height: 27px;
+    background-color: #E4C098;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px
+}
+.donation-time {
+    position: absolute;
+    left: 7px;
+    bottom: 0;
+    font-size: 12px;
+    color: #676766
+}
+@media (max-width: 767px) {
+    .mobile-center {
+        width: 100%!important;
+        text-align: center!important
+    }
+    .modal-donation {
+        width: calc(100% - 15px)
+    }
+}
+@media (min-width: 768px) {
+    .tab-content {
+        height: 270px;
+        min-height: 270px;
+        max-height: 270px;
+        overflow-y: auto
+    }
+}
+.navbar-text {
+    margin-top: 10px!important;
+    font-size: 10px!important
+}
+.contact {
+    margin-top: 5px;
+    margin-right: 10px;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    border-radius: 15px;
+    border: 1px solid #fff
+}
+.contact:hover {
+    transform: scale(1.1)
+}
+.contact:active {
+    transform: scale(.9)
+}
+#imgContainer img {
+    max-width: 100%
+}
+#imgContainer {
+    max-height: calc(100vh - 230px)
+}
+.sc-save-btns {
+    width: 100%;
+    margin: 20px 0
+}
+.modal-full {
+    width: 100%!important
+}
+tbody>tr:hover {
+    background-color: rgba(255, 255, 255, .4)
+}
+@keyframes rainbow {
+    0% {
+        color: red
+    }
+    14.3% {
+        color: orange
+    }
+    28.6% {
+        color: #ff0
+    }
+    42.9% {
+        color: green
+    }
+    57.2% {
+        color: #00f
+    }
+    71.5% {
+        color: indigo
+    }
+    85.8% {
+        color: violet
+    }
+    100% {
+        color: red
+    }
+}
+.rainbow {
+    animation: rainbow 14s ease-out;
+    animation-iteration-count: infinite
+}
+.tab-content {
+    margin-top: 20px
+}
+.bubble {
+    position: fixed;
+    z-index: 1031;
+    background-color: #fff;
+    border: 3px solid gray;
+    border-radius: 10px;
+    padding: 10px;
+    transform: scale(0)
+}
+.qtip-content {
+    text-align: center!important
+}
+.chitikaAdContainer {
+    padding-bottom: 30px
+}
+#cmbCountries {
+    top: 15px;
+    right: 50px;
+    z-index: 1030;
+	width: 50px;
+}
+.sc-btn-impexp {
+    width: 50px;
+    height: 45px;
+    margin: 15px;
+}

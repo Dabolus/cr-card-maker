@@ -1,0 +1,549 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="author" content="Giorgio Garasto">
+		<meta name="description" content="Welcome to Clash Royale Card Maker! With this simple online tool you will be able to create your own custom Clash Royale cards!">
+		<meta name="copyright" content="Giorgio Garasto">
+		<meta name="keywords" content="clash royale card maker supercell generator online free">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>Clash Royale Card Maker</title>
+
+
+		<!-- Favicon -->
+			<!-- Allows the website to be pinned as a mobile web app -->
+			<meta name="mobile-web-app-capable" content="yes">
+			<!-- For iOS - Web Clip -->
+			<meta name="apple-mobile-web-app-title" content="Clash Royale Card Maker">
+
+			<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+			<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+			<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+			<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+			<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+			<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+			<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+
+			<meta name="theme-color" content="#001E46">
+			<link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+			<link rel="manifest" href="/manifest.json">
+			<!-- For Windows 8 and 10 -->
+			<meta name="application-name" content="Clash Royale Card Maker">
+			<meta name="msapplication-TileColor" content="#1765A4">
+			<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+			<!-- For Desktop browsers -->
+
+			<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+			<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+			<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+			<link rel="shortcut icon" href="/favicon.ico">
+		<!-- /Favicon -->
+
+		<!-- CSS -->
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+		<link href="https://cdn.jsdelivr.net/sweetalert2/5.3.5/sweetalert2.min.css" rel="stylesheet" type="text/css">
+
+		<link href="css/msdropdown/dd.css" rel="stylesheet" type="text/css">
+		<link href="css/fonts.css" rel="stylesheet" type="text/css">
+		<link href="css/style.css" rel="stylesheet" type="text/css">
+		<link href="css/cropper.min.css" rel="stylesheet" type="text/css">
+		<link href="css/jquery-ui.min.css" rel="stylesheet" type="text/css">
+		<link href="http://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.css" rel="stylesheet" type="text/css">
+
+		<!-- FontAwesome -->
+		<script src="https://use.fontawesome.com/1770f1ec9d.js"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top sc-navbar navbar-center">
+			<div class="container">
+				<img id="logo" src="img/logo.png" alt="Clash Royale Card Maker" title="Clash Royale Card Maker" />
+			</div>
+		</nav>
+		<div id="options" class="col-md-6" style="padding-bottom: 70px">
+			<div class="row">
+				<div class="col-sm-offset-4 col-sm-8 mobile-center">
+					<script type="text/javascript">
+						( function() {
+							if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
+							var unit = {"calltype":"async[2]","publisher":"Dabolus","width":320,"height":50,"sid":"Chitika Default"};
+							var placement_id = window.CHITIKA.units.length;
+							window.CHITIKA.units.push(unit);
+							document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
+						}());
+					</script>
+					<script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
+				</div>
+			</div>
+			<form class="form-horizontal center-block vertical-center">
+				<div class="form-group">
+					<label class="control-label white black-3d-border col-sm-offset-2 col-sm-2" for="cmbLanguage" id="ctlLanguage">Language:</label>
+					<div class="col-sm-6"> 
+						<select class="form-control" id="cmbLanguage">
+							<option value="en">English</option>
+							<option value="fr">Français</option>
+							<option value="de">Deutsch</option>
+							<option value="es">Español</option>
+							<option value="it">Italiano</option>
+							<option value="ja">日本語</option>
+							<option value="pt">Português</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label white black-3d-border col-sm-offset-2 col-sm-2" for="lblName" id="ctlName">Name:</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="lblName" placeholder="Enter name" autofocus>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label white black-3d-border col-sm-offset-2 col-sm-2" for="cmbRarity" id="ctlRarity">Rarity:</label>
+					<div class="col-sm-6"> 
+						<select class="form-control" id="cmbRarity">
+							<option value="common" selected>Common</option>
+							<option value="rare">Rare</option>
+							<option value="epic">Epic</option>
+							<option value="legendary">Legendary</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label white black-3d-border col-sm-offset-2 col-sm-2" for="cmbLevel" id="ctlLevel">Level:</label>
+					<div class="col-sm-6"> 
+						<select class="form-control" id="cmbLevel">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label white black-3d-border col-sm-offset-2 col-sm-2" for="cmbType" id="ctlType">Type:</label>
+					<div class="col-sm-6"> 
+						<select class="form-control" id="cmbType">
+							<option value="troop">Troop</option>
+							<option value="building">Building</option>
+							<option value="spell">Spell</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label white black-3d-border col-sm-offset-2 col-sm-2" for="cmbElixirCost" id="ctlElixirCost">Elixir cost:</label>
+					<div class="col-sm-6"> 
+						<select class="form-control" id="cmbElixirCost">
+							<option value="?">?</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label white black-3d-border col-sm-offset-2 col-sm-2" for="txtDescription" id="ctlDescription">Description:</label>
+					<div class="col-sm-6"> 
+						<textarea class="form-control" id="txtDescription" rows="4" cols="50" placeholder="Enter description..."></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label white black-3d-border col-sm-offset-2 col-sm-2" for="fcImage" id="ctlImage">Image:</label>
+
+					<div class="col-lg-6 col-sm-6 col-12">
+						<div class="input-group">
+							<label class="input-group-btn">
+								<span class="btn btn-info white black-3d-border">
+									&hellip; <input type="file" style="display: none;" id="fcImage" accept="image/*">
+								</span>
+								</label>
+							<p class="form-control" id="filename"></p>
+						</div>
+						<span id="ctlImageDesc" class="help-block white">
+							Select an image that represents your card.
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label white black-3d-border col-sm-offset-2 col-sm-2" for="tblProperties" id="ctlProperties">Properties:</label>
+					<table class="table white black-3d-border col-sm-offset-4 col-sm-6" id="tblProperties">
+						<thead>
+							<tr>
+								<th class="col-xs-6" id="ctlThName">Name</th>
+								<th class="col-xs-6" id="ctlThValue">Value</th>
+								<th class="col-xs-2" id="ctlThExtras">Extras</th>
+								<th class="col-xs-1" id="ctlThIcon">Icon</th>
+								<th class="col-xs-1"></th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div class="form-group">
+					<button type="button" id="btnAddCardProperty" class="col-sm-offset-7 col-sm-3 col-xs-offset-1 col-xs-10 sc-btn sc-btn-yellow" data-toggle="modal" data-target="#mdlAddProperty">Add card property</button>
+				</div>
+			</form>
+			<div>
+				<button type="button" id="btnSave" class="col-md-1 sc-btn sc-btn-yellow sc-btn-impexp"><i class="fa fa-download fa-lg"></i></button>
+				<label for="fcCard" class="col-md-offset-1 col-md-1 sc-btn sc-btn-yellow text-center sc-btn-impexp">
+					<i class="fa fa-upload fa-lg"></i>
+					<input type="file" style="display: none;" id="fcCard" accept=".card">
+				</label>
+			</div>
+		</div>
+		<div class="col-md-6" style="padding-bottom: 70px;">
+			<div class="row">
+				<div class="center-block text-center">
+					<script type="text/javascript">
+					( function() {
+						if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
+							var unit = {"calltype":"async[2]","publisher":"Dabolus","width":320,"height":50,"sid":"Chitika Default"};
+							var placement_id = window.CHITIKA.units.length;
+							window.CHITIKA.units.push(unit);
+							document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
+							}());
+					</script>
+					<script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
+				</div>
+			</div>
+
+			<div class="row">
+				<canvas id="card-canvas" class="center-block" width="1432" height="1794">
+					Your browser does not support HTML5 canvas.
+				</canvas>
+			</div>
+			<div class="row">
+				<div class="center-block text-center">
+					<button type="button" id="btnDownload" class="sc-btn sc-btn-yellow sc-btn-save">Save</button>
+					<div id="btnDownloadTltp" class="hidden">
+						<button type="button" id="btnSaveSD" class="sc-btn sc-btn-yellow sc-btn-save">SD</button>
+						<button type="button" id="btnSaveHD" class="sc-btn sc-btn-yellow sc-btn-save">HD</button>
+						<button type="button" id="btnSaveFQ" class="sc-btn sc-btn-yellow sc-btn-save">Full quality</button>
+					</div>
+<!--					<button type="button" id="btnUpload" class="sc-btn sc-btn-yellow sc-btn-save">Upload to imgur</button>-->
+				</div>
+			</div>
+			<div class="row">
+				<div class="center-block text-center">
+					<script type="text/javascript">
+						( function() {
+							if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
+							var unit = {"calltype":"async[2]","publisher":"Dabolus","width":320,"height":50,"sid":"Chitika Default"};
+							var placement_id = window.CHITIKA.units.length;
+							window.CHITIKA.units.push(unit);
+							document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
+						}());
+					</script>
+					<script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
+				</div>
+			</div>
+		</div>
+
+		<nav class="navbar navbar-default navbar-fixed-bottom sc-navbar">
+			<div class="container">
+				<p class="navbar-text navbar-left white black-3d-border">Contact me:<br />
+					<a href="https://telegram.me/Dabolus" target="DabolusTelegram"><img src="img/contact/telegram.png" class="contact" alt="Telegram" title="Telegram" /></a>
+					<a href="https://fb.me/Dabolus" target="DabolusFacebook"><img src="img/contact/facebook.png" class="contact" alt="Facebook" title="Facebook" /></a>
+					<a href="mailto:dabolus+CRCM@gmail.com" target="DabolusMail"><img src="img/contact/gmail.png" class="contact" alt="Mail" title="Mail" /></a>
+					<a href="https://twitter.com/Dabolus" target="DabolusTwitter"><img src="img/contact/twitter.png" class="contact" alt="Twitter" title="Twitter" /></a>
+					<a href="https://forum.supercell.com/member.php/1791292-Dabolus" target="DabolusForum"><img src="img/contact/sprclforum.png" class="contact" alt="Supercell Forum" title="Supercell Forum" /></a>
+				</p>
+			</div>
+		</nav>
+
+		<select id="cmbCountries">
+			<option value="en" data-image="img/flags/en.png" data-title="English" selected>EN</option>
+<!--			<option value="fr" data-image="img/flags/fr.png" data-title="Français">FR</option>
+			<option value="de" data-image="img/flags/de.png" data-title="Deutsch">DE</option>
+			<option value="es" data-image="img/flags/es.png" data-title="Español">ES</option>-->
+			<option value="it" data-image="img/flags/it.png" data-title="Italiano">IT</option>
+<!--			<option value="ja" data-image="img/flags/jp.png" data-title="日本語">JP</option>-->
+			<option value="pt" data-image="img/flags/pt.png" data-title="Português">PT</option>
+		</select>
+		<button type="button" id="btnInfo" data-toggle="modal" data-target="#mdlInfo"><img src="img/info.png" alt="i" title="Informations" /></button>
+
+		<div id="mdlInfo" class="modal fade" role="dialog">
+			<div class="modal-dialog modal-md">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Informations</h4>
+					</div>
+					<div class="modal-body info-body">
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active"><a href="#about" aria-controls="about" role="tab" data-toggle="tab">About the website</a></li>
+							<li role="presentation"><a href="#changelog" aria-controls="changelog" role="tab" data-toggle="tab">Changelog</a></li>
+							<li role="presentation"><a href="#credits" aria-controls="credits" role="tab" data-toggle="tab">Credits</a></li>
+							<li role="presentation"><a href="#specialthanks" aria-controls="specialthanks" role="tab" data-toggle="tab">Special thanks</a></li>
+						</ul>
+
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<div role="tabpanel" class="tab-pane active" id="about">
+								<p>Hi Chief! Welcome to Clash Royale Card Maker!</p>
+								<p>Clash Royale is a freemium mobile strategy video game developed and published by Supercell. The game combines elements from collectible card games, tower defense, and multiplayer online battle arena. The game was released globally on March 2, 2016.</p>
+								<p>Thanks to this simple web tool, you can create your own Clash Royale card! You can use it to give a better idea when you create a new card for the forum or even just for fun!</p>
+								<p>This web tool was created by Giorgio Garasto, a 19-yearold student who loves making websites and also loves Clash Royale. Anyway, since he is a student, he works hard to keep this web tool up and working. So, if you like its work, please consider donating using the button on the lower-right side of the page.</p>
+								<p>Thank you!</p>
+							</div>
+							<div role="tabpanel" class="tab-pane" id="changelog">
+								<p>
+									1.1 (2016-11-24)<br />
+									<small>
+										Added Portuguese translation (thanks to <a href="http://supr.cl/RoyaleDicas" target="CRD">Clash Royale Dicas</a>!).<br />
+										Started translating the whole website in the various languages.<br />
+										Fixed the undefined type of troop problem that some users had.<br />
+										Lots of bugfixes and improvements as suggested by you!
+									</small>
+								</p>
+								<p>
+									1.0 (2016-11-07) <span class="rainbow black-3d-border">Finally out of the beta!</span><br />
+									<small>
+										The created cards are now in HD.<br />
+										You can now choose various options to save your card or to automatically upload it to imgur!<br />
+										Resize and crop the card image as you wish!<br />
+										Drag and drop the card properties to change their order.<br />
+										Added Japanese translation (thanks to <a href="https://forum.supercell.com/member.php/1811075-WCF20" target="WCF20Profile">WCF20</a> for the translation).<br />
+										Finally fixed the problems with Safari.<br />
+										Many other fixes and enhancements.
+									</small>
+								</p>
+								<p>
+									0.41b (2016-10-26)<br />
+									<small>
+										Fixed compatibility issues with older browsers.<br />
+										Added some missing icons.
+									</small>
+								</p>
+								<p>
+									0.4b (2016-10-25)<br />
+									<small>Added an awesome info menu.</small>
+								</p>
+								<p>
+									0.3b (2016-10-24)<br />
+									<small>
+										Choose if you want the property icon background and the info button.
+										Restyled the donate process.<br />
+									</small>
+								</p>
+								<p>
+									0.2b (2016-10-23)<br />
+									<small>
+										Added the possibility to switch the card language.<br />
+										Now it is possible to export and import the cards in JSON format.
+									</small>
+								</p>
+								<p>
+									0.11b (2016-10-21)<br />
+									<small>Icons hotfix.</small>
+								</p>
+								<p>
+									0.1b (2016-10-21)<br />
+									<small>Initial release.</small>
+								</p>
+							</div>
+							<div role="tabpanel" class="tab-pane" id="credits">
+								<p>First of all, a lot of credits go to Supercell for its incredible support to its fan community. I couldn't do anything without their Fan Kit and their forum.</p>
+								<p>Then, I'd like to thank my parents for supporting me in this little project and for making the first donation!<br />Thanks a lot daddy.</p>
+								<p>A lot of thanks also go to <a href="https://forum.supercell.com/member.php/1811075-WCF20" target="WCF20Profile">WCF20</a> and to <a href="http://supr.cl/RoyaleDicas" target="CRD">Clash Royale Dicas</a> for translating the website respectively in Japanese and in Portoguese.</p>
+								<p>Another person that helped me A LOT is Beez Nguyên. He started giving me suggestions to improve the website from the very beginning and he never stopped! The website is so stable and usable also thanks to him.</p>
+								<p>Last but not least, I'd like to thank <a href="https://forum.supercell.com/member.php/1708815-Londync" target="LondyncProfile">Londync</a> for <a href="https://forum.supercell.com/showthread.php/1299367-Clash-Royale-card-maker%21%21" target="LondyncPost">giving me the idea</a> and to everyone on the forum who supported me a lot!</p>
+								<p>If you encounter some problems or have an idea/question/suggestion, please, contact me on the <a href="https://forum.supercell.com/showthread.php/1306442-Clash-Royale-Card-Maker" target="OfficialPost">official post on the forum</a>.</p>
+							</div>
+							<div role="tabpanel" class="tab-pane" id="specialthanks">
+								<p>I want to give a special thank to all those people who supported me with a donation ❤</p>
+								<ul>
+									<li>Luigi</li>
+									<li>Vince</li>
+									<li>Tony</li>
+									<li>Henry</li>
+									<li>Jacob</li>
+									<li>Mohamad</li>
+									<li>Adam</li>
+									<li>Jayden</li>
+								</ul>
+								<p><i>Surnames are excluded for privacy reasons.</i></p>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="donate">
+			<img src="img/donate/CryingKing.png" id="cryingKing" alt="" />
+			<button type="button" id="btnDonate" data-toggle="modal" data-target="#mdlDonate">
+				<img src="img/donate/DonateButton.png" alt="Donate" title="Donate" />
+			</button>
+			<img src="img/donate/RHand.png" id="rHand" alt="" />
+			<img src="img/donate/LHand.png" id="lHand" alt="" />
+		</div>
+
+		<div id="mdlDonate" class="modal fade" role="dialog">
+			<div class="modal-dialog modal-donation">
+				<div class="modal-content">
+					<div class="donation-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="donation-title black-3d-border">Dabolus</h4>
+						<h4 class="donation-subtitle black-3d-border">Requesting Donation!</h4>
+					</div>
+					<div class="modal-body donation-body">
+						<img src="img/currencies/usd.jpg" alt="USD" title="USD" class="donation-image" />
+						<p class="donation-msg">You are donating:</p>
+						<input type="number" id="nbrDonationAmount" class="donation-amount black-3d-border" min="0.00" value="5.00" step="0.05">
+						<a id="aDonate" href="https://www.paypal.me/GiorgioGarasto/5usd" class="donation-href" target="DabolusDonation">
+							<button type="button" class="donation-button black-3d-border">Donate</button>
+						</a>
+						<p class="donation-description black-3d-border">Insert donation amount up here!</p>
+					</div>
+					<div class="donation-footer">
+						<p class="donation-time">right now</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Image editor -->
+		<div id="mdlImgEditor" class="modal fade" role="dialog">
+			<div class="modal-dialog modal-full" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Crop the image</h4>
+					</div>
+					<div class="modal-body">
+						<div id="imgContainer"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="cancelImg" class="sc-btn sc-btn-red sc-btn-modal" data-dismiss="modal">Cancel</button>
+						<button type="button" id="noCropImg" class="sc-btn sc-btn-yellow sc-btn-modal" data-dismiss="modal">Don't crop</button>
+						<button type="button" id="cropImg" class="sc-btn sc-btn-yellow sc-btn-modal" data-dismiss="modal">Crop</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="mdlAddProperty" class="modal fade" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title" id="ctlAddPropertyTitle">Add card property</h4>
+					</div>
+					<div class="modal-body">
+						<form id="frmAddProperty" class="form-horizontal">
+							<div class="form-group">
+								<label class="control-label col-sm-3" for="lblPropertyName" id="ctlPropertyName">Name:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="lblPropertyName" name="lblPropertyName" maxlength="25" placeholder="Enter property name">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3" for="lblPropertyValue" id="ctlPropertyValue">Value:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="lblPropertyValue" name="lblPropertyValue" maxlength="25" placeholder="Enter property value">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3" for="cmbPropertyIcon" id="ctlPropertyIcon">Icon:</label>
+								<div class="col-sm-9">
+									<select style="width:100%;" class="form-control" name="cmbPropertyIcon" id="cmbPropertyIcon">
+										<option value="img/icons/hp.png" data-image="img/icons/hp.png" selected>Hitpoints</option>
+										<option value="img/icons/shield_hp.png" data-image="img/icons/shield_hp.png">Shield Hitpoints</option>
+										<option value="img/icons/dps.png" data-image="img/icons/dps.png">DPS</option>
+										<option value="img/icons/damage.png" data-image="img/icons/damage.png">Damage</option>
+										<option value="img/icons/area_damage.png" data-image="img/icons/area_damage.png">Area Damage</option>
+										<option value="img/icons/tower_damage.png" data-image="img/icons/tower_damage.png">Tower Damage</option>
+										<option value="img/icons/death_damage.png" data-image="img/icons/death_damage.png">Death Damage</option>
+										<option value="img/icons/hit_speed.png" data-image="img/icons/hit_speed.png">Hit Speed</option>
+										<option value="img/icons/target.png" data-image="img/icons/target.png">Targets</option>
+										<option value="img/icons/speed.png" data-image="img/icons/speed.png">Speed</option>
+										<option value="img/icons/range.png" data-image="img/icons/range.png">Range</option>
+										<option value="img/icons/lifetime.png" data-image="img/icons/lifetime.png">Lifetime</option>
+										<option value="img/icons/deploy_time.png" data-image="img/icons/deploy_time.png">Deploy Time</option>
+										<option value="img/icons/stun_duration.png" data-image="img/icons/stun_duration.png">Stun Duration</option>
+										<option value="img/icons/radius.png" data-image="img/icons/radius.png">Radius</option>
+										<option value="img/icons/troop.png" data-image="img/icons/troop.png">Troop</option>
+										<option value="img/icons/count.png" data-image="img/icons/count.png">Count</option>
+										<option value="img/icons/boost.png" data-image="img/icons/boost.png">Boost</option>
+										<option value="img/icons/rage_fx.png" data-image="img/icons/rage_fx.png">Rage Effect</option>
+										<option value="img/icons/common_cards.png" data-image="img/icons/common_cards.png">Common Cards</option>
+										<option value="img/icons/rare_cards.png" data-image="img/icons/rare_cards.png">Rare Cards</option>
+										<option value="img/icons/epic_cards.png" data-image="img/icons/epic_cards.png">Epic Cards</option>
+										<option value="img/icons/legendary_cards.png" data-image="img/icons/legendary_cards.png">Legendary Cards</option>
+										<option value="img/icons/trophy.png" data-image="img/icons/trophy.png">Trophy</option>
+										<option value="img/icons/gold.png" data-image="img/icons/gold.png">Gold</option>
+										<option value="img/icons/elixir.png" data-image="img/icons/elixir.png">Elixir</option>
+										<option value="img/icons/dark_elixir.png" data-image="img/icons/dark_elixir.png">Dark Elixir</option>
+										<option value="img/icons/gem.png" data-image="img/icons/gem.png">Gems</option>
+										<option value="img/icons/transport.png" data-image="img/icons/transport.png">Transport</option>
+										<option value="img/icons/upgrade.png" data-image="img/icons/upgrade.png">Upgrade</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3" for="cbxExtras" id="ctlExtras">Extra:</label>
+								<div class="col-sm-9" name="cbxExtras">
+									<div class="checkbox">
+										<label id="cbxIconBgLbl"><input type="checkbox" name="cbxIconBg" checked>Add icon background</label>
+									</div>
+									<div class="checkbox">
+										<label id="cbxInfoBtnLbl"><input type="checkbox" name="cbxInfoBtn">Add <img src="img/info.png" alt="info" title="info" style="width: 20px;" /> button</label>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="btnCancelProperty" class="sc-btn sc-btn-red sc-btn-modal" data-dismiss="modal">Cancel</button>
+						<button type="button" id="btnAddProperty" class="sc-btn sc-btn-yellow sc-btn-modal">Add</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- JS -->
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+		<script src="https://cdn.jsdelivr.net/sweetalert2/5.3.5/sweetalert2.min.js" type="text/javascript"></script>
+
+		<script src="js/jquery.dd.min.js" type="text/javascript"></script>
+		<script src="js/canvas.min.js" type="text/javascript"></script>
+		<script src="js/Blob.js" type="text/javascript"></script>
+		<script src="js/canvas-toBlob.js" type="text/javascript"></script>
+		<script src="js/FileSaver.min.js" type="text/javascript"></script>
+		<script src="js/cropper.min.js" type="text/javascript"></script>
+		<script src="js/jquery-ui.min.js" type="text/javascript"></script>
+		<script src="http://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.js" type="text/javascript"></script>
+
+		<script src="js/main.js" type="text/javascript"></script>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-86330876-1', 'auto');
+			ga('send', 'pageview');
+		</script>
+	</body>
+</html>
