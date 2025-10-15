@@ -1,4 +1,4 @@
-import standard2Template from '../../templates/standard-2.json' with { type: 'json' };
+import standardTemplate from '../../templates/standard.json' with { type: 'json' };
 import placeholderImageUrl from '../../images/placeholder.svg';
 import { drawForm } from '../renderers/form';
 import { t } from '../i18n';
@@ -7,7 +7,7 @@ import type { RendererBaseOptions } from '../renderers/types';
 import type { $Schema as TemplateSchema } from '../../templates/generated/types';
 
 const defaultParams: RendererBaseOptions = {
-  template: standard2Template as unknown as TemplateSchema,
+  template: standardTemplate as unknown as TemplateSchema,
   language: 'en',
   cardName: '',
   rarity: 'common',

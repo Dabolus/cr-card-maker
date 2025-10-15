@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "type": "object",
   "definitions": {
     "Rarity": {
@@ -82,41 +82,8 @@
           "additionalProperties": false
         }
       ]
-    }
-  },
-  "properties": {
-    "$schema": {
-      "type": "string"
     },
-    "name": {
-      "type": "string"
-    },
-    "width": {
-      "type": "integer"
-    },
-    "height": {
-      "type": "integer"
-    },
-    "background": {
-      "type": "string"
-    },
-    "supported-rarities": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Rarity"
-      },
-      "minItems": 1,
-      "uniqueItems": true
-    },
-    "supported-types": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Type"
-      },
-      "minItems": 1,
-      "uniqueItems": true
-    },
-    "fields": {
+    "Fields": {
       "type": "object",
       "properties": {
         "card-name": {
@@ -518,16 +485,60 @@
           "additionalProperties": false
         }
       },
-      "required": [
-        "card-name",
-        "image",
-        "elixir-cost",
-        "rarity-label",
-        "rarity-value",
-        "type-label",
-        "type-value"
-      ],
       "additionalProperties": false
+    }
+  },
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "width": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
+    },
+    "background": {
+      "type": "string"
+    },
+    "supported-rarities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Rarity"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "supported-types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Type"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "fields": {
+      "$ref": "#/definitions/Fields"
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "x": { "type": "integer" },
+          "y": { "type": "integer" },
+          "width": { "type": "integer" },
+          "height": { "type": "integer" },
+          "background": { "type": "string" },
+          "fields": {
+            "$ref": "#/definitions/Fields"
+          }
+        },
+        "required": ["x", "y", "width", "height", "background", "fields"]
+      }
     },
     "i18n": {
       "type": "object",
@@ -581,6 +592,6 @@
       "additionalProperties": false
     }
   },
-  "required": ["name", "width", "height", "background", "fields"],
+  "required": ["name", "width", "height"],
   "additionalProperties": false
 }

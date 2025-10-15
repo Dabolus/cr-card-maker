@@ -1,9 +1,8 @@
 {
   "$schema": "./$schema.json",
-  "name": "Standard - Page 3",
+  "name": "Standard",
   "width": 989,
   "height": 1240,
-  "background": "/cards-assets/backgrounds/standard-3.png",
   "supported-rarities": ["common", "rare", "epic", "legendary"],
   "supported-types": ["troop", "building", "spell"],
   "fields": {
@@ -120,18 +119,73 @@
         "legendary": ["#9f6", "#fff", "#f9f", "#ff9", "#66fffc"],
         "champion": ["#f9dd50", "#fdfadf"]
       }
-    },
-    "description": {
-      "x": 495,
-      "y": 532,
-      "maxWidth": 760,
-      "fontSize": 40,
-      "lineHeight": 44,
-      "maxLines": 9,
-      "textBaseline": "middle",
-      "color": "#4a566b"
     }
   },
+  "pages": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 989,
+      "height": 1240,
+      "background": "/cards-assets/backgrounds/standard-stats.png",
+      "fields": {
+        "stats": {
+          "x": 58,
+          "y": 486,
+          "gapX": 19,
+          "gapY": 6,
+          "maxItems": 14,
+          "itemsPerRow": 2,
+          "items": {
+            "width": 425,
+            "height": 85,
+            "oddBackground": "/cards-assets/backgrounds/standard-stat-bg.svg",
+            "evenBackground": "/cards-assets/backgrounds/standard-stat-bg.svg",
+            "icon": {
+              "dx": 8,
+              "dy": 4,
+              "width": 73,
+              "height": 73,
+              "backgroundColor": "#1d232e"
+            },
+            "name": {
+              "dx": 90,
+              "dy": 12,
+              "fontSize": 33,
+              "maxWidth": 330,
+              "color": "#384457"
+            },
+            "value": {
+              "dx": 90,
+              "dy": 51,
+              "fontSize": 33,
+              "maxWidth": 330,
+              "color": "#fff"
+            }
+          }
+        }
+      }
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "width": 989,
+      "height": 1240,
+      "background": "/cards-assets/backgrounds/standard-description.png",
+      "fields": {
+        "description": {
+          "x": 495,
+          "y": 532,
+          "maxWidth": 760,
+          "fontSize": 40,
+          "lineHeight": 44,
+          "maxLines": 9,
+          "textBaseline": "middle",
+          "color": "#4a566b"
+        }
+      }
+    }
+  ],
   "i18n": {
     "en": {
       "name": "{{cardName}}",
