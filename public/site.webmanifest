@@ -1,22 +1,79 @@
 {
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+  "id": "/",
   "name": "Clash Royale Card Maker",
   "short_name": "CRCM",
-  "start_url": ".",
-  "description": "Create your own custom Clash Royale cards!",
+  "description": "The Clash Royale Card Maker is a simple tool that allows you to create your own custom Clash Royale cards!",
   "author": "Giorgio Garasto (Dabolus)",
-  "icons": [
+  "categories": ["entertainment", "games", "utilities"],
+  "screenshots": [
     {
-      "src": "icons/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "./screenshots/phone-1.jpg",
+      "sizes": "1600x3000",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Create your own Clash Royale cards!"
     },
     {
-      "src": "icons/android-chrome-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "./screenshots/phone-2.jpg",
+      "sizes": "1600x3000",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Easily Save, Download, or Share your creations"
+    },
+    {
+      "src": "./screenshots/phone-3.jpg",
+      "sizes": "1600x3000",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "View your saved creations whenever you want"
     }
   ],
+  "icons": [
+    {
+      "src": "./icons/any-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/any-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "launch_handler": {
+    "client_mode": ["navigate-new", "auto"]
+  },
   "theme_color": "#344253",
   "background_color": "#344253",
-  "display": "standalone"
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["tabbed"],
+  "tab_strip": {
+    "new_tab_button": {
+      "url": "/",
+      "icons": [
+        {
+          "src": "./icons/plus.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  }
 }
