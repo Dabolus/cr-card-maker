@@ -71,6 +71,7 @@ const handleSave = async (params: RendererBaseOptions, templateId: string) => {
     createdAt: new Date(),
     updatedAt: new Date(),
   });
+  alert(t('card-saved'));
 };
 
 const handleDownload = async (params: RendererBaseOptions) => {
