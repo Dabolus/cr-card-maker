@@ -1,5 +1,10 @@
 import { loadImage } from '../utils';
-import type { Rarity, Type } from '../../templates/generated/types';
+import type {
+  $Schema as TemplateSchema,
+  Rarity,
+  Type,
+  Fields,
+} from '../../templates/generated/types';
 
 export const shapes = [
   'normal',
@@ -265,3 +270,11 @@ export const getIconsImages = async (
       ]),
     ),
   );
+
+export const getTemplateField = <T extends keyof Fields>(
+  template: TemplateSchema,
+  fieldName: T,
+  page = 1,
+): Fields[T] | undefined =>
+  template?.fields?.[fieldName] ??
+  template?.pages?.[page - 1]?.fields?.[fieldName];

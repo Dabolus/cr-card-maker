@@ -1,8 +1,14 @@
 import { t } from '../../i18n';
 import { fitFontSize, getCanvasColor } from './utils';
+import { getTemplateField } from '../shared';
 import type { DrawCanvasPartParams } from './types';
 
-export const drawName = ({ options, ctx }: DrawCanvasPartParams) => {
+export const drawName = ({ options, ctx, page }: DrawCanvasPartParams) => {
+  const nameField = getTemplateField(options.template, 'card-name', page);
+  if (!nameField) {
+    return;
+  }
+
   const i18n =
     options.template.i18n?.[
       options.language as keyof typeof options.template.i18n
@@ -11,31 +17,20 @@ export const drawName = ({ options, ctx }: DrawCanvasPartParams) => {
   ctx.save();
   ctx.textAlign = 'center';
   ctx.textBaseline = 'hanging';
-  ctx.fillStyle = getCanvasColor(
-    ctx,
-    options.template.fields['card-name'].color,
-  );
+  ctx.fillStyle = getCanvasColor(ctx, nameField.color);
   ctx.strokeStyle = 'black';
   ctx.shadowColor = 'black';
-  ctx.lineWidth = options.template.fields['card-name'].fontSize * 0.1;
-  ctx.shadowOffsetY = options.template.fields['card-name'].fontSize * 0.07;
+  ctx.lineWidth = nameField.fontSize * 0.1;
+  ctx.shadowOffsetY = nameField.fontSize * 0.07;
   const localizedCardName = t('name', options, i18n);
   fitFontSize(
     ctx,
     localizedCardName,
     'Supercell Magic',
-    options.template.fields['card-name'].maxWidth,
-    options.template.fields['card-name'].fontSize,
+    nameField.maxWidth,
+    nameField.fontSize,
   );
-  ctx.strokeText(
-    localizedCardName,
-    options.template.fields['card-name'].x,
-    options.template.fields['card-name'].y,
-  );
-  ctx.fillText(
-    localizedCardName,
-    options.template.fields['card-name'].x,
-    options.template.fields['card-name'].y,
-  );
+  ctx.strokeText(localizedCardName, nameField.x, nameField.y);
+  ctx.fillText(localizedCardName, nameField.x, nameField.y);
   ctx.restore();
 };

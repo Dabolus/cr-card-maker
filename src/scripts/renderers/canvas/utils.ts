@@ -1,6 +1,6 @@
-import type { Color } from '../../../templates/generated/types';
 import { wrappingSlice } from '../../utils';
 import { Rarity } from '../types';
+import type { Color } from '../../../templates/generated/types';
 
 export const computeTextLines = (
   ctx: CanvasRenderingContext2D,

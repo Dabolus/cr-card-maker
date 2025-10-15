@@ -7,12 +7,33 @@ import { drawElixirCost } from './elixir-cost';
 import { drawRarityType } from './rarity-type';
 import { drawDescription } from './description';
 import { drawStats } from './stats';
-import { getIconsImages, getShapeImage, raritiesConfig } from '../shared';
+import {
+  getIconsImages,
+  getShapeImage,
+  getTemplateField,
+  raritiesConfig,
+} from '../shared';
 import type { DrawCanvasOptions } from './types';
 
-export const drawCanvas = async (options: DrawCanvasOptions) => {
-  const rarityBackgroundField = options.template.fields['rarity-background'];
-  const typeBackgroundField = options.template.fields['type-background'];
+export const drawCanvas = async ({
+  page = 1,
+  ...options
+}: DrawCanvasOptions) => {
+  console.log({ page });
+  const rarityBackgroundField = getTemplateField(
+    options.template,
+    'rarity-background',
+    page,
+  );
+  const typeBackgroundField = getTemplateField(
+    options.template,
+    'type-background',
+    page,
+  );
+  const backgroundField =
+    options.template.background ??
+    options.template.pages?.[page - 1]?.background;
+  const statsField = getTemplateField(options.template, 'stats', page);
 
   const [
     loadedImage,
@@ -26,7 +47,7 @@ export const drawCanvas = async (options: DrawCanvasOptions) => {
     loadedStatsOddBgImage,
   ] = await Promise.all([
     loadImage(options.image.src).catch(() => null),
-    loadImage(options.template.background),
+    backgroundField ? loadImage(backgroundField) : null,
     loadImage('/cards-assets/elixir.png'),
     getIconsImages(options.stats?.map((item) => item.icon) ?? []),
     getShapeImage(raritiesConfig[options.rarity].shape),
@@ -36,11 +57,11 @@ export const drawCanvas = async (options: DrawCanvasOptions) => {
     typeBackgroundField
       ? loadImage(typeBackgroundField.url, options.rarity)
       : null,
-    options.template.fields.stats?.items.evenBackground
-      ? loadImage(options.template.fields.stats.items.evenBackground)
+    statsField?.items.evenBackground
+      ? loadImage(statsField.items.evenBackground)
       : null,
-    options.template.fields.stats?.items.oddBackground
-      ? loadImage(options.template.fields.stats.items.oddBackground)
+    statsField?.items.oddBackground
+      ? loadImage(statsField.items.oddBackground)
       : null,
   ]);
 
@@ -48,32 +69,40 @@ export const drawCanvas = async (options: DrawCanvasOptions) => {
   const { ctx } = setupLayout({ options, backgroundImage: loadedBgImage });
 
   // Draw the card name
-  drawName({ options, ctx });
+  drawName({ options, ctx, page });
 
   // Draw the level
-  drawLevel({ options, ctx });
+  drawLevel({ options, ctx, page });
 
   // Draw the image (if possible)
-  drawImage({ options, ctx, image: loadedImage, shapeImage: loadedShapeImage });
+  drawImage({
+    options,
+    ctx,
+    page,
+    image: loadedImage,
+    shapeImage: loadedShapeImage,
+  });
 
   // Draw the elixir cost
-  drawElixirCost({ options, ctx, elixirImage: loadedElixirImage });
+  drawElixirCost({ options, ctx, page, elixirImage: loadedElixirImage });
 
   // Draw rarity and type
   drawRarityType({
     options,
     ctx,
+    page,
     rarityBackgroundImage: loadedRarityBgImage,
     typeBackgroundImage: loadedTypeBgImage,
   });
 
   // Draw the description
-  drawDescription({ options, ctx });
+  drawDescription({ options, ctx, page });
 
   // Draw the stats
   drawStats({
     options,
     ctx,
+    page,
     evenBackgroundImage: loadedStatsEvenBgImage,
     oddBackgroundImage: loadedStatsOddBgImage,
     iconsImages: loadedIconsImages,

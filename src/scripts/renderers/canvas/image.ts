@@ -4,6 +4,7 @@ import {
   shapesConfig,
   frameContainerNominalWidth,
   frameContainerNominalHeight,
+  getTemplateField,
 } from '../shared';
 import type { DrawCanvasPartParams } from './types';
 
@@ -15,19 +16,24 @@ export interface DrawImageParams extends DrawCanvasPartParams {
 export const drawImage = ({
   options,
   ctx,
+  page,
   image,
   shapeImage,
 }: DrawImageParams) => {
+  const imageField = getTemplateField(options.template, 'image', page);
+  if (!imageField) {
+    return;
+  }
+
   ctx.save();
 
   const shapeConfig = shapesConfig[raritiesConfig[options.rarity].shape];
 
-  const containerField = options.template.fields.image;
-  const scaleX = containerField.width / frameContainerNominalWidth;
-  const scaleY = containerField.height / frameContainerNominalHeight;
+  const scaleX = imageField.width / frameContainerNominalWidth;
+  const scaleY = imageField.height / frameContainerNominalHeight;
   const scale = Math.min(scaleX, scaleY);
-  const frameLeft = containerField.x + shapeConfig.frame.offsetX * scale;
-  const frameTop = containerField.y + shapeConfig.frame.offsetY * scale;
+  const frameLeft = imageField.x + shapeConfig.frame.offsetX * scale;
+  const frameTop = imageField.y + shapeConfig.frame.offsetY * scale;
 
   ctx.translate(frameLeft, frameTop);
   ctx.scale(scale, scale);

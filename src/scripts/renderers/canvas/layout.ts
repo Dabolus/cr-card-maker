@@ -2,7 +2,7 @@ import type { DrawCanvasOptions } from './types';
 
 export interface SetupLayoutParams {
   options: DrawCanvasOptions;
-  backgroundImage: HTMLImageElement;
+  backgroundImage: HTMLImageElement | null;
 }
 
 export interface SetupLayoutResult {
@@ -17,6 +17,8 @@ export const setupLayout = ({
   canvas.width = options.template.width;
   canvas.height = options.template.height;
   const ctx = canvas.getContext('2d')!;
-  ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+  if (backgroundImage) {
+    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+  }
   return { ctx };
 };

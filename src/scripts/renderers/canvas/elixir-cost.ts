@@ -1,3 +1,4 @@
+import { getTemplateField } from '../shared';
 import type { DrawCanvasPartParams } from './types';
 
 export interface DrawElixirCostParams extends DrawCanvasPartParams {
@@ -7,32 +8,38 @@ export interface DrawElixirCostParams extends DrawCanvasPartParams {
 export const drawElixirCost = ({
   options,
   ctx,
+  page,
   elixirImage,
 }: DrawElixirCostParams) => {
+  const elixirCostField = getTemplateField(
+    options.template,
+    'elixir-cost',
+    page,
+  );
+  if (!elixirCostField) {
+    return;
+  }
   // Let's draw the elixir drop...
   ctx.save();
-  ctx.translate(
-    options.template.fields['elixir-cost'].x,
-    options.template.fields['elixir-cost'].y,
-  );
+  ctx.translate(elixirCostField.x, elixirCostField.y);
   ctx.drawImage(
     elixirImage,
     0,
     0,
-    options.template.fields['elixir-cost'].width,
-    options.template.fields['elixir-cost'].height,
+    elixirCostField.width,
+    elixirCostField.height,
   );
   // ...and then the elixir cost
-  ctx.font = `${options.template.fields['elixir-cost'].fontSize}px "Supercell Magic"`;
+  ctx.font = `${elixirCostField.fontSize}px "Supercell Magic"`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = '#FFE9FF';
   ctx.strokeStyle = '#760088';
   ctx.shadowColor = '#760088';
-  ctx.lineWidth = options.template.fields['elixir-cost'].fontSize * 0.1;
-  ctx.shadowOffsetY = options.template.fields['elixir-cost'].fontSize * 0.07;
-  const elixirX = options.template.fields['elixir-cost'].width / 2;
-  const elixirY = options.template.fields['elixir-cost'].height / 2;
+  ctx.lineWidth = elixirCostField.fontSize * 0.1;
+  ctx.shadowOffsetY = elixirCostField.fontSize * 0.07;
+  const elixirX = elixirCostField.width / 2;
+  const elixirY = elixirCostField.height / 2;
   ctx.strokeText(options.elixirCost.toString(), elixirX, elixirY);
   ctx.fillText(options.elixirCost.toString(), elixirX, elixirY);
   ctx.restore();

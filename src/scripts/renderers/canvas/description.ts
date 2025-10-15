@@ -1,13 +1,11 @@
 import { computeTextLines, drawMultilineText, getCanvasColor } from './utils';
+import { getTemplateField } from '../shared';
 import type { DrawCanvasPartParams } from './types';
-import type {
-  $Schema as TemplateSchema,
-  TextBaseline,
-} from '../../../templates/generated/types';
+import type { Fields, TextBaseline } from '../../../templates/generated/types';
 
 const computeStartY = (
   textBaseline: TextBaseline,
-  descriptionOptions: NonNullable<TemplateSchema['fields']['description']>,
+  descriptionOptions: NonNullable<Fields['description']>,
   totalHeight: number,
 ) => {
   if (textBaseline === 'middle' || textBaseline === 'bottom') {
@@ -20,8 +18,16 @@ const computeStartY = (
   }
 };
 
-export const drawDescription = ({ options, ctx }: DrawCanvasPartParams) => {
-  const descriptionOptions = options.template.fields.description;
+export const drawDescription = ({
+  options,
+  ctx,
+  page,
+}: DrawCanvasPartParams) => {
+  const descriptionOptions = getTemplateField(
+    options.template,
+    'description',
+    page,
+  );
   if (!descriptionOptions) {
     return;
   }

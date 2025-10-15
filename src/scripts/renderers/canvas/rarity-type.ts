@@ -1,5 +1,6 @@
 import { t } from '../../i18n';
 import { fitFontSize, getCanvasColor } from './utils';
+import { getTemplateField } from '../shared';
 import type { DrawCanvasPartParams } from './types';
 
 export interface DrawRarityTypeParams extends DrawCanvasPartParams {
@@ -10,6 +11,7 @@ export interface DrawRarityTypeParams extends DrawCanvasPartParams {
 export const drawRarityType = ({
   options,
   ctx,
+  page,
   rarityBackgroundImage,
   typeBackgroundImage,
 }: DrawRarityTypeParams) => {
@@ -18,9 +20,14 @@ export const drawRarityType = ({
       options.language as keyof typeof options.template.i18n
     ] ?? {};
 
-  // First of all, draw the rarity background, which changes based on the rarity
   ctx.save();
-  const rarityBackgroundField = options.template.fields['rarity-background'];
+
+  // First of all, draw the rarity and type backgrounds, which might change based on the rarity
+  const rarityBackgroundField = getTemplateField(
+    options.template,
+    'rarity-background',
+    page,
+  );
   if (rarityBackgroundField && rarityBackgroundImage) {
     ctx.drawImage(
       rarityBackgroundImage,
@@ -30,7 +37,12 @@ export const drawRarityType = ({
       rarityBackgroundField.height,
     );
   }
-  const typeBackgroundField = options.template.fields['type-background'];
+
+  const typeBackgroundField = getTemplateField(
+    options.template,
+    'type-background',
+    page,
+  );
   if (typeBackgroundField && typeBackgroundImage) {
     ctx.drawImage(
       typeBackgroundImage,
@@ -43,108 +55,112 @@ export const drawRarityType = ({
   // Ok, now we can draw the text
   ctx.textBaseline = 'hanging';
   // First of all, draw the labels
-  ctx.textAlign = options.template.fields['rarity-label'].textAlign || 'left';
-  ctx.fillStyle = getCanvasColor(
-    ctx,
-    options.template.fields['rarity-label'].color,
-    { rarity: options.rarity },
+  const rarityLabelField = getTemplateField(
+    options.template,
+    'rarity-label',
+    page,
   );
-  fitFontSize(
-    ctx,
-    t('rarity-label', {}, i18n),
-    'Supercell Magic',
-    options.template.fields['rarity-label'].maxWidth,
-    options.template.fields['rarity-label'].fontSize,
-  );
-  ctx.fillText(
-    t('rarity-label', {}, i18n),
-    options.template.fields['rarity-label'].x,
-    options.template.fields['rarity-label'].y,
-  );
-  ctx.textAlign = options.template.fields['type-label'].textAlign || 'left';
-  ctx.fillStyle = getCanvasColor(
-    ctx,
-    options.template.fields['type-label'].color,
-    { rarity: options.rarity },
-  );
-  fitFontSize(
-    ctx,
-    t('type-label', {}, i18n),
-    'Supercell Magic',
-    options.template.fields['type-label'].maxWidth,
-    options.template.fields['type-label'].fontSize,
-  );
-  ctx.fillText(
-    t('type-label', {}, i18n),
-    options.template.fields['type-label'].x,
-    options.template.fields['type-label'].y,
-  );
+  if (rarityLabelField) {
+    ctx.textAlign = rarityLabelField.textAlign || 'left';
+    ctx.fillStyle = getCanvasColor(ctx, rarityLabelField.color, {
+      rarity: options.rarity,
+    });
+    fitFontSize(
+      ctx,
+      t('rarity-label', {}, i18n),
+      'Supercell Magic',
+      rarityLabelField.maxWidth,
+      rarityLabelField.fontSize,
+    );
+    ctx.fillText(
+      t('rarity-label', {}, i18n),
+      rarityLabelField.x,
+      rarityLabelField.y,
+    );
+  }
+  const typeLabelField = getTemplateField(options.template, 'type-label', page);
+  if (typeLabelField) {
+    ctx.textAlign = typeLabelField.textAlign || 'left';
+    ctx.fillStyle = getCanvasColor(ctx, typeLabelField.color, {
+      rarity: options.rarity,
+    });
+    fitFontSize(
+      ctx,
+      t('type-label', {}, i18n),
+      'Supercell Magic',
+      typeLabelField.maxWidth,
+      typeLabelField.fontSize,
+    );
+    ctx.fillText(t('type-label', {}, i18n), typeLabelField.x, typeLabelField.y);
+  }
   // Then the rarity value
-  ctx.strokeStyle = 'black';
-  ctx.shadowColor = 'black';
-  ctx.textAlign = options.template.fields['rarity-value'].textAlign || 'left';
-  ctx.lineWidth = options.template.fields['rarity-value'].fontSize * 0.1;
-  ctx.shadowOffsetY = options.template.fields['rarity-value'].fontSize * 0.07;
-  const rarityValueFontSize = fitFontSize(
-    ctx,
-    t(`rarity-${options.rarity}`, {}, i18n),
-    'Supercell Magic',
-    options.template.fields['rarity-value'].maxWidth,
-    options.template.fields['rarity-value'].fontSize,
+  const rarityValueField = getTemplateField(
+    options.template,
+    'rarity-value',
+    page,
   );
-  ctx.fillStyle = getCanvasColor(
-    ctx,
-    options.template.fields['rarity-value'].color,
-    {
+  if (rarityValueField) {
+    ctx.strokeStyle = 'black';
+    ctx.shadowColor = 'black';
+    ctx.textAlign = rarityValueField.textAlign || 'left';
+    ctx.lineWidth = rarityValueField.fontSize * 0.1;
+    ctx.shadowOffsetY = rarityValueField.fontSize * 0.07;
+    const rarityValueFontSize = fitFontSize(
+      ctx,
+      t(`rarity-${options.rarity}`, {}, i18n),
+      'Supercell Magic',
+      rarityValueField.maxWidth,
+      rarityValueField.fontSize,
+    );
+    ctx.fillStyle = getCanvasColor(ctx, rarityValueField.color, {
       rarity: options.rarity,
-      gradientX: options.template.fields['rarity-value'].x,
-      gradientY: options.template.fields['rarity-value'].y,
+      gradientX: rarityValueField.x,
+      gradientY: rarityValueField.y,
       gradientWidth: rarityValueFontSize.metrics.width,
-    },
-  );
-  ctx.strokeText(
-    t(`rarity-${options.rarity}`, {}, i18n),
-    options.template.fields['rarity-value'].x,
-    options.template.fields['rarity-value'].y,
-  );
-  ctx.fillText(
-    t(`rarity-${options.rarity}`, {}, i18n),
-    options.template.fields['rarity-value'].x,
-    options.template.fields['rarity-value'].y,
-  );
+    });
+    ctx.strokeText(
+      t(`rarity-${options.rarity}`, {}, i18n),
+      rarityValueField.x,
+      rarityValueField.y,
+    );
+    ctx.fillText(
+      t(`rarity-${options.rarity}`, {}, i18n),
+      rarityValueField.x,
+      rarityValueField.y,
+    );
+  }
   // And finally the type
-  ctx.strokeStyle = 'black';
-  ctx.fillStyle = 'white';
-  ctx.shadowColor = 'black';
-  ctx.textAlign = options.template.fields['type-value'].textAlign || 'left';
-  ctx.lineWidth = options.template.fields['type-value'].fontSize * 0.1;
-  ctx.shadowOffsetY = options.template.fields['type-value'].fontSize * 0.07;
-  const typeValueFontSize = fitFontSize(
-    ctx,
-    t(`type-${options.cardType}`, {}, i18n),
-    'Supercell Magic',
-    options.template.fields['type-value'].maxWidth,
-    options.template.fields['type-value'].fontSize,
-  );
-  ctx.fillStyle = getCanvasColor(
-    ctx,
-    options.template.fields['type-value'].color,
-    {
+  const typeValueField = getTemplateField(options.template, 'type-value', page);
+  if (typeValueField) {
+    ctx.strokeStyle = 'black';
+    ctx.fillStyle = 'white';
+    ctx.shadowColor = 'black';
+    ctx.textAlign = typeValueField.textAlign || 'left';
+    ctx.lineWidth = typeValueField.fontSize * 0.1;
+    ctx.shadowOffsetY = typeValueField.fontSize * 0.07;
+    const typeValueFontSize = fitFontSize(
+      ctx,
+      t(`type-${options.cardType}`, {}, i18n),
+      'Supercell Magic',
+      typeValueField.maxWidth,
+      typeValueField.fontSize,
+    );
+    ctx.fillStyle = getCanvasColor(ctx, typeValueField.color, {
       rarity: options.rarity,
-      gradientX: options.template.fields['type-value'].x,
-      gradientY: options.template.fields['type-value'].y,
+      gradientX: typeValueField.x,
+      gradientY: typeValueField.y,
       gradientWidth: typeValueFontSize.metrics.width,
-    },
-  );
-  ctx.strokeText(
-    t(`type-${options.cardType}`, {}, i18n),
-    options.template.fields['type-value'].x,
-    options.template.fields['type-value'].y,
-  );
-  ctx.fillText(
-    t(`type-${options.cardType}`, {}, i18n),
-    options.template.fields['type-value'].x,
-    options.template.fields['type-value'].y,
-  );
+    });
+    ctx.strokeText(
+      t(`type-${options.cardType}`, {}, i18n),
+      typeValueField.x,
+      typeValueField.y,
+    );
+    ctx.fillText(
+      t(`type-${options.cardType}`, {}, i18n),
+      typeValueField.x,
+      typeValueField.y,
+    );
+  }
   ctx.restore();
 };

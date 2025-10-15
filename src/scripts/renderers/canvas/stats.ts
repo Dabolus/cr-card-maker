@@ -1,6 +1,6 @@
 import { fitFontSize, getCanvasColor } from './utils';
-import type { Icon } from '../shared';
-import type { $Schema as TemplateSchema } from '../../../templates/generated/types';
+import { getTemplateField, type Icon } from '../shared';
+import type { Fields } from '../../../templates/generated/types';
 import type { CardStat } from '../types';
 import type { DrawCanvasPartParams } from './types';
 
@@ -24,7 +24,7 @@ const drawStat = ({
   background: HTMLImageElement | null;
   x: number;
   y: number;
-  itemsConfig: NonNullable<TemplateSchema['fields']['stats']>['items'];
+  itemsConfig: NonNullable<Fields['stats']>['items'];
   iconsImages: Record<Icon, HTMLImageElement>;
 }) => {
   ctx.translate(x, y);
@@ -101,11 +101,12 @@ const drawStat = ({
 export const drawStats = ({
   options,
   ctx,
+  page,
   evenBackgroundImage,
   oddBackgroundImage,
   iconsImages,
 }: DrawStatsParams) => {
-  const statsConfig = options.template.fields.stats;
+  const statsConfig = getTemplateField(options.template, 'stats', page);
   if (!statsConfig) {
     return;
   }

@@ -1,9 +1,12 @@
 import { t } from '../../i18n';
 import { getCanvasColor } from './utils';
+import { getTemplateField } from '../shared';
 import type { DrawCanvasPartParams } from './types';
 
-export const drawLevel = ({ options, ctx }: DrawCanvasPartParams) => {
-  if (!options.template.fields.level) {
+export const drawLevel = ({ options, ctx, page }: DrawCanvasPartParams) => {
+  const levelField = getTemplateField(options.template, 'level', page);
+
+  if (!levelField) {
     return;
   }
 
@@ -17,26 +20,18 @@ export const drawLevel = ({ options, ctx }: DrawCanvasPartParams) => {
   ctx.textBaseline = 'hanging';
   ctx.strokeStyle = 'black';
   ctx.shadowColor = 'black';
-  ctx.lineWidth = options.template.fields.level.fontSize * 0.1;
-  ctx.shadowOffsetY = options.template.fields.level.fontSize * 0.07;
-  ctx.font = `${options.template.fields.level.fontSize}px "Supercell Magic"`;
-  const localizedCardName = t('level', options, i18n);
-  const cardNameFontSize = ctx.measureText(localizedCardName);
-  ctx.fillStyle = getCanvasColor(ctx, options.template.fields.level.color, {
+  ctx.lineWidth = levelField.fontSize * 0.1;
+  ctx.shadowOffsetY = levelField.fontSize * 0.07;
+  ctx.font = `${levelField.fontSize}px "Supercell Magic"`;
+  const localizedLevel = t('level', options, i18n);
+  const levelFontSize = ctx.measureText(localizedLevel);
+  ctx.fillStyle = getCanvasColor(ctx, levelField.color, {
     rarity: options.rarity,
-    gradientX: options.template.fields['rarity-value'].x,
-    gradientY: options.template.fields['rarity-value'].y,
-    gradientWidth: cardNameFontSize.width,
+    gradientX: levelField.x,
+    gradientY: levelField.y,
+    gradientWidth: levelFontSize.width,
   });
-  ctx.strokeText(
-    localizedCardName,
-    options.template.fields.level.x,
-    options.template.fields.level.y,
-  );
-  ctx.fillText(
-    localizedCardName,
-    options.template.fields.level.x,
-    options.template.fields.level.y,
-  );
+  ctx.strokeText(localizedLevel, levelField.x, levelField.y);
+  ctx.fillText(localizedLevel, levelField.x, levelField.y);
   ctx.restore();
 };
