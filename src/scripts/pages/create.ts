@@ -5,6 +5,7 @@ import { t } from '../i18n';
 import { loadImage } from '../utils';
 import type { RendererBaseOptions } from '../renderers/types';
 import type { $Schema as TemplateSchema } from '../../templates/generated/types';
+import type { DrawCanvasOptions } from '../renderers/canvas/types';
 
 const defaultParams: RendererBaseOptions = {
   template: standardTemplate as unknown as TemplateSchema,
@@ -22,13 +23,17 @@ const defaultParams: RendererBaseOptions = {
   stats: [],
 };
 
-const renderImage = async (params: RendererBaseOptions) => {
+const renderImage = async (params: DrawCanvasOptions) => {
   const { drawCanvas } = await import('../renderers/canvas');
   const canvas = await drawCanvas(params);
   const blob = await new Promise<Blob | null>((resolve) =>
     canvas.toBlob(resolve, 'image/png', 1),
   );
-  return new File([blob!], `${params.cardName || t('clash-royale-card')}.png`, {
+  const pageIndex = (params.page ?? 1) - 1;
+  const cardName = params.cardName || t('clash-royale-card');
+  const pageName = params.template.pages?.[pageIndex]?.name;
+  const fullName = `${cardName}${pageName ? ` - ${pageName}` : ''}`;
+  return new File([blob!], `${fullName}.png`, {
     type: 'image/png',
   });
 };
@@ -69,16 +74,24 @@ const handleSave = async (params: RendererBaseOptions, templateId: string) => {
 };
 
 const handleDownload = async (params: RendererBaseOptions) => {
-  const [{ saveAs }, imageFile] = await Promise.all([
+  const totalPages = params.template.pages?.length ?? 1;
+  const [{ saveAs }, ...imageFiles] = await Promise.all([
     import('file-saver'),
-    renderImage(params),
+    ...Array.from({ length: totalPages }, (_, index) =>
+      renderImage({ ...params, page: index + 1 }),
+    ),
   ]);
-  saveAs(imageFile);
+  imageFiles.forEach((file) => saveAs(file));
 };
 
 const handleShare = async (params: RendererBaseOptions) => {
-  const imageFile = await renderImage(params);
-  await navigator.share({ files: [imageFile] });
+  const totalPages = params.template.pages?.length ?? 1;
+  const imageFiles = await Promise.all(
+    Array.from({ length: totalPages }, (_, index) =>
+      renderImage({ ...params, page: index + 1 }),
+    ),
+  );
+  await navigator.share({ files: imageFiles });
 };
 
 export const onPageLoad = async () => {
@@ -93,9 +106,7 @@ export const onPageLoad = async () => {
         (currentParams as Record<string, unknown>)[key] = val;
       },
     });
-    cardElement.style.aspectRatio = `${currentParams.template.width} / ${currentParams.template.height}`;
-    cardEditor.removeChild(cardEditor.firstElementChild!);
-    cardEditor.appendChild(cardElement);
+    cardEditor.firstElementChild?.replaceWith(cardElement);
   };
 
   const templateSelect =
@@ -141,11 +152,14 @@ export const onPageLoad = async () => {
     }
   });
 
-  // Show the share button only if sharing images is supported by this browser
+  // Show the share button only if sharing multiple images is supported by this browser
   if (
     !('canShare' in navigator) ||
     !navigator.canShare({
-      files: [new File([], 'test.png', { type: 'image/png' })],
+      files: Array.from(
+        { length: 2 },
+        (_, index) => new File([], `${index}.png`, { type: 'image/png' }),
+      ),
     })
   ) {
     document.querySelector<HTMLButtonElement>('#share-button')!.hidden = true;
