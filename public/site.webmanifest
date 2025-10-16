@@ -8,6 +8,27 @@
   "categories": ["entertainment", "games", "utilities"],
   "screenshots": [
     {
+      "src": "./screenshots/pc-1.jpg",
+      "sizes": "2600x1600",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Create your own Clash Royale cards!"
+    },
+    {
+      "src": "./screenshots/pc-2.jpg",
+      "sizes": "2600x1600",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Easily Save, Download, or Share your creations"
+    },
+    {
+      "src": "./screenshots/pc-3.jpg",
+      "sizes": "2600x1600",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "View your saved creations whenever you want"
+    },
+    {
       "src": "./screenshots/phone-1.jpg",
       "sizes": "1600x3000",
       "type": "image/jpeg",
@@ -37,9 +58,27 @@
       "purpose": "any"
     },
     {
+      "src": "./icons/any-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "./icons/any-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/any-1024x1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/any-any.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
       "purpose": "any"
     },
     {
@@ -49,10 +88,58 @@
       "purpose": "maskable"
     },
     {
+      "src": "./icons/maskable-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "./icons/maskable-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "./icons/maskable-1024x1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/maskable-any.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/monochrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "monochrome"
+    },
+    {
+      "src": "./icons/monochrome-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "monochrome"
+    },
+    {
+      "src": "./icons/monochrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "monochrome"
+    },
+    {
+      "src": "./icons/monochrome-1024x1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "monochrome"
+    },
+    {
+      "src": "./icons/monochrome-any.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "monochrome"
     }
   ],
   "launch_handler": {
