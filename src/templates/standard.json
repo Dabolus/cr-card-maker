@@ -232,12 +232,12 @@
     "es": {
       "name": "{{cardName}}",
       "level": "Nivel {{level}}",
-      "rarity-label": "Calidad",
+      "rarity-label": "CALIDAD",
       "rarity-common": "Común",
       "rarity-rare": "Especial",
       "rarity-epic": "Épica",
       "rarity-legendary": "Legendaria",
-      "type-label": "Tipo",
+      "type-label": "TIPO",
       "type-troop": "Tropa",
       "type-building": "Estructura",
       "type-spell": "Hechizo"
