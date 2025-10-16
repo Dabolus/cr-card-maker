@@ -1,7 +1,7 @@
 import standardTemplate from '../../templates/standard.json' with { type: 'json' };
 import placeholderImageUrl from '../../images/placeholder.svg';
 import { drawForm } from '../renderers/form';
-import { t } from '../i18n';
+import { getLocale, t } from '../i18n';
 import { loadImage } from '../utils';
 import { showNotification } from '../notifications';
 import type { RendererBaseOptions } from '../renderers/types';
@@ -97,7 +97,10 @@ const handleShare = async (params: RendererBaseOptions) => {
 };
 
 export const onPageLoad = async () => {
-  let currentParams: RendererBaseOptions = defaultParams;
+  let currentParams: RendererBaseOptions = {
+    ...defaultParams,
+    language: await getLocale(),
+  };
 
   const cardEditor = document.querySelector<HTMLDivElement>('#card-editor')!;
 
