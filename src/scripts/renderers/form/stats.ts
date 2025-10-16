@@ -125,7 +125,7 @@ const generateStat = ({
   statName.type = 'text';
   statName.name = 'stat-name';
   statName.value = stat.name;
-  statName.placeholder = 'Name';
+  statName.placeholder = t('stat-name-placeholder');
   statName.maxLength = 32;
   statName.classList.add('stat-name');
   statName.addEventListener('input', (e) => {
@@ -142,7 +142,7 @@ const generateStat = ({
   statValue.type = 'text';
   statValue.name = 'stat-value';
   statValue.value = stat.value.toString();
-  statValue.placeholder = 'Value';
+  statValue.placeholder = t('stat-value-placeholder');
   statValue.maxLength = 32;
   statValue.classList.add('stat-value');
   statValue.addEventListener('input', (e) => {

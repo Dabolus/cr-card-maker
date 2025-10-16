@@ -84,7 +84,10 @@ export const drawLevel = ({
   );
   const levelSelect = level.querySelector<HTMLSelectElement>(
     'select[name="level"]',
-  )!;
+  );
+  if (!levelSelect) {
+    return { updateLevelTextColor: () => {} };
+  }
   levelSelect.addEventListener('change', (e) => {
     const newLevel = parseInt((e.target as HTMLSelectElement).value, 10);
     options.onChange?.({ ...options, level: newLevel }, 'level', newLevel);
