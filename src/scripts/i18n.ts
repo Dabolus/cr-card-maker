@@ -25,7 +25,9 @@ export const t = (
   const rawTranslation = localeData[key];
 
   if (!rawTranslation) {
-    console.warn(`Missing localization for key: ${key}`);
+    if (import.meta.env.DEV) {
+      console.warn(`Missing localization for key: ${key}`);
+    }
     return key;
   }
 
