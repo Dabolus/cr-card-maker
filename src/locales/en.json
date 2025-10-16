@@ -83,5 +83,7 @@
   "stat-name-placeholder": "Name",
   "stat-value-placeholder": "Value",
   "template-label": "Template:",
+  "template-name-og": "OG",
+  "template-name-standard": "Standard",
   "type-label": "Type"
 }
