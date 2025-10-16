@@ -1,6 +1,7 @@
 import { registerSW } from 'virtual:pwa-register';
 import { showNotification } from './notifications';
 import { t } from './i18n';
+import { set } from './settings';
 
 const updateCheckInterval = 60 * 60 * 1000;
 
@@ -62,8 +63,5 @@ export const registerServiceWorker = (i18nReadyPromise: Promise<void>) => {
     );
   }
 
-  window.localStorage.setItem(
-    'latestOpenedVersion',
-    import.meta.env.VITE_APP_VERSION,
-  );
+  set('latestOpenedVersion', import.meta.env.VITE_APP_VERSION);
 };
