@@ -128,12 +128,106 @@
       "rarity-rare": "Rare",
       "rarity-epic": "Epic",
       "rarity-legendary": "Legendary",
-      "rarity-champion": "Champion",
       "type-label": "Type:",
       "type-troop": "Troop",
       "type-building": "Building",
-      "type-spell": "Spell",
-      "type-tower-troop": "Tower Troop"
+      "type-spell": "Spell"
+    },
+    "fr": {
+      "name": "{{cardName}} de niveau {{level}}",
+      "rarity-label": "Rareté :",
+      "rarity-common": "Commune",
+      "rarity-rare": "Rare",
+      "rarity-epic": "Épique",
+      "rarity-legendary": "Légendaire",
+      "type-label": "Type :",
+      "type-troop": "Combattant",
+      "type-building": "Bâtiment",
+      "type-spell": "Sort"
+    },
+    "de": {
+      "name": "{{cardName}} Level {{level}}",
+      "rarity-label": "Seltenheit",
+      "rarity-common": "Gewöhnlich",
+      "rarity-rare": "Selten",
+      "rarity-epic": "Episch",
+      "rarity-legendary": "Legendär",
+      "type-label": "Typ",
+      "type-troop": "Einheit",
+      "type-building": "Gebäude",
+      "type-spell": "Zauber"
+    },
+    "es": {
+      "name": "{{cardName}} (nivel {{level}})",
+      "rarity-label": "Calidad:",
+      "rarity-common": "Común",
+      "rarity-rare": "Especial",
+      "rarity-epic": "Épica",
+      "rarity-legendary": "Legendaria",
+      "type-label": "Tipo:",
+      "type-troop": "Tropa",
+      "type-building": "Estructura",
+      "type-spell": "Hechizo"
+    },
+    "it": {
+      "name": "{{cardName}} livello {{level}}",
+      "rarity-label": "Rarità:",
+      "rarity-common": "Comune",
+      "rarity-rare": "Rara",
+      "rarity-epic": "Epica",
+      "rarity-legendary": "Leggendaria",
+      "type-label": "Tipo:",
+      "type-troop": "Truppa",
+      "type-building": "Edificio",
+      "type-spell": "Incantesimo"
+    },
+    "ja": {
+      "name": "レベル{{level}} {{cardName}}",
+      "rarity-label": "レア度：",
+      "rarity-common": "ノーマル",
+      "rarity-rare": "レア",
+      "rarity-epic": "スーパーレア",
+      "rarity-legendary": "ウルトラレア",
+      "type-label": "タイプ：",
+      "type-troop": "ユニット",
+      "type-building": "建物",
+      "type-spell": "呪文"
+    },
+    "pt": {
+      "name": "{{cardName}} Nível {{level}}",
+      "rarity-label": "Rarirade:",
+      "rarity-common": "Comum",
+      "rarity-rare": "Rara",
+      "rarity-epic": "Épica",
+      "rarity-legendary": "Lendária",
+      "type-label": "Tipo:",
+      "type-troop": "Tropa",
+      "type-building": "Construção",
+      "type-spell": "Feitiço"
+    },
+    "nl": {
+      "name": "Level {{level}} {{cardName}}",
+      "rarity-label": "Zeldzaamheid:",
+      "rarity-common": "Gewoon",
+      "rarity-rare": "Zeldzaam",
+      "rarity-epic": "Episch",
+      "rarity-legendary": "Legendarisch",
+      "type-label": "Type:",
+      "type-troop": "Eenheid",
+      "type-building": "Gebouw",
+      "type-spell": "Spreuk"
+    },
+    "ru": {
+      "name": "{{cardName}} {{level}}-го уровеня",
+      "rarity-label": "Редкость:",
+      "rarity-common": "Обычная",
+      "rarity-rare": "Редкая",
+      "rarity-epic": "Эпическая",
+      "rarity-legendary": "Легендарная",
+      "type-label": "Тип:",
+      "type-troop": "Войско",
+      "type-building": "Здание",
+      "type-spell": "Заклинание"
     }
   }
 }
