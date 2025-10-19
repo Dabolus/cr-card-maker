@@ -7,7 +7,8 @@ const updateCheckInterval = 60 * 60 * 1000;
 
 export const registerServiceWorker = (i18nReadyPromise: Promise<void>) => {
   const update = registerSW({
-    onNeedRefresh() {
+    async onNeedRefresh() {
+      await i18nReadyPromise;
       showNotification({
         message: t('pwa-update-available'),
         timer: 10000,
