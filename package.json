@@ -1,6 +1,6 @@
 {
   "name": "cr-card-maker",
-  "version": "3.0.0-beta.0",
+  "version": "3.0.0-beta.2",
   "scripts": {
     "dev": "bun run generate-types && vite",
     "dev:public": "bun run dev --host 0.0.0.0",
