@@ -3,14 +3,77 @@
 .page#cards {
   display: flex;
   flex-direction: column;
+}
 
-  & > h1 {
-    font-size: 1.5rem;
-    flex: 0;
-    color: theme.$text-on-primary;
-    text-shadow: 2px 2px 4px black;
-    margin: 0.5rem 0.5rem 0;
+.section-header {
+  position: relative;
+  font-family: 'Supercell Magic';
+  background: rgba(theme.$primary-color, 0.4);
+  border-radius: 1rem;
+  box-shadow:
+    0 -1px 0 rgba(0 0 0 / 0.2),
+    0 2px 0 rgba(255 255 255 / 0.2);
+  margin: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0.3rem;
+    left: 0.3rem;
+    width: calc(100% - 0.6rem);
+    height: calc(50% - 0.3rem);
+    background: rgba(255 255 255 / 0.06);
+    border-radius: 0.6rem;
   }
+
+  & > h2 {
+    z-index: 1;
+    font-size: 1rem;
+    flex: 1;
+    color: theme.$text-on-primary;
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 2px 0 #000,
+      1px 2px 0 #000;
+    margin: 0;
+    margin: 0 0 0 0.25rem;
+  }
+
+  & > button {
+    z-index: 1;
+    flex: 0;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    height: 3rem;
+  }
+}
+
+#cards-sort-direction {
+  box-sizing: border-box;
+  color: #5bc797;
+  text-shadow:
+    -1px 1px 0 #72f2e5,
+    1px 1px 0 #72f2e5,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
+  font-size: 1.5rem;
+
+  &.sort-direction-asc {
+    transform: rotate(180deg);
+  }
+}
+
+#cards-sort-by {
+  font-size: 0.75rem;
+  min-width: 7rem;
+  text-wrap: nowrap;
 }
 
 #cards-list {
@@ -171,14 +234,29 @@
         padding: 0 0.5rem;
       }
     }
-
-    @media (min-width: 480px) {
-      flex-direction: row;
-    }
   }
 
   & > canvas {
     max-width: 100%;
     max-height: calc(100% - 40px);
+  }
+}
+
+@media (min-width: 480px) {
+  .section-header > h2 {
+    font-size: 1.5rem;
+  }
+
+  #cards-sort-direction {
+    font-size: 1.5rem;
+  }
+
+  #cards-sort-by {
+    font-size: 1rem;
+    min-width: 9rem;
+  }
+
+  #card-preview-dialog > #card-preview-config-selects-container {
+    flex-direction: row;
   }
 }

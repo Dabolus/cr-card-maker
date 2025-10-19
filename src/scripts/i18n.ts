@@ -61,8 +61,10 @@ export const updateView = () => {
 };
 
 export const getLocale = async () => {
-  const userLocale =
-    (await get<string>('locale')) || navigator.language.slice(0, 2);
+  const userLocale = await get<string>(
+    'locale',
+    navigator.language.slice(0, 2),
+  );
 
   return supportedLocales.includes(userLocale)
     ? userLocale

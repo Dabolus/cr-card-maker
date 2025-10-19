@@ -3,13 +3,23 @@ import {
   frameContainerNominalHeight,
   frameContainerNominalWidth,
   getShapeImageSrc,
+  rarities,
   raritiesConfig,
   shapesConfig,
 } from '../renderers/shared';
 import { createToRelativeMapper } from '../renderers/form/utils';
 import type { $Schema as TemplateSchema } from '../../templates/generated/types';
+import { get, set } from '../settings';
+import { t } from '../i18n';
 
 type StoredCard = CRCMDBSchema['cards']['value'];
+
+type SortBy = 'creation' | 'elixir' | 'level' | 'name' | 'rarity' | 'type';
+type SortDirection = 'asc' | 'desc';
+interface SortInfo {
+  by: SortBy;
+  direction: SortDirection;
+}
 
 let openedCardReference: StoredCard | null = null;
 let openedTemplateReference: TemplateSchema | null = null;
@@ -156,8 +166,13 @@ const createCardPreviewElement = (
       const pageSelect = cardPreviewDialog.querySelector<HTMLSelectElement>(
         '#card-preview-page-select',
       )!;
+      const i18n =
+        template.i18n?.[card.language as keyof typeof template.i18n] ?? {};
       pageSelect.innerHTML = template.pages
-        .map((page, i) => `<option value="${i + 1}">${page.name}</option>`)
+        .map(
+          (page, i) =>
+            `<option value="${i + 1}">${t(page['name-translation-key'], {}, i18n)}</option>`,
+        )
         .join('');
       pageSelect.value = '1';
       cardPreviewConfigSelectsContainer.hidden = false;
@@ -174,11 +189,38 @@ const createCardPreviewElement = (
 const updateCardsList = async (
   cardPreviewDialog: HTMLDialogElement,
   cardPreviewConfigSelectsContainer: HTMLDivElement,
+  sortInfo: SortInfo,
 ) => {
   const cards = await cardsCollection.getCards();
+  const sortedCards = cards.toSorted((a, b) => {
+    let compareResult = 0;
+    switch (sortInfo.by) {
+      case 'creation':
+        compareResult = a.createdAt.valueOf() - b.createdAt.valueOf();
+        break;
+      case 'elixir':
+        compareResult =
+          (typeof a.elixirCost === 'number' ? a.elixirCost : Infinity) -
+          (typeof b.elixirCost === 'number' ? b.elixirCost : Infinity);
+        break;
+      case 'level':
+        compareResult = a.level - b.level;
+        break;
+      case 'name':
+        compareResult = a.cardName.localeCompare(b.cardName);
+        break;
+      case 'rarity':
+        compareResult = rarities.indexOf(a.rarity) - rarities.indexOf(b.rarity);
+        break;
+      case 'type':
+        compareResult = a.cardType.localeCompare(b.cardType);
+        break;
+    }
+    return sortInfo.direction === 'asc' ? compareResult : -compareResult;
+  });
   const listContainer = document.querySelector('#cards-list')!;
   listContainer.innerHTML = '';
-  cards.forEach((card) => {
+  sortedCards.forEach((card) => {
     const cardElement = createCardPreviewElement(
       card,
       cardPreviewDialog,
@@ -189,9 +231,68 @@ const updateCardsList = async (
 };
 
 export const onPageLoad = async () => {
+  const sortInfo = await get<SortInfo>('cardsSortInfo', {
+    by: 'creation',
+    direction: 'desc',
+  });
+
+  const cardsSortDirectionButton = document.querySelector<HTMLButtonElement>(
+    '#cards-sort-direction',
+  )!;
+  const cardsSortByButton =
+    document.querySelector<HTMLButtonElement>('#cards-sort-by')!;
   const cardPreviewDialog = document.querySelector<HTMLDialogElement>(
     '#card-preview-dialog',
   )!;
+  cardsSortByButton.textContent = t(`sort-by-${sortInfo.by}`);
+  cardsSortDirectionButton.textContent =
+    sortInfo.direction === 'asc' ? '▲' : '▼';
+  cardsSortDirectionButton.setAttribute(
+    'aria-label',
+    t(`sort-direction-${sortInfo.direction}`),
+  );
+
+  cardsSortDirectionButton.addEventListener('click', async () => {
+    sortInfo.direction = sortInfo.direction === 'asc' ? 'desc' : 'asc';
+    cardsSortDirectionButton.textContent =
+      sortInfo.direction === 'asc' ? '▲' : '▼';
+    cardsSortDirectionButton.setAttribute(
+      'aria-label',
+      t(`sort-direction-${sortInfo.direction}`),
+    );
+    await Promise.all([
+      set<SortInfo>('cardsSortInfo', sortInfo),
+      updateCardsList(
+        cardPreviewDialog,
+        cardPreviewConfigSelectsContainer,
+        sortInfo,
+      ),
+    ]);
+  });
+
+  cardsSortByButton.addEventListener('click', async () => {
+    const sortByOptions: SortBy[] = [
+      'creation',
+      'elixir',
+      'level',
+      'name',
+      'rarity',
+      'type',
+    ];
+    const currentIndex = sortByOptions.indexOf(sortInfo.by);
+    const nextIndex = (currentIndex + 1) % sortByOptions.length;
+    sortInfo.by = sortByOptions[nextIndex];
+    cardsSortByButton.textContent = t(`sort-by-${sortInfo.by}`);
+    await Promise.all([
+      set<SortInfo>('cardsSortInfo', sortInfo),
+      updateCardsList(
+        cardPreviewDialog,
+        cardPreviewConfigSelectsContainer,
+        sortInfo,
+      ),
+    ]);
+  });
+
   const cardPreviewConfigSelectsContainer =
     cardPreviewDialog.querySelector<HTMLDivElement>(
       '#card-preview-config-selects-container',
@@ -219,7 +320,16 @@ export const onPageLoad = async () => {
     );
   });
   cardsCollection.addEventListener('change', () =>
-    updateCardsList(cardPreviewDialog, cardPreviewConfigSelectsContainer),
+    updateCardsList(
+      cardPreviewDialog,
+      cardPreviewConfigSelectsContainer,
+      sortInfo,
+    ),
   );
-  await updateCardsList(cardPreviewDialog, cardPreviewConfigSelectsContainer);
+
+  await updateCardsList(
+    cardPreviewDialog,
+    cardPreviewConfigSelectsContainer,
+    sortInfo,
+  );
 };

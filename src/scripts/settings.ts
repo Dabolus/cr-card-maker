@@ -1,12 +1,16 @@
 import { CRCMDBSchema, db } from './db';
 
-export const get = <T extends CRCMDBSchema['settings']['value']>(
+export const get = async <T extends CRCMDBSchema['settings']['value']>(
   key: CRCMDBSchema['settings']['key'],
-): Promise<T> => db.get('settings', key) as Promise<T>;
+  defaultValue: T,
+): Promise<T> => {
+  const storedVal = await db.get('settings', key);
+  return (storedVal ?? defaultValue) as T;
+};
 
-export const set = (
+export const set = <T extends CRCMDBSchema['settings']['value']>(
   key: CRCMDBSchema['settings']['key'],
-  val: CRCMDBSchema['settings']['value'],
+  val: T,
 ) => db.put('settings', val, key);
 
 export const remove = (key: CRCMDBSchema['settings']['key']) =>

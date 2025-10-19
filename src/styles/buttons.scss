@@ -1,5 +1,6 @@
 button {
   cursor: pointer;
+  font: inherit;
 
   & > svg {
     fill: currentColor;
@@ -7,7 +8,7 @@ button {
 }
 
 .sc-btn {
-  font-size: 16px;
+  font-size: 1rem;
   padding: 10px;
   border-radius: 3px;
   border: 0;
@@ -64,6 +65,35 @@ button {
       1px -1px 0 #582d00,
       -1px 1px 0 #582d00,
       1px 1px 0 #582d00;
+  }
+}
+
+.sc-btn-blue {
+  appearance: none;
+  border: none;
+  color: #fff;
+  background: #4d739e;
+  border: 2px solid #0d2646;
+  color: #fff;
+  text-shadow:
+    -1px 2px 0 #000,
+    0 2px 0 #000,
+    1px 2px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    width: calc(100% - 0.4rem);
+    height: calc(50% - 0.2rem);
+    background: rgba(255 255 255 / 0.06);
+    border-radius: 0.2rem;
   }
 }
 
