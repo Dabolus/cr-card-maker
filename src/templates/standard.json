@@ -1,6 +1,6 @@
 {
   "$schema": "./$schema.json",
-  "name": "Standard",
+  "name-translation-key": "template-name",
   "width": 989,
   "height": 1240,
   "supported-rarities": ["common", "rare", "epic", "legendary"],
@@ -123,7 +123,7 @@
   },
   "pages": [
     {
-      "name": "Stats",
+      "name-translation-key": "page-stats-name",
       "x": 0,
       "y": 0,
       "width": 989,
@@ -168,7 +168,7 @@
       }
     },
     {
-      "name": "Description",
+      "name-translation-key": "page-description-name",
       "x": 0,
       "y": 0,
       "width": 989,
@@ -190,6 +190,9 @@
   ],
   "i18n": {
     "en": {
+      "template-name": "Standard",
+      "page-stats-name": "Stats",
+      "page-description-name": "Description",
       "name": "{{cardName}}",
       "level": "Level {{level}}",
       "rarity-label": "RARITY",
@@ -203,6 +206,9 @@
       "type-spell": "Spell"
     },
     "fr": {
+      "template-name": "Standard",
+      "page-stats-name": "Statistiques",
+      "page-description-name": "Description",
       "name": "{{cardName}}",
       "level": "Niveau {{level}}",
       "rarity-label": "RARETÉ",
@@ -216,6 +222,9 @@
       "type-spell": "Sort"
     },
     "de": {
+      "template-name": "Standard",
+      "page-stats-name": "Statistiken",
+      "page-description-name": "Beschreibung",
       "name": "{{cardName}}",
       "level": "Level {{level}}",
       "rarity-label": "SELTENHEIT",
@@ -230,6 +239,9 @@
       "type-spell": "Zauber"
     },
     "es": {
+      "template-name": "Estándar",
+      "page-stats-name": "Estadísticas",
+      "page-description-name": "Descripción",
       "name": "{{cardName}}",
       "level": "Nivel {{level}}",
       "rarity-label": "CALIDAD",
@@ -243,6 +255,9 @@
       "type-spell": "Hechizo"
     },
     "it": {
+      "template-name": "Standard",
+      "page-stats-name": "Statistiche",
+      "page-description-name": "Descrizione",
       "name": "{{cardName}}",
       "level": "Livello {{level}}",
       "rarity-label": "RARITÀ",
@@ -256,6 +271,9 @@
       "type-spell": "Incantesimo"
     },
     "ja": {
+      "template-name": "スタンダード",
+      "page-stats-name": "ステータス",
+      "page-description-name": "説明",
       "name": "{{cardName}}",
       "level": "レベル{{level}}",
       "rarity-label": "レア度",
@@ -269,6 +287,9 @@
       "type-spell": "呪文"
     },
     "pt": {
+      "template-name": "Padrão",
+      "page-stats-name": "Estatísticas",
+      "page-description-name": "Descrição",
       "name": "{{cardName}}",
       "level": "Nível {{level}}",
       "rarity-label": "RARIDADE",
@@ -282,6 +303,9 @@
       "type-spell": "Feitiço"
     },
     "nl": {
+      "template-name": "Standaard",
+      "page-stats-name": "Statistieken",
+      "page-description-name": "Beschrijving",
       "name": "{{cardName}}",
       "level": "Level {{level}}",
       "rarity-label": "ZELDZAAMHEID",
@@ -295,6 +319,9 @@
       "type-spell": "Spreuk"
     },
     "ru": {
+      "template-name": "Стандарт",
+      "page-stats-name": "Статистика",
+      "page-description-name": "Описание",
       "name": "{{cardName}}",
       "level": "{{level}}-й уровень",
       "rarity-label": "РЕДКОСТЬ",

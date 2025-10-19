@@ -24,6 +24,29 @@ const defaultParams: RendererBaseOptions = {
   stats: [],
 };
 
+const updatePagesSelect = (
+  params: RendererBaseOptions,
+  pageSelect: HTMLSelectElement,
+  pageSelectContainer: HTMLDivElement,
+) => {
+  if (params.template.pages && params.template.pages.length > 1) {
+    const i18n =
+      params.template.i18n?.[
+        params.language as keyof typeof params.template.i18n
+      ] ?? {};
+    pageSelectContainer.hidden = false;
+    pageSelect.innerHTML = params.template.pages
+      .map(
+        (page, i) =>
+          `<option value="${i + 1}">${t(page['name-translation-key'], {}, i18n)}</option>`,
+      )
+      .join('');
+    pageSelect.value = '1';
+  } else {
+    pageSelectContainer.hidden = true;
+  }
+};
+
 const renderImage = async (params: DrawCanvasOptions) => {
   const { drawCanvas } = await import('../renderers/canvas');
   const canvas = await drawCanvas(params);
@@ -133,20 +156,10 @@ export const onPageLoad = async () => {
     currentParams.template = await import(
       `../../templates/${selectedTemplateId}.json`
     ).then((mod) => mod.default);
-    if (
-      currentParams.template.pages &&
-      currentParams.template.pages.length > 1
-    ) {
-      pageSelectContainer.hidden = false;
-      pageSelect.innerHTML = currentParams.template.pages
-        .map((page, i) => `<option value="${i + 1}">${page.name}</option>`)
-        .join('');
-      pageSelect.value = '1';
-    } else {
-      pageSelectContainer.hidden = true;
-    }
+    updatePagesSelect(currentParams, pageSelect, pageSelectContainer);
     renderResult = await renderForm();
   });
+  updatePagesSelect(currentParams, pageSelect, pageSelectContainer);
 
   const actionsButton =
     document.querySelector<HTMLButtonElement>('#actions-button')!;

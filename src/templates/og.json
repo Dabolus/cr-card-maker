@@ -1,6 +1,6 @@
 {
   "$schema": "./$schema.json",
-  "name": "OG",
+  "name-translation-key": "template-name",
   "width": 1432,
   "height": 1794,
   "background": "/cards-assets/backgrounds/og.png",
@@ -122,6 +122,7 @@
   },
   "i18n": {
     "en": {
+      "template-name": "OG",
       "name": "Level {{level}} {{cardName}}",
       "rarity-label": "Rarity:",
       "rarity-common": "Common",
@@ -134,6 +135,7 @@
       "type-spell": "Spell"
     },
     "fr": {
+      "template-name": "OG",
       "name": "{{cardName}} de niveau {{level}}",
       "rarity-label": "Rareté :",
       "rarity-common": "Commune",
@@ -146,6 +148,7 @@
       "type-spell": "Sort"
     },
     "de": {
+      "template-name": "OG",
       "name": "{{cardName}} Level {{level}}",
       "rarity-label": "Seltenheit",
       "rarity-common": "Gewöhnlich",
@@ -158,6 +161,7 @@
       "type-spell": "Zauber"
     },
     "es": {
+      "template-name": "OG",
       "name": "{{cardName}} (nivel {{level}})",
       "rarity-label": "Calidad:",
       "rarity-common": "Común",
@@ -170,6 +174,7 @@
       "type-spell": "Hechizo"
     },
     "it": {
+      "template-name": "OG",
       "name": "{{cardName}} livello {{level}}",
       "rarity-label": "Rarità:",
       "rarity-common": "Comune",
@@ -182,6 +187,7 @@
       "type-spell": "Incantesimo"
     },
     "ja": {
+      "template-name": "元祖",
       "name": "レベル{{level}} {{cardName}}",
       "rarity-label": "レア度：",
       "rarity-common": "ノーマル",
@@ -194,6 +200,7 @@
       "type-spell": "呪文"
     },
     "pt": {
+      "template-name": "OG",
       "name": "{{cardName}} Nível {{level}}",
       "rarity-label": "Rarirade:",
       "rarity-common": "Comum",
@@ -206,6 +213,7 @@
       "type-spell": "Feitiço"
     },
     "nl": {
+      "template-name": "OG",
       "name": "Level {{level}} {{cardName}}",
       "rarity-label": "Zeldzaamheid:",
       "rarity-common": "Gewoon",
@@ -218,6 +226,7 @@
       "type-spell": "Spreuk"
     },
     "ru": {
+      "template-name": "Оригинал",
       "name": "{{cardName}} {{level}}-го уровеня",
       "rarity-label": "Редкость:",
       "rarity-common": "Обычная",

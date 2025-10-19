@@ -492,7 +492,7 @@
     "$schema": {
       "type": "string"
     },
-    "name": {
+    "name-translation-key": {
       "type": "string"
     },
     "width": {
@@ -528,7 +528,7 @@
       "items": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
+          "name-translation-key": { "type": "string" },
           "x": { "type": "integer" },
           "y": { "type": "integer" },
           "width": { "type": "integer" },
@@ -539,7 +539,7 @@
           }
         },
         "required": [
-          "name",
+          "name-translation-key",
           "x",
           "y",
           "width",
@@ -595,12 +595,14 @@
               "type": "string"
             }
           },
-          "additionalProperties": false
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": false
     }
   },
-  "required": ["name", "width", "height"],
+  "required": ["name-translation-key", "width", "height"],
   "additionalProperties": false
 }
