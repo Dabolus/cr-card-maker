@@ -8,7 +8,7 @@
     "serve": "vite preview",
     "deploy": "firebase deploy",
     "upgrade-interactive": "ncu -ui",
-    "generate-types": "json2ts ./src/templates/\\$schema.json -o ./src/templates/generated/types.ts"
+    "generate-types": "json2ts ./src/templates/\\$schema.json -o ./src/templates/generated/types.ts && echo -e \"// @ts-nocheck\\n$(cat ./src/templates/generated/types.ts)\" > ./src/templates/generated/types.ts"
   },
   "dependencies": {
     "cropperjs": "^2.0.1",

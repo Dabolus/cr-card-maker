@@ -53,9 +53,17 @@ const renderImage = async (params: DrawCanvasOptions) => {
   const blob = await new Promise<Blob | null>((resolve) =>
     canvas.toBlob(resolve, 'image/png', 1),
   );
+  const i18n =
+    params.template.i18n?.[
+      params.language as keyof typeof params.template.i18n
+    ] ?? {};
   const pageIndex = (params.page ?? 1) - 1;
   const cardName = params.cardName || t('clash-royale-card');
-  const pageName = params.template.pages?.[pageIndex]?.name;
+  const pageName = t(
+    params.template.pages?.[pageIndex]?.['name-translation-key'] ?? '',
+    {},
+    i18n,
+  );
   const fullName = `${cardName}${pageName ? ` - ${pageName}` : ''}`;
   return new File([blob!], `${fullName}.png`, {
     type: 'image/png',

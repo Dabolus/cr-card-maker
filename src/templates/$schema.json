@@ -546,7 +546,8 @@
           "height",
           "background",
           "fields"
-        ]
+        ],
+        "additionalProperties": false
       }
     },
     "i18n": {
