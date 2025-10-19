@@ -1,11 +1,13 @@
 import { registerSW } from 'virtual:pwa-register';
 import { showNotification } from './notifications';
 import { t } from './i18n';
-import { set } from './settings';
+import { get, set } from './settings';
 
 const updateCheckInterval = 60 * 60 * 1000;
 
-export const registerServiceWorker = (i18nReadyPromise: Promise<void>) => {
+export const registerServiceWorker = async (
+  i18nReadyPromise: Promise<void>,
+) => {
   const update = registerSW({
     async onNeedRefresh() {
       await i18nReadyPromise;
@@ -47,22 +49,22 @@ export const registerServiceWorker = (i18nReadyPromise: Promise<void>) => {
   });
 
   // After each update, show a dialog with the changelog
-  const latestOpenedVersion = window.localStorage.getItem(
+  const latestOpenedVersion = await get<string | null>(
     'latestOpenedVersion',
+    null,
   );
 
   if (
     latestOpenedVersion &&
     latestOpenedVersion !== import.meta.env.VITE_APP_VERSION
   ) {
-    i18nReadyPromise.then(() =>
-      showNotification({
-        message: t('pwa-updated', {
-          version: import.meta.env.VITE_APP_VERSION,
-        }),
+    await i18nReadyPromise;
+    showNotification({
+      message: t('pwa-updated', {
+        version: import.meta.env.VITE_APP_VERSION,
       }),
-    );
+    });
   }
 
-  set('latestOpenedVersion', import.meta.env.VITE_APP_VERSION);
+  await set('latestOpenedVersion', import.meta.env.VITE_APP_VERSION);
 };

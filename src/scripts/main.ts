@@ -5,4 +5,4 @@ import '../styles/main.scss';
 
 const i18nReadyPromise = setupI18n();
 setupRouting(i18nReadyPromise);
-registerServiceWorker(i18nReadyPromise);
+await registerServiceWorker(i18nReadyPromise);
