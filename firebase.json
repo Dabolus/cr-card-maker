@@ -11,6 +11,13 @@
       "**/node_modules/**",
       "src/**"
     ],
+    "redirects": [
+      {
+        "source": "/CoCTC/**",
+        "destination": "https://clashofclanstroopcreator.com/",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
         "source": "**",
