@@ -86,13 +86,16 @@ const handleImageEdit = async ({
   imageFitLabel.appendChild(imageFitSelect);
   actionsContainer.appendChild(imageFitLabel);
 
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.classList.add('dialog-buttons');
+
   const dontCropButton = document.createElement('button');
   dontCropButton.classList.add('secondary-action');
   dontCropButton.type = 'submit';
   dontCropButton.formMethod = 'dialog';
   dontCropButton.value = 'dont-crop';
   dontCropButton.textContent = t('dont-crop');
-  actionsContainer.appendChild(dontCropButton);
+  buttonsContainer.appendChild(dontCropButton);
 
   const cropButton = document.createElement('button');
   cropButton.classList.add('primary-action');
@@ -100,7 +103,8 @@ const handleImageEdit = async ({
   cropButton.formMethod = 'dialog';
   cropButton.value = 'crop';
   cropButton.textContent = t('crop');
-  actionsContainer.appendChild(cropButton);
+  buttonsContainer.appendChild(cropButton);
+  actionsContainer.appendChild(buttonsContainer);
 
   dialogForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -202,7 +206,7 @@ export const drawImage = ({
           border-radius: 8px;
         }
 
-        & > .dialog-actions > #image-fit {
+        & > .dialog-actions #image-fit {
           color: #000;
           margin-right: auto;
           display: flex;

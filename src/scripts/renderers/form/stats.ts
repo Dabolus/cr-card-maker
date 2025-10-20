@@ -421,7 +421,7 @@ export const drawStats = ({
         }
       }
 
-      & .dialog-actions > #show-icon-background {
+      & .dialog-actions #show-icon-background {
         cursor: pointer;
         color: #000;
         margin-right: auto;
