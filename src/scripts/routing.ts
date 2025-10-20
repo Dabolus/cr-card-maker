@@ -1,11 +1,11 @@
 import { installRouter, updateMetadata } from 'pwa-helpers';
 import { loadFragment, logEvent } from './utils';
 import { t, updateView } from './i18n';
-import cardsFragmentUrl from '../fragments/pages/cards.html?url';
+import collectionFragmentUrl from '../fragments/pages/collection.html?url';
 import infoFragmentUrl from '../fragments/pages/info.html?url';
 
 const pageToFragmentUrl: Partial<Record<string, string>> = {
-  cards: cardsFragmentUrl,
+  collection: collectionFragmentUrl,
   info: infoFragmentUrl,
 };
 

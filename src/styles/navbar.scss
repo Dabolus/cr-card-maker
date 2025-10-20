@@ -82,9 +82,27 @@ $selected-item-width: $item-width * 2;
       &::before,
       &::after,
       span {
+        font-size: 0.9rem;
         transition: opacity 0.25s;
         transition-delay: 0.25s;
         opacity: 0;
+      }
+
+      span {
+        position: relative;
+        z-index: 0;
+
+        &::before {
+          position: absolute;
+          top: 0.25em;
+          left: 0;
+          z-index: -1;
+          content: '';
+          display: block;
+          background: rgba(0, 0, 0, 0.06);
+          width: 100%;
+          height: 1.25em;
+        }
       }
 
       &::before {
