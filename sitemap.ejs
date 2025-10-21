@@ -1,0 +1,21 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <%# The pages should be sorted by priority %>
+  <%# NOTE: we assume a maximum of 11 pages %>
+  <% pages.forEach((page, index) => { %>
+    <% const defaultPath = t(`page-path-${page}`, defaultLocale) %>
+    <url>
+      <loc><%= `${baseUrl}${defaultPath}` %></loc>
+      <xhtml:link rel="alternate" hreflang="x-default" href="<%= `${baseUrl}${defaultPath}` %>" />
+      <xhtml:link rel="alternate" hreflang="<%= defaultLocale %>" href="<%= `${baseUrl}${defaultPath}` %>" />
+      <% locales.forEach(locale => { %>
+        <% if (locale === defaultLocale) return; %>
+        <% const localizedPath = t(`page-path-${page}`, locale) %>
+        <xhtml:link rel="alternate" hreflang="<%= locale %>" href="<%= `${baseUrl}${localizedPath}` %>" />
+      <% }) %>
+
+      <changefreq>weekly</changefreq>
+      <priority><%= (1 - index / 10).toFixed(1) %></priority>
+      <lastmod><%= buildDate.toISOString() %></lastmod>
+    </url>
+  <% }) %>
+</urlset>

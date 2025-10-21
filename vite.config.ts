@@ -4,6 +4,7 @@ import { analyzer } from 'vite-bundle-analyzer';
 import preload from 'vite-plugin-preload';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { VitePWA } from 'vite-plugin-pwa';
+import { sitemap } from './vite-plugins/sitemap';
 import packageJson from './package.json' with { type: 'json' };
 
 process.env.VITE_APP_VERSION = packageJson.version;
@@ -14,6 +15,7 @@ export default defineConfig({
     mkcert(),
     preload(),
     createHtmlPlugin({ minify: true }),
+    sitemap(),
     VitePWA({
       // Don't inject register, as we will do it ourselves
       injectRegister: false,
