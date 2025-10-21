@@ -34,10 +34,12 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
       description,
     });
 
+    const normalizedPath = decodeURIComponent(location.pathname);
+
     logEvent('page_view', {
       page_title: title,
-      page_location: location.href,
-      page_path: location.pathname,
+      page_location: `${location.origin}${normalizedPath}`,
+      page_path: normalizedPath,
     });
   };
 
@@ -113,8 +115,9 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
 
   installRouter(async ({ pathname }, event) => {
     await i18nReadyPromise;
-    const normalizedPath =
-      pathname.split('/').length < 2 ? t('page-path-create') : pathname;
+    const normalizedPath = decodeURIComponent(
+      pathname.split('/').length < 2 ? t('page-path-create') : pathname,
+    );
 
     if (pathname !== normalizedPath) {
       history.replaceState({}, '', normalizedPath);
