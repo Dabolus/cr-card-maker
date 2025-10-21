@@ -58,7 +58,7 @@
           },
           {
             "key": "Cache-Control",
-            "value": "public, no-cache, must-revalidate"
+            "value": "public, max-age=604800"
           }
         ]
       },
