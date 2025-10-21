@@ -70,8 +70,8 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
 
     // Push the new path to the history only if necessary
     if (previousIndex < 0 || newIndex !== previousIndex) {
-      const newPageHref = tabs[newIndex].getAttribute('href') ?? '';
-      const newPageId = newPageHref.slice(1);
+      const newPageHref = tabs[newIndex].getAttribute('href')!;
+      const newPageId = tabs[newIndex].id.slice(0, -4);
       updatePageMetadata(newPageId);
       loadPageContent(newPageId);
 
@@ -111,8 +111,11 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
     }
   };
 
-  installRouter(({ pathname }, event) => {
-    const normalizedPath = pathname === '/' ? '/create' : pathname;
+  installRouter(async ({ pathname }, event) => {
+    await i18nReadyPromise;
+    const normalizedPath =
+      pathname.split('/').length < 2 ? t('page-path-create') : pathname;
+
     if (pathname !== normalizedPath) {
       history.replaceState({}, '', normalizedPath);
     }
@@ -120,7 +123,7 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
     // Set the newly selected menu item as selected and all the others as non selected
     let newItemIndex = Math.floor(tabs.length / 2); // Default to the center page
     tabs.forEach((item, index) => {
-      const itemUrl = item.getAttribute('href');
+      const itemUrl = item.getAttribute('href')!;
 
       // Update the item with the proper accessibility attributes
       item.setAttribute(
@@ -153,7 +156,7 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
       }
     });
 
-    const newPageId = tabs[newItemIndex].getAttribute('href')?.slice(1) ?? '';
+    const newPageId = tabs[newItemIndex].id.slice(0, -4);
     updatePageMetadata(newPageId);
     loadPageContent(newPageId);
 

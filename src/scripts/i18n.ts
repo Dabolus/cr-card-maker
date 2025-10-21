@@ -1,6 +1,7 @@
 import { get, set } from './settings';
 
 export const supportedLocales = ['en', 'it', 'es', 'pt'];
+export const [defaultLocale] = supportedLocales;
 
 const localesCache: Record<
   string,
@@ -40,7 +41,9 @@ export const t = (
 
 export const updateView = () => {
   document
-    .querySelectorAll('[data-i18n],[data-i18n-title],[data-i18n-aria-label]')
+    .querySelectorAll(
+      '[data-i18n],[data-i18n-href],[data-i18n-title],[data-i18n-aria-label]',
+    )
     .forEach((el) => {
       if (el.hasAttribute('data-i18n-title')) {
         const key = el.getAttribute('data-i18n-title')!;
@@ -52,6 +55,11 @@ export const updateView = () => {
         const value = t(key);
         el.setAttribute('aria-label', value);
       }
+      if (el.hasAttribute('data-i18n-href')) {
+        const key = el.getAttribute('data-i18n-href')!;
+        const value = t(key);
+        el.setAttribute('href', value);
+      }
       if (el.hasAttribute('data-i18n')) {
         const key = el.getAttribute('data-i18n')!;
         const value = t(key);
@@ -60,19 +68,32 @@ export const updateView = () => {
     });
 };
 
-export const getLocale = async () => {
-  const userLocale = await get<string>(
-    'locale',
-    navigator.language.slice(0, 2),
-  );
+const getLocaleFromSettings = (): Promise<string | null> =>
+  get<string | null>('locale', null);
 
-  return supportedLocales.includes(userLocale)
-    ? userLocale
-    : supportedLocales[0];
+const getLocaleFromPath = (): string | null => {
+  const pathParts = window.location.pathname.split('/');
+  return pathParts.length > 1 ? (pathParts[1] ?? null) : null;
+};
+
+const getLocaleFromNavigator = (): string | null =>
+  navigator.languages
+    .find((lang) => supportedLocales.includes(lang.slice(0, 2)))
+    ?.slice(0, 2) ?? null;
+
+export const getLocale = async () => {
+  const guessedLocale =
+    (await getLocaleFromSettings()) ??
+    getLocaleFromPath() ??
+    getLocaleFromNavigator();
+
+  return guessedLocale && supportedLocales.includes(guessedLocale)
+    ? guessedLocale
+    : defaultLocale;
 };
 
 export const setLocale = async (locale: string) => {
-  const newLocale = supportedLocales.includes(locale) ? locale : 'en';
+  const newLocale = supportedLocales.includes(locale) ? locale : defaultLocale;
   currentLocaleData = await getLocaleData(newLocale);
   updateView();
   await set('locale', newLocale);
