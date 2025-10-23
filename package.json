@@ -33,6 +33,7 @@
     "npm-check-updates": "^19.0.0",
     "prettier": "^3.6.2",
     "sass": "^1.93.2",
+    "schema-dts": "^1.1.5",
     "typescript": "^5.9.3",
     "vite": "^7.1.9",
     "vite-bundle-analyzer": "^1.2.3",
