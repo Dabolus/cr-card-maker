@@ -20,7 +20,7 @@ export interface BuildSitemapData {
   readonly t: (page: string, locale: string) => string;
 }
 
-const supportedLocales = ['en', 'it', 'es', 'pt'];
+const supportedLocales = ['en', 'fr', 'de', 'es', 'it', 'ja', 'pt', 'nl', 'ru'];
 const [defaultLocale] = supportedLocales;
 
 const readLocaleFiles = async (resolvedLocalesPath: string) => {
