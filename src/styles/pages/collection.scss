@@ -241,6 +241,35 @@
     max-width: 100%;
     max-height: calc(100% - 40px);
   }
+
+  & > #card-preview-menu-container {
+    position: fixed;
+    bottom: 0.5rem;
+    right: 0.5rem;
+
+    & > #card-preview-actions-button {
+      width: 3.2rem;
+      height: 3rem;
+
+      & > svg {
+        stroke: #582d00;
+        stroke-width: 1px;
+      }
+    }
+
+    & > #card-preview-actions-button-menu button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      & > svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        stroke: #582d00;
+        stroke-width: 1px;
+      }
+    }
+  }
 }
 
 @media (min-width: 480px) {

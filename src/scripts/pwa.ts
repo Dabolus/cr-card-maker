@@ -1,5 +1,5 @@
 import { registerSW } from 'virtual:pwa-register';
-import { showNotification } from './notifications';
+import { showNotification } from './ui/notifications';
 import { t } from './i18n';
 import { get, set } from './settings';
 

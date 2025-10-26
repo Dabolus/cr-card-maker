@@ -67,6 +67,10 @@ export type RendererBaseOptions = {
    */
   language: string;
   /**
+   * The ID of the card. It can be used to uniquely identify the card if needed.
+   */
+  cardId?: string;
+  /**
    * The name of the card.
    */
   cardName: string;

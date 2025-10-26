@@ -492,6 +492,9 @@
     "$schema": {
       "type": "string"
     },
+    "id": {
+      "type": "string"
+    },
     "name-translation-key": {
       "type": "string"
     },
@@ -604,6 +607,6 @@
       "additionalProperties": false
     }
   },
-  "required": ["name-translation-key", "width", "height"],
+  "required": ["id", "name-translation-key", "width", "height"],
   "additionalProperties": false
 }

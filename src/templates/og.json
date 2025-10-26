@@ -1,5 +1,6 @@
 {
   "$schema": "./$schema.json",
+  "id": "og",
   "name-translation-key": "template-name",
   "width": 1432,
   "height": 1794,

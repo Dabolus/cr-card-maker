@@ -12,4 +12,27 @@
     </div>
   </header>
   <canvas></canvas>
+  <div id="card-preview-menu-container" class="dropdown-menu-container">
+    <button id="card-preview-actions-button" class="sc-btn sc-btn-yellow dropdown-btn" aria-controls="card-preview-actions-button-menu" aria-haspopup="true" aria-expanded="false" data-i18n-aria-label="actions">
+      <svg viewBox="0 0 24 24"><path d="M3 19.5v-3h18v3zm0-6v-3h18v3zm0-6v-3h18v3z"/></svg>
+    </button>
+    <ul id="card-preview-actions-button-menu" role="menu" class="dropdown-menu sc-btn-yellow" aria-labelledby="card-preview-actions-button" hidden>
+      <li>
+        <button id="card-preview-download-button" class="sc-btn sc-btn-yellow">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+          </svg>
+          <span data-i18n="download"></span>
+        </button>
+      </li>
+      <li>
+        <button id="card-preview-share-button" class="sc-btn sc-btn-yellow">
+          <svg viewBox="0 0 24 24">
+            <path d="M16.75 9.9a3.23 3.23 0 1 0-3.15-2.66L9.3 9.61a3.23 3.23 0 1 0 0 4.87l4.3 2.44v.5a3.23 3.23 0 1 0 1-2.43l-4.3-2.37v-1.08l4.3-2.43q.93.72 2.15.79"/>
+          </svg>
+          <span data-i18n="share"></span>
+        </button>
+      </li>
+    </ul>
+  </div>
 </dialog>

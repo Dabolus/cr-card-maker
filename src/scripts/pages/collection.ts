@@ -8,9 +8,16 @@ import {
   shapesConfig,
 } from '../renderers/shared';
 import { createToRelativeMapper } from '../renderers/form/utils';
-import type { $Schema as TemplateSchema } from '../../templates/generated/types';
 import { get, set } from '../settings';
 import { t } from '../i18n';
+import { setupDropdown } from '../ui/dropdowns';
+import {
+  canShareImages,
+  dbCardToRendererOptions,
+  downloadCard,
+  shareCard,
+} from '../cards-utils';
+import type { $Schema as TemplateSchema } from '../../templates/generated/types';
 
 type StoredCard = CRCMDBSchema['cards']['value'];
 
@@ -302,8 +309,16 @@ export const onPageLoad = async () => {
       '#card-preview-page-select',
     )!;
   cardPreviewDialog.addEventListener('click', (e) => {
-    // Avoid closing the dialog when clicking on the page selector
-    if (e.target !== cardPreviewPageSelect) {
+    // Avoid closing the dialog when clicking on one of the interactive elements in the dialog
+    if (
+      e
+        .composedPath()
+        .every(
+          (el) =>
+            (el as HTMLElement).tagName !== 'SELECT' &&
+            (el as HTMLElement).tagName !== 'BUTTON',
+        )
+    ) {
       cardPreviewDialog.close();
     }
   });
@@ -326,6 +341,41 @@ export const onPageLoad = async () => {
       sortInfo,
     ),
   );
+
+  setupDropdown(
+    document.querySelector<HTMLElement>('#card-preview-menu-container')!,
+    [
+      {
+        selector: '#card-preview-download-button',
+        action: async () => {
+          if (!openedCardReference || !openedTemplateReference) {
+            return;
+          }
+          const cardRendererOptions =
+            await dbCardToRendererOptions(openedCardReference);
+          await downloadCard(cardRendererOptions);
+        },
+      },
+      {
+        selector: '#card-preview-share-button',
+        action: async () => {
+          if (!openedCardReference || !openedTemplateReference) {
+            return;
+          }
+          const cardRendererOptions =
+            await dbCardToRendererOptions(openedCardReference);
+          await shareCard(cardRendererOptions);
+        },
+      },
+    ],
+  );
+
+  // Show the share button only if sharing multiple images is supported by this browser
+  if (!canShareImages) {
+    document.querySelector<HTMLButtonElement>(
+      '#card-preview-share-button',
+    )!.hidden = true;
+  }
 
   await updateCardsList(
     cardPreviewDialog,
