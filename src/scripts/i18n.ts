@@ -1,6 +1,16 @@
 import { get, set } from './settings';
 
-export const supportedLocales = ['en', 'it', 'es', 'pt'];
+export const supportedLocales = [
+  'en',
+  'fr',
+  'de',
+  'es',
+  'it',
+  'ja',
+  'pt',
+  'nl',
+  'ru',
+];
 export const [defaultLocale] = supportedLocales;
 
 const localesCache: Record<
