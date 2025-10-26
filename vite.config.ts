@@ -6,9 +6,27 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import { VitePWA } from 'vite-plugin-pwa';
 import { sitemap } from './vite-plugins/sitemap';
 import packageJson from './package.json' with { type: 'json' };
+import type { Options } from 'html-minifier-terser';
 import type { WebSite } from 'schema-dts';
 
 process.env.VITE_APP_VERSION = packageJson.version;
+
+const baseUrl = 'https://clashroyalecardmaker.com';
+
+const htmlMinifierOptions: Options = {
+  collapseBooleanAttributes: true,
+  collapseWhitespace: true,
+  collapseInlineTagWhitespace: true,
+  keepClosingSlash: true,
+  removeComments: true,
+  removeRedundantAttributes: true,
+  removeScriptTypeAttributes: true,
+  removeStyleLinkTypeAttributes: true,
+  useShortDoctype: true,
+  minifyCSS: true,
+  minifyJS: true,
+  processScripts: ['application/ld+json'],
+};
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,8 +39,8 @@ export default defineConfig({
           linkedData: JSON.stringify({
             '@context': 'http://schema.org/',
             '@type': 'WebSite',
-            url: 'https://clashroyalecardmaker.com',
-            image: 'https://clashroyalecardmaker.com/icons/any-512x512.png',
+            url: baseUrl,
+            image: `${baseUrl}/icons/any-512x512.png`,
             name: 'Clash Royale Card Maker',
             description:
               'Welcome to Clash Royale Card Maker! With this simple tool you can create your own custom Clash Royale cards!',
@@ -57,22 +75,12 @@ export default defineConfig({
           } satisfies WebSite & { '@context': string }),
         },
       },
-      minify: {
-        collapseBooleanAttributes: true,
-        collapseWhitespace: true,
-        collapseInlineTagWhitespace: true,
-        keepClosingSlash: true,
-        removeComments: true,
-        removeRedundantAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        useShortDoctype: true,
-        minifyCSS: true,
-        minifyJS: true,
-        processScripts: ['application/ld+json'],
-      },
+      minify: htmlMinifierOptions,
     }),
-    sitemap(),
+    sitemap({
+      pages: ['create', 'collection', 'info'],
+      baseUrl,
+    }),
     VitePWA({
       // Don't inject register, as we will do it ourselves
       injectRegister: false,

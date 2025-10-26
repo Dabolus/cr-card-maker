@@ -1,10 +1,12 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { render as renderTemplate } from 'ejs';
-import { minify as minifyTemplate } from 'html-minifier';
+import { minify as minifyTemplate } from 'html-minifier-terser';
 import type { Plugin, ResolvedConfig } from 'vite';
 
 export interface SitemapPluginOptions {
+  readonly pages: string[];
+  readonly baseUrl: string;
   readonly localesPath?: string;
   readonly templatePath?: string;
   readonly outputPath?: string;
@@ -35,10 +37,12 @@ const readLocaleFiles = async (resolvedLocalesPath: string) => {
 };
 
 export const sitemap = ({
+  pages,
+  baseUrl,
   localesPath = 'src/locales/',
   templatePath = 'sitemap.ejs',
   outputPath = 'sitemap.xml',
-}: SitemapPluginOptions = {}): Plugin => {
+}: SitemapPluginOptions): Plugin => {
   let config: ResolvedConfig;
 
   return {
@@ -57,10 +61,10 @@ export const sitemap = ({
       const renderedTemplate = await renderTemplate(
         template,
         {
-          pages: ['create', 'collection', 'info'],
+          pages,
           locales: supportedLocales,
           defaultLocale,
-          baseUrl: 'https://clashroyalecardmaker.com',
+          baseUrl,
           buildDate: new Date(),
           t: (key: string, locale: string) => localesData[locale]?.[key] ?? key,
         },
@@ -71,7 +75,7 @@ export const sitemap = ({
         },
       );
 
-      const finalTemplate = minifyTemplate(renderedTemplate, {
+      const finalTemplate = await minifyTemplate(renderedTemplate, {
         collapseWhitespace: true,
         keepClosingSlash: true,
       });
