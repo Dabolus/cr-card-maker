@@ -62,13 +62,16 @@ const handleIconChange = ({
       showIconBackgroundLabel.appendChild(labelText);
       actionsContainer.appendChild(showIconBackgroundLabel);
 
+      const buttonsContainer = document.createElement('div');
+      buttonsContainer.classList.add('dialog-buttons');
+
       const cancelButton = document.createElement('button');
       cancelButton.classList.add('secondary-action');
       cancelButton.type = 'submit';
       cancelButton.formMethod = 'dialog';
       cancelButton.value = 'cancel';
       cancelButton.textContent = t('cancel');
-      actionsContainer.appendChild(cancelButton);
+      buttonsContainer.appendChild(cancelButton);
 
       const confirmButton = document.createElement('button');
       confirmButton.classList.add('primary-action');
@@ -76,7 +79,8 @@ const handleIconChange = ({
       confirmButton.formMethod = 'dialog';
       confirmButton.value = 'confirm';
       confirmButton.textContent = t('confirm');
-      actionsContainer.appendChild(confirmButton);
+      buttonsContainer.appendChild(confirmButton);
+      actionsContainer.appendChild(buttonsContainer);
 
       dialogForm.addEventListener('submit', async (e) => {
         e.preventDefault();
