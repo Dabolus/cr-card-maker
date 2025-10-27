@@ -105,6 +105,7 @@ export const getLocale = async () => {
 export const setLocale = async (locale: string) => {
   const newLocale = supportedLocales.includes(locale) ? locale : defaultLocale;
   currentLocaleData = await getLocaleData(newLocale);
+  document.documentElement.lang = newLocale;
   updateView();
   await set('locale', newLocale);
 };
@@ -112,5 +113,6 @@ export const setLocale = async (locale: string) => {
 export const setupI18n = async () => {
   const locale = await getLocale();
   currentLocaleData = await getLocaleData(locale);
+  document.documentElement.lang = locale;
   updateView();
 };

@@ -36,6 +36,7 @@ export default defineConfig({
     createHtmlPlugin({
       inject: {
         data: {
+          baseUrl,
           linkedData: JSON.stringify({
             '@context': 'http://schema.org/',
             '@type': 'WebSite',

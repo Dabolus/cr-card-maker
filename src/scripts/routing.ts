@@ -25,21 +25,26 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
     pagesContainer.querySelectorAll<HTMLDivElement>('.page'),
   );
 
-  const updatePageMetadata = async (pageId: string) => {
+  const updatePageMetadata = async (pageId: string, pagePath: string) => {
     await i18nReadyPromise;
     const title = t(`page-${pageId}-title`);
     const description = t(`page-${pageId}-description`);
+    const fullUrl = `${location.origin}${pagePath}`;
+
+    document
+      .querySelector<HTMLLinkElement>('link[rel="canonical"]')
+      ?.setAttribute('href', fullUrl);
+
     updateMetadata({
       title: `${title} - Clash Royale Card Maker`,
       description,
+      url: fullUrl,
     });
-
-    const normalizedPath = decodeURIComponent(location.pathname);
 
     logEvent('page_view', {
       page_title: title,
-      page_location: `${location.origin}${normalizedPath}`,
-      page_path: normalizedPath,
+      page_location: fullUrl,
+      page_path: pagePath,
     });
   };
 
@@ -74,7 +79,7 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
     if (previousIndex < 0 || newIndex !== previousIndex) {
       const newPageHref = tabs[newIndex].getAttribute('href')!;
       const newPageId = tabs[newIndex].id.slice(0, -4);
-      updatePageMetadata(newPageId);
+      updatePageMetadata(newPageId, newPageHref);
       loadPageContent(newPageId);
 
       // Update the item and its view with the proper accessibility attributes
@@ -160,7 +165,7 @@ export const setupRouting = (i18nReadyPromise: Promise<void>) => {
     });
 
     const newPageId = tabs[newItemIndex].id.slice(0, -4);
-    updatePageMetadata(newPageId);
+    updatePageMetadata(newPageId, normalizedPath);
     loadPageContent(newPageId);
 
     // Scroll to the correct section
