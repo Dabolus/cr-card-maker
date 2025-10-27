@@ -346,6 +346,16 @@ export const onPageLoad = async () => {
     document.querySelector<HTMLElement>('#card-preview-menu-container')!,
     [
       {
+        selector: '#card-preview-delete-button',
+        action: async () => {
+          if (!openedCardReference) {
+            return;
+          }
+          await cardsCollection.deleteCard(openedCardReference.id);
+          cardPreviewDialog.close();
+        },
+      },
+      {
         selector: '#card-preview-download-button',
         action: async () => {
           if (!openedCardReference || !openedTemplateReference) {
