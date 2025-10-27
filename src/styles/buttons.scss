@@ -9,13 +9,17 @@ button {
 
 .sc-btn {
   font-size: 1rem;
-  padding: 10px;
+  padding: 5px;
   border-radius: 3px;
   border: 0;
 
   &:active {
     position: relative;
     top: 2px;
+  }
+
+  @media (min-width: 480px) {
+    padding: 10px;
   }
 }
 

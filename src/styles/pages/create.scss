@@ -85,12 +85,17 @@
 
     & > .dropdown-menu-container {
       & > #actions-button {
-        width: 3.2rem;
-        height: 3rem;
+        width: 2.4rem;
+        height: 2.25rem;
 
         & > svg {
           stroke: #582d00;
           stroke-width: 1px;
+        }
+
+        @media (min-width: 480px) {
+          width: 3.2rem;
+          height: 3rem;
         }
       }
 
