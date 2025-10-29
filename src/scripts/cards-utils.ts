@@ -100,23 +100,111 @@ export const dbCardToRendererOptions = async (
   };
 };
 
+const readWholeStream = async (
+  stream: ReadableStream<Uint8Array<ArrayBuffer>>,
+): Promise<Uint8Array<ArrayBuffer>> => {
+  const reader = stream.getReader();
+  const chunks: Uint8Array<ArrayBuffer>[] = [];
+  let done = false;
+  while (!done) {
+    const { value, done: readerDone } = await reader.read();
+    if (value) {
+      chunks.push(value);
+    }
+    done = readerDone;
+  }
+  const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+  const result = new Uint8Array(totalLength);
+  let offset = 0;
+  for (const chunk of chunks) {
+    result.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return result;
+};
+
+interface BrotliWrapper {
+  compress(
+    input: Uint8Array<ArrayBuffer>,
+    options?: { quality: number },
+  ): Promise<Uint8Array<ArrayBuffer>>;
+  decompress(input: Uint8Array<ArrayBuffer>): Promise<Uint8Array<ArrayBuffer>>;
+}
+
+const getBrotliNative = (): BrotliWrapper => ({
+  compress: async (input, _options) => {
+    const compressionStream = new CompressionStream(
+      // Currently TS doesn't recognize 'brotli' as valid CompressionFormat
+      'brotli' as unknown as CompressionFormat,
+    );
+    const writer = compressionStream.writable.getWriter();
+    writer.write(input);
+    writer.close();
+    const compressedStream = compressionStream.readable;
+    return await readWholeStream(compressedStream);
+  },
+  decompress: async (input) => {
+    const decompressionStream = new DecompressionStream(
+      // Currently TS doesn't recognize 'brotli' as valid CompressionFormat
+      'brotli' as unknown as CompressionFormat,
+    );
+    const writer = decompressionStream.writable.getWriter();
+    writer.write(input);
+    writer.close();
+    const decompressedStream = decompressionStream.readable;
+    return await readWholeStream(decompressedStream);
+  },
+});
+
+const getBrotliWasm = (): BrotliWrapper => {
+  const brotliPromise = import('brotli-wasm').then((mod) => mod.default);
+  return {
+    compress: async (input, options) => {
+      const brotli = await brotliPromise;
+      return brotli.compress(input, options) as Uint8Array<ArrayBuffer>;
+    },
+    decompress: async (input) => {
+      const brotli = await brotliPromise;
+      return brotli.decompress(input) as Uint8Array<ArrayBuffer>;
+    },
+  };
+};
+
+const getBrotli = (): BrotliWrapper => {
+  try {
+    if (
+      'CompressionStream' in globalThis &&
+      'DecompressionStream' in globalThis
+    ) {
+      // If Compression/DecompressionStreams are available, check if they support brotli
+      // Currently TS doesn't recognize 'brotli' as valid CompressionFormat
+      new CompressionStream('brotli' as unknown as CompressionFormat);
+      new DecompressionStream('brotli' as unknown as CompressionFormat);
+      return getBrotliNative();
+    } else {
+      // Otherwise, throw to fall back to the catch block (i.e. WASM implementation)
+      throw new Error();
+    }
+  } catch {
+    return getBrotliWasm();
+  }
+};
+
 export const parseCard = async (file: File): Promise<RendererBaseOptions> => {
-  const brotli = await import('brotli-wasm').then((mod) => mod.default);
+  const brotli = getBrotli();
   const cardDataArrayBuffer = await file.arrayBuffer();
   const fullCard = new Uint8Array(cardDataArrayBuffer);
   // NOTE: Currently, we only have version 0, so we don't need to perform version checks
   const cardDataBrotliUint8Array = fullCard.slice(1); // Remove version byte
-  const cardDataUint8Array = brotli.decompress(cardDataBrotliUint8Array);
+  const cardDataUint8Array = await brotli.decompress(cardDataBrotliUint8Array);
   const utf8Decoder = new TextDecoder();
   const card: Card = JSON.parse(utf8Decoder.decode(cardDataUint8Array));
   return card;
 };
 
 export const exportCard = async (params: RendererBaseOptions) => {
-  const [brotli, { saveAs }] = await Promise.all([
-    import('brotli-wasm').then((mod) => mod.default),
-    import('file-saver'),
-  ]);
+  const { saveAs } = await import('file-saver');
+  const brotli = getBrotli();
   const cardData = JSON.stringify({
     ...params,
     createdAt: new Date().toISOString(),
@@ -124,9 +212,9 @@ export const exportCard = async (params: RendererBaseOptions) => {
   } satisfies Card);
   const utf8Encoder = new TextEncoder();
   const cardDataUint8Array = utf8Encoder.encode(cardData);
-  const cardDataBrotliUint8Array = brotli.compress(cardDataUint8Array, {
+  const cardDataBrotliUint8Array = await brotli.compress(cardDataUint8Array, {
     quality: 9,
-  }) as Uint8Array<ArrayBuffer>;
+  });
   const fullCard = new Uint8Array(cardDataBrotliUint8Array.length + 1);
   fullCard.set(new Uint8Array([0x0]), 0); // Version byte
   fullCard.set(cardDataBrotliUint8Array, 1);
