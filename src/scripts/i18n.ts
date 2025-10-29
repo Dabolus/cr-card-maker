@@ -1,4 +1,4 @@
-import { get, set } from './settings';
+import { db } from './db';
 
 export const supportedLocales = [
   'en',
@@ -78,18 +78,18 @@ export const updateView = () => {
     });
 };
 
-const getLocaleFromSettings = (): Promise<string | null> =>
-  get<string | null>('locale', null);
+const getLocaleFromSettings = async (): Promise<string | undefined> =>
+  await db.settings.get<string>('locale');
 
-const getLocaleFromPath = (): string | null => {
+const getLocaleFromPath = (): string | undefined => {
   const pathParts = window.location.pathname.split('/');
-  return pathParts.length > 1 ? (pathParts[1] ?? null) : null;
+  return pathParts.length > 1 ? pathParts[1] : undefined;
 };
 
-const getLocaleFromNavigator = (): string | null =>
+const getLocaleFromNavigator = (): string | undefined =>
   navigator.languages
     .find((lang) => supportedLocales.includes(lang.slice(0, 2)))
-    ?.slice(0, 2) ?? null;
+    ?.slice(0, 2);
 
 export const getLocale = async () => {
   const guessedLocale =
@@ -107,7 +107,7 @@ export const setLocale = async (locale: string) => {
   currentLocaleData = await getLocaleData(newLocale);
   document.documentElement.lang = newLocale;
   updateView();
-  await set('locale', newLocale);
+  await db.settings.set<string>('locale', newLocale);
 };
 
 export const setupI18n = async () => {

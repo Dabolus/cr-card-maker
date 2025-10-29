@@ -1,7 +1,7 @@
 import { registerSW } from 'virtual:pwa-register';
 import { showNotification } from './ui/notifications';
 import { t } from './i18n';
-import { get, set } from './settings';
+import { db } from './db';
 
 const updateCheckInterval = 60 * 60 * 1000;
 
@@ -49,9 +49,8 @@ export const registerServiceWorker = async (
   });
 
   // After each update, show a dialog with the changelog
-  const latestOpenedVersion = await get<string | null>(
+  const latestOpenedVersion = await db.settings.get<string>(
     'latestOpenedVersion',
-    null,
   );
 
   if (
@@ -66,5 +65,8 @@ export const registerServiceWorker = async (
     });
   }
 
-  await set('latestOpenedVersion', import.meta.env.VITE_APP_VERSION);
+  await db.settings.set<string>(
+    'latestOpenedVersion',
+    import.meta.env.VITE_APP_VERSION,
+  );
 };

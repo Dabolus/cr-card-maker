@@ -1,4 +1,4 @@
-import { cardsCollection, type CRCMDBSchema } from '../db';
+import { db, type CRCMDBSchema } from '../db';
 import {
   frameContainerNominalHeight,
   frameContainerNominalWidth,
@@ -8,15 +8,16 @@ import {
   shapesConfig,
 } from '../renderers/shared';
 import { createToRelativeMapper } from '../renderers/form/utils';
-import { get, set } from '../settings';
 import { t } from '../i18n';
 import { setupDropdown } from '../ui/dropdowns';
 import {
   canShareImages,
   dbCardToRendererOptions,
   downloadCard,
+  exportCard,
   shareCard,
 } from '../cards-utils';
+import { showNotification } from '../ui/notifications';
 import type { $Schema as TemplateSchema } from '../../templates/generated/types';
 
 type StoredCard = CRCMDBSchema['cards']['value'];
@@ -42,6 +43,7 @@ const renderImage = async (
   const canvas = await drawCanvas({
     template,
     language: card.language,
+    cardId: card.id,
     cardName: card.cardName,
     rarity: card.rarity,
     level: card.level,
@@ -198,7 +200,7 @@ const updateCardsList = async (
   cardPreviewConfigSelectsContainer: HTMLDivElement,
   sortInfo: SortInfo,
 ) => {
-  const cards = await cardsCollection.getCards();
+  const cards = await db.cards.getAll();
   const sortedCards = cards.toSorted((a, b) => {
     let compareResult = 0;
     switch (sortInfo.by) {
@@ -238,7 +240,7 @@ const updateCardsList = async (
 };
 
 export const onPageLoad = async () => {
-  const sortInfo = await get<SortInfo>('cardsSortInfo', {
+  const sortInfo = await db.settings.get<SortInfo>('cardsSortInfo', {
     by: 'creation',
     direction: 'desc',
   });
@@ -268,7 +270,7 @@ export const onPageLoad = async () => {
       t(`sort-direction-${sortInfo.direction}`),
     );
     await Promise.all([
-      set<SortInfo>('cardsSortInfo', sortInfo),
+      db.settings.set<SortInfo>('cardsSortInfo', sortInfo),
       updateCardsList(
         cardPreviewDialog,
         cardPreviewConfigSelectsContainer,
@@ -291,7 +293,7 @@ export const onPageLoad = async () => {
     sortInfo.by = sortByOptions[nextIndex];
     cardsSortByButton.textContent = t(`sort-by-${sortInfo.by}`);
     await Promise.all([
-      set<SortInfo>('cardsSortInfo', sortInfo),
+      db.settings.set<SortInfo>('cardsSortInfo', sortInfo),
       updateCardsList(
         cardPreviewDialog,
         cardPreviewConfigSelectsContainer,
@@ -316,6 +318,7 @@ export const onPageLoad = async () => {
         .every(
           (el) =>
             (el as HTMLElement).tagName !== 'SELECT' &&
+            (el as HTMLElement).tagName !== 'INPUT' &&
             (el as HTMLElement).tagName !== 'BUTTON',
         )
     ) {
@@ -334,7 +337,7 @@ export const onPageLoad = async () => {
       cardPreviewDialog,
     );
   });
-  cardsCollection.addEventListener('change', () =>
+  db.cards.addEventListener('change', () =>
     updateCardsList(
       cardPreviewDialog,
       cardPreviewConfigSelectsContainer,
@@ -351,8 +354,20 @@ export const onPageLoad = async () => {
           if (!openedCardReference) {
             return;
           }
-          await cardsCollection.deleteCard(openedCardReference.id);
+          await db.cards.remove(openedCardReference.id);
           cardPreviewDialog.close();
+        },
+      },
+      {
+        selector: '#card-preview-export-button',
+        action: async () => {
+          if (!openedCardReference || !openedTemplateReference) {
+            return;
+          }
+          const cardRendererOptions =
+            await dbCardToRendererOptions(openedCardReference);
+          await exportCard(cardRendererOptions);
+          showNotification({ message: t('card-exported') });
         },
       },
       {

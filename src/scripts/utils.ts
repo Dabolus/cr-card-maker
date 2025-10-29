@@ -52,14 +52,14 @@ export const loadImage = <T extends Url>(
   return waitImageLoaded(img);
 };
 
-export const readFileAsDataUrl = (file: File): Promise<string> =>
+export const readFileAsDataUrl = (blob: Blob): Promise<string> =>
   new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
       resolve(reader.result as string);
     };
     reader.onerror = reject;
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(blob);
   });
 
 const initializeAnalytics = async () => {

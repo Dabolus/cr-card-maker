@@ -44,7 +44,7 @@ export type CardImage = {
   fit: ImageFit;
 };
 
-export type RendererBaseOptions = {
+export type Card = {
   /**
    * The template to use for generating the card.
    */
@@ -67,9 +67,9 @@ export type RendererBaseOptions = {
    */
   language: string;
   /**
-   * The ID of the card. It can be used to uniquely identify the card if needed.
+   * The ID of the card. It is used to uniquely identify the card.
    */
-  cardId?: string;
+  cardId: string;
   /**
    * The name of the card.
    */
@@ -123,4 +123,14 @@ export type RendererBaseOptions = {
    * The stats to show on the card.
    */
   stats?: CardStat[];
+  /**
+   * The creation date of the card.
+   */
+  createdAt: string;
+  /**
+   * The last update date of the card.
+   */
+  updatedAt: string;
 };
+
+export type RendererBaseOptions = Omit<Card, 'createdAt' | 'updatedAt'>;

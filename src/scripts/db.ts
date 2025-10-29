@@ -5,7 +5,7 @@ import type { Icon, ImageFit } from './renderers/shared';
 export const dbName = 'crcm';
 export const dbVersion = 1;
 
-export interface CRCMDBSchema extends DBSchema {
+interface CRCMDBSchemaConfig {
   settings: {
     key: string;
     value: unknown;
@@ -47,7 +47,9 @@ export interface CRCMDBSchema extends DBSchema {
   };
 }
 
-export const db = await openDB<CRCMDBSchema>(dbName, dbVersion, {
+export type CRCMDBSchema = DBSchema & CRCMDBSchemaConfig;
+
+const idb = await openDB<CRCMDBSchema>(dbName, dbVersion, {
   upgrade(db) {
     db.createObjectStore('settings');
     const cardsStore = db.createObjectStore('cards', {
@@ -63,36 +65,89 @@ export const db = await openDB<CRCMDBSchema>(dbName, dbVersion, {
   },
 });
 
-class CardsCollection extends EventTarget {
-  async addCard(card: CRCMDBSchema['cards']['value']) {
-    await db.add('cards', card);
-    this.dispatchEvent(new Event('change'));
-  }
-
-  async updateCard(card: CRCMDBSchema['cards']['value']) {
-    await db.put('cards', card);
-    this.dispatchEvent(new Event('change'));
-  }
-
-  async deleteCard(cardId: string) {
-    await db.delete('cards', cardId);
-    this.dispatchEvent(new Event('change'));
-  }
-
-  async getCards() {
-    return await db.getAll('cards');
+class DBEvent<T extends keyof CRCMDBSchemaConfig> extends Event {
+  constructor(
+    public readonly storeName: T,
+    eventName: string,
+  ) {
+    super(eventName);
   }
 }
 
-export interface CardsCollectionEventMap {
-  change: Event;
+class DBChangeEvent<T extends keyof CRCMDBSchemaConfig> extends DBEvent<T> {
+  constructor(
+    storeName: T,
+    public readonly detail: Pick<CRCMDBSchemaConfig[T], 'key' | 'value'>,
+  ) {
+    super(storeName, 'change');
+  }
 }
 
-declare interface CardsCollection {
-  addEventListener<K extends keyof CardsCollectionEventMap>(
+class DBCollection<T extends keyof CRCMDBSchemaConfig> extends EventTarget {
+  constructor(private storeName: T) {
+    super();
+  }
+
+  async add(value: CRCMDBSchemaConfig[T]['value']): Promise<void> {
+    const key = await idb.add(this.storeName, value);
+    this.dispatchEvent(new DBChangeEvent(this.storeName, { key, value }));
+  }
+
+  async set<
+    TValue extends
+      CRCMDBSchema['settings']['value'] = CRCMDBSchema['settings']['value'],
+  >(key: CRCMDBSchemaConfig[T]['key'], value: TValue): Promise<void> {
+    await idb.put(this.storeName, value, key);
+    this.dispatchEvent(new DBChangeEvent(this.storeName, { key, value }));
+  }
+
+  async remove(key: CRCMDBSchemaConfig[T]['key']): Promise<void> {
+    await idb.delete(this.storeName, key);
+    this.dispatchEvent(new DBChangeEvent(this.storeName, { key, value: null }));
+  }
+
+  async clear(): Promise<void> {
+    await idb.clear(this.storeName);
+    this.dispatchEvent(new DBEvent(this.storeName, 'clear'));
+  }
+
+  async keys(): Promise<CRCMDBSchemaConfig[T]['key'][]> {
+    return await idb.getAllKeys(this.storeName);
+  }
+
+  async getAll(): Promise<CRCMDBSchemaConfig[T]['value'][]> {
+    return await idb.getAll(this.storeName);
+  }
+
+  async get<TValue extends CRCMDBSchemaConfig[T]['value']>(
+    key: CRCMDBSchemaConfig[T]['key'],
+  ): Promise<TValue | undefined>;
+  async get<TValue extends CRCMDBSchemaConfig[T]['value']>(
+    key: CRCMDBSchemaConfig[T]['key'],
+    defaultValue: TValue,
+  ): Promise<TValue>;
+  async get<TValue extends CRCMDBSchemaConfig[T]['value']>(
+    key: CRCMDBSchemaConfig[T]['key'],
+    defaultValue?: TValue,
+  ): Promise<TValue | undefined> {
+    const storedVal = await idb.get(this.storeName, key);
+    return (storedVal ?? defaultValue) as TValue | undefined;
+  }
+}
+
+export interface DBCollectionEventMap<T extends keyof CRCMDBSchemaConfig> {
+  change: DBChangeEvent<T>;
+  clear: DBEvent<T>;
+}
+
+declare interface DBCollection<T extends keyof CRCMDBSchemaConfig> {
+  addEventListener<K extends keyof DBCollectionEventMap<T>>(
     type: K,
-    listener: (event: CardsCollectionEventMap[K]) => void,
+    listener: (event: DBCollectionEventMap<T>[K]) => void,
   ): void;
 }
 
-export const cardsCollection = new CardsCollection();
+export const db = {
+  settings: new DBCollection('settings'),
+  cards: new DBCollection('cards'),
+};

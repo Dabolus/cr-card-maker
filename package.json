@@ -11,6 +11,7 @@
     "generate-types": "json2ts ./src/templates/\\$schema.json -o ./src/templates/generated/types.ts && echo -e \"// @ts-nocheck\\n$(cat ./src/templates/generated/types.ts)\" > ./src/templates/generated/types.ts"
   },
   "dependencies": {
+    "brotli-wasm": "^3.0.1",
     "cropperjs": "^2.0.1",
     "file-saver": "^2.0.5",
     "firebase": "^12.4.0",

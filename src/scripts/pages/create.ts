@@ -3,16 +3,20 @@ import placeholderImageUrl from '../../images/placeholder.svg';
 import { drawForm } from '../renderers/form';
 import { getLocale, t } from '../i18n';
 import { setupDropdown } from '../ui/dropdowns';
+import { showNotification } from '../ui/notifications';
 import {
   canShareImages,
   downloadCard,
+  exportCard,
+  parseCard,
   saveCard,
   shareCard,
 } from '../cards-utils';
+import { db } from '../db';
 import type { RendererBaseOptions } from '../renderers/types';
 import type { $Schema as TemplateSchema } from '../../templates/generated/types';
 
-const defaultParams: RendererBaseOptions = {
+const defaultParams: Omit<RendererBaseOptions, 'cardId'> = {
   template: standardTemplate as unknown as TemplateSchema,
   language: 'en',
   cardName: '',
@@ -52,18 +56,26 @@ const updatePagesSelect = (
 };
 
 export const onPageLoad = async () => {
-  let currentParams: RendererBaseOptions = {
-    ...defaultParams,
-    language: await getLocale(),
-  };
+  let currentParams = await db.settings.get<RendererBaseOptions>(
+    'currentCard',
+    {
+      ...defaultParams,
+      cardId: crypto.randomUUID(),
+      language: await getLocale(),
+    },
+  );
 
   const cardEditor = document.querySelector<HTMLDivElement>('#card-editor')!;
 
   const renderForm = async () => {
     const result = await drawForm({
       ...currentParams,
-      onChange: (_, key, val) => {
+      onChange: async (_, key, val) => {
         (currentParams as Record<string, unknown>)[key] = val;
+        await db.settings.set<RendererBaseOptions>(
+          'currentCard',
+          currentParams,
+        );
       },
     });
     cardEditor.firstElementChild?.replaceWith(result.element);
@@ -93,12 +105,45 @@ export const onPageLoad = async () => {
   });
   updatePagesSelect(currentParams, pageSelect, pageSelectContainer);
 
+  db.settings.addEventListener('change', async (event) => {
+    if (
+      event.detail.key === 'currentCard' &&
+      (event.detail.value as RendererBaseOptions).cardId !==
+        currentParams.cardId
+    ) {
+      currentParams = event.detail.value as RendererBaseOptions;
+      updatePagesSelect(currentParams, pageSelect, pageSelectContainer);
+      renderResult = await renderForm();
+    }
+  });
+
   setupDropdown(
     document.querySelector<HTMLElement>('#actions-menu-container')!,
     [
       {
+        selector: '#clear-button',
+        action: async () => {
+          await db.settings.set<RendererBaseOptions>('currentCard', {
+            ...defaultParams,
+            cardId: crypto.randomUUID(),
+            language: await getLocale(),
+          });
+          showNotification({ message: t('card-cleared') });
+        },
+      },
+      {
+        selector: '#export-button',
+        action: async () => {
+          await exportCard(currentParams);
+          showNotification({ message: t('card-exported') });
+        },
+      },
+      {
         selector: '#save-button',
-        action: () => saveCard(currentParams),
+        action: async () => {
+          await saveCard(currentParams);
+          showNotification({ message: t('card-saved') });
+        },
       },
       {
         selector: '#download-button',
@@ -110,6 +155,19 @@ export const onPageLoad = async () => {
       },
     ],
   );
+
+  document
+    .querySelector('#import-card-input')!
+    .addEventListener('change', async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) {
+        return;
+      }
+      const parsedCard = await parseCard(file);
+      await db.settings.set<RendererBaseOptions>('currentCard', parsedCard);
+      (e.target as HTMLInputElement).value = '';
+      showNotification({ message: t('card-imported') });
+    });
 
   // Show the share button only if sharing multiple images is supported by this browser
   if (!canShareImages) {

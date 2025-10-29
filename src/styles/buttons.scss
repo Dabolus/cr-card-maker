@@ -1,4 +1,5 @@
-button {
+button,
+label {
   cursor: pointer;
   font: inherit;
 
@@ -120,7 +121,8 @@ button {
       0 1px 0 2px #202020;
   }
 
-  & li > button {
+  & li > button,
+  & li > label {
     font-family: inherit;
     white-space: nowrap;
     width: 100%;
@@ -138,11 +140,13 @@ button {
     }
   }
 
-  & li:first-child > button.sc-btn-yellow {
+  & li:first-child > button.sc-btn-yellow,
+  & li:first-child > label.sc-btn-yellow {
     border-radius: 3px 3px 0 0;
   }
 
-  & li:last-child > button.sc-btn-yellow {
+  & li:last-child > button.sc-btn-yellow,
+  & li:last-child > label.sc-btn-yellow {
     border-radius: 0 0 3px 3px;
   }
 }
