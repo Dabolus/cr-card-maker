@@ -1,6 +1,17 @@
 /// <reference types="vite/client" />
 /// <reference types="vite-plugin-pwa/client" />
 
+interface LaunchParams {
+  targetURL: string;
+  files: FileSystemFileHandle[];
+}
+
+interface Window {
+  launchQueue?: {
+    setConsumer: (consumer: (params: LaunchParams) => void) => void;
+  };
+}
+
 interface ImportMetaEnv {
   readonly VITE_APP_VERSION: string;
   readonly VITE_FIREBASE_API_KEY: string;

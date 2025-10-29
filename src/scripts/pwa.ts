@@ -70,3 +70,18 @@ export const registerServiceWorker = async (
     import.meta.env.VITE_APP_VERSION,
   );
 };
+
+export interface RegisterLaunchQueueConsumerOptions {
+  onFileReceived?: (file: File) => void;
+}
+
+export const registerLaunchQueueConsumer = ({
+  onFileReceived,
+}: RegisterLaunchQueueConsumerOptions) => {
+  window.launchQueue?.setConsumer(async (launchParams) => {
+    if (launchParams.files?.length) {
+      const file = await launchParams.files[0].getFile();
+      onFileReceived?.(file);
+    }
+  });
+};

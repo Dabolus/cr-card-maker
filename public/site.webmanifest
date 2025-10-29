@@ -145,6 +145,14 @@
   "launch_handler": {
     "client_mode": ["navigate-new", "auto"]
   },
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "application/octet-stream": [".crcard"]
+      }
+    }
+  ],
   "theme_color": "#344253",
   "background_color": "#344253",
   "start_url": "/",
