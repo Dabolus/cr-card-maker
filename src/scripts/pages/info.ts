@@ -28,7 +28,7 @@ export const onPageLoad = async () => {
     document.querySelector<HTMLAnchorElement>('#donation-button')!;
 
   donationInput.addEventListener('input', () => {
-    const value = parseFloat(donationInput.value) || 5;
-    donationButton.href = `https://www.paypal.me/GiorgioGarasto/${value.toFixed(2)}usd`;
+    const value = Number(donationInput.value) || 5;
+    donationButton.href = `https://github.com/sponsors/Dabolus?frequency=one-time&amount=${value}`;
   });
 };
