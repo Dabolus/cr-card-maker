@@ -16,36 +16,15 @@ export const shapes = [
 
 export type Shape = (typeof shapes)[number];
 
-export const raritiesConfig: Record<
-  Rarity,
-  {
-    minLevel: number;
-    shape: Shape;
-  }
-> = {
-  common: {
-    minLevel: 1,
-    shape: 'normal',
-  },
-  rare: {
-    minLevel: 3,
-    shape: 'normal',
-  },
-  epic: {
-    minLevel: 6,
-    shape: 'normal',
-  },
-  legendary: {
-    minLevel: 9,
-    shape: 'legendary',
-  },
-  champion: {
-    minLevel: 11,
-    shape: 'champion',
-  },
+export const rarityToShape: Record<Rarity, Shape> = {
+  common: 'normal',
+  rare: 'normal',
+  epic: 'normal',
+  legendary: 'legendary',
+  champion: 'champion',
 };
 
-export const rarities = Object.keys(raritiesConfig) as Rarity[];
+export const rarities = Object.keys(rarityToShape) as Rarity[];
 
 export const types: Type[] = [
   'troop',
@@ -54,6 +33,17 @@ export const types: Type[] = [
   'tower-troop',
   'ruler',
 ];
+
+export const getShape = ({
+  rarity,
+  cardType,
+}: {
+  rarity: Rarity;
+  cardType: Type;
+}): Shape =>
+  cardType === 'tower-troop' || cardType === 'ruler'
+    ? cardType
+    : rarityToShape[rarity];
 
 export const frameContainerNominalWidth = 280;
 export const frameContainerNominalHeight = 385;

@@ -9,7 +9,7 @@ export const drawPageBackground = ({
   page,
 }: DrawFormPartParams) => {
   const pageConfig = options.template.pages?.[page - 1];
-  if (!pageConfig) {
+  if (!pageConfig?.background) {
     return;
   }
   styles.insertRule(css`

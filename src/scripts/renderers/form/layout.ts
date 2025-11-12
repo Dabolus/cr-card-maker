@@ -30,11 +30,14 @@ export const setupLayout = ({ options }: SetupLayoutParams) => {
       aspect-ratio: ${options.template.width} / ${options.template.height};
     }
   `);
-  styles.insertRule(css`
-    #card {
-      background: url(${options.template.background}) no-repeat center/100% 100%;
-    }
-  `);
+  if (options.template.background) {
+    styles.insertRule(css`
+      #card {
+        background: url(${options.template.background}) no-repeat center/100%
+          100%;
+      }
+    `);
+  }
   styles.insertRule(css`
     input,
     textarea,

@@ -1,5 +1,5 @@
-import standardTemplate from '../../templates/standard.json' with { type: 'json' };
-import placeholderImageUrl from '../../images/placeholder.svg';
+import placeholderPortraitUrl from '../../images/portrait-placeholder.svg?url';
+import placeholderHeroUrl from '../../images/hero-placeholder.svg?url';
 import { drawForm } from '../renderers/form';
 import { getLocale, t } from '../i18n';
 import { setupDropdown } from '../ui/dropdowns';
@@ -8,16 +8,16 @@ import {
   canShareImages,
   downloadCard,
   exportCard,
+  getTemplate,
   parseCard,
   saveCard,
   shareCard,
 } from '../cards-utils';
 import { db } from '../db';
 import type { RendererBaseOptions } from '../renderers/types';
-import type { $Schema as TemplateSchema } from '../../templates/generated/types';
 
 const defaultParams: Omit<RendererBaseOptions, 'cardId'> = {
-  template: standardTemplate as unknown as TemplateSchema,
+  template: await getTemplate('standard'),
   language: 'en',
   cardName: '',
   rarity: 'common',
@@ -26,7 +26,9 @@ const defaultParams: Omit<RendererBaseOptions, 'cardId'> = {
   elixirCost: '?',
   description: '',
   image: {
-    src: placeholderImageUrl,
+    fit: 'contain',
+  },
+  heroImage: {
     fit: 'contain',
   },
   stats: [],
@@ -56,7 +58,7 @@ const updatePagesSelect = (
 };
 
 export const onPageLoad = async () => {
-  let currentParams = await db.settings.get<RendererBaseOptions>(
+  const dbCurrentCard = await db.settings.get<RendererBaseOptions>(
     'currentCard',
     {
       ...defaultParams,
@@ -64,12 +66,19 @@ export const onPageLoad = async () => {
       language: await getLocale(),
     },
   );
+  let currentParams: RendererBaseOptions = {
+    ...dbCurrentCard,
+    // Make sure to always load the template afresh, in case it was updated
+    template: await getTemplate(dbCurrentCard.template.id),
+  };
 
   const cardEditor = document.querySelector<HTMLDivElement>('#card-editor')!;
 
   const renderForm = async () => {
     const result = await drawForm({
       ...currentParams,
+      imagePlaceholderSrc: placeholderPortraitUrl,
+      heroImagePlaceholderSrc: placeholderHeroUrl,
       onChange: async (_, key, val) => {
         (currentParams as Record<string, unknown>)[key] = val;
         await db.settings.set<RendererBaseOptions>(
@@ -95,11 +104,25 @@ export const onPageLoad = async () => {
 
   const templateSelect =
     document.querySelector<HTMLSelectElement>('#template-select')!;
+  // Select the current template in the select
+  templateSelect.value = currentParams.template.id;
   templateSelect.addEventListener('change', async (e) => {
     const selectedTemplateId = (e.target as HTMLSelectElement).value;
-    currentParams.template = await import(
-      `../../templates/${selectedTemplateId}.json`
-    ).then((mod) => mod.default);
+    const newTemplate = await getTemplate(selectedTemplateId);
+    currentParams.template = newTemplate;
+    // Adjust current params to fit new template constraints
+    if (
+      newTemplate['supported-rarities'] &&
+      !newTemplate['supported-rarities'].includes(currentParams.rarity)
+    ) {
+      currentParams.rarity = newTemplate['supported-rarities'][0];
+    }
+    if (
+      newTemplate['supported-types'] &&
+      !newTemplate['supported-types'].includes(currentParams.cardType)
+    ) {
+      currentParams.cardType = newTemplate['supported-types'][0];
+    }
     updatePagesSelect(currentParams, pageSelect, pageSelectContainer);
     renderResult = await renderForm();
   });
@@ -125,10 +148,11 @@ export const onPageLoad = async () => {
         action: async () => {
           await db.settings.set<RendererBaseOptions>('currentCard', {
             ...defaultParams,
+            template: currentParams.template,
             cardId: crypto.randomUUID(),
             language: await getLocale(),
           });
-          showNotification({ message: t('card-cleared') });
+          // showNotification({ message: t('card-cleared') });
         },
       },
       {

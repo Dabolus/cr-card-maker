@@ -1,6 +1,7 @@
 import { setupLayout } from './layout';
 import { drawPageBackground } from './page-background';
 import { drawStats } from './stats';
+import { drawHeroImage } from './hero-image';
 import { drawImage } from './image';
 import { drawName } from './name';
 import { drawLevel } from './level';
@@ -42,8 +43,17 @@ const drawFormElements = async (options: DrawFormOptions, page: number) => {
     page,
   });
 
+  // Draw the hero image (if possible)
+  drawHeroImage({
+    options,
+    toRelative,
+    styles,
+    form,
+    page,
+  });
+
   // Draw the image (if possible)
-  const { updateRarityFrame } = drawImage({
+  const { updateImageFrame } = drawImage({
     options,
     toRelative,
     styles,
@@ -69,7 +79,10 @@ const drawFormElements = async (options: DrawFormOptions, page: number) => {
     page,
     onRarityChange: (newRarity) => {
       updateLevelTextColor(newRarity);
-      updateRarityFrame(newRarity);
+      updateImageFrame({ rarity: newRarity, cardType: options.cardType });
+    },
+    onTypeChange: (newType) => {
+      updateImageFrame({ rarity: options.rarity, cardType: newType });
     },
   });
 

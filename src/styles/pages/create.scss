@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
 
   & > #card-config-selects-container {
     margin: 0.5rem 0 0;
@@ -61,16 +62,10 @@
     height: 100%;
 
     // Make the dynamic card editor fill the container, but keep its aspect ratio
-    & > [role='application'] {
-      @media (orientation: portrait) {
-        width: 100%;
-        height: auto;
-      }
-
-      @media (orientation: landscape) {
-        height: 100%;
-        width: auto;
-      }
+    & > [role='application'],
+    & > canvas {
+      height: 100%;
+      width: auto;
     }
   }
 

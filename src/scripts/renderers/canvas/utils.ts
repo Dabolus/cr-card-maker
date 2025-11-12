@@ -95,9 +95,11 @@ export const getCanvasColor = (
     gradientY?: number;
     gradientWidth?: number;
   } = {},
-) => {
+): string | CanvasGradient => {
   const colorValue =
-    typeof color === 'string' || Array.isArray(color) ? color : color[rarity];
+    typeof color === 'string' || Array.isArray(color)
+      ? color
+      : (color[rarity] ?? color.common);
 
   if (Array.isArray(colorValue) && colorValue.length > 1) {
     const startX =

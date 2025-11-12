@@ -22,7 +22,7 @@ export const drawName = ({ options, ctx, page }: DrawCanvasPartParams) => {
   ctx.shadowColor = 'black';
   ctx.lineWidth = nameField.fontSize * 0.1;
   ctx.shadowOffsetY = nameField.fontSize * 0.07;
-  const localizedCardName = t('name', options, i18n);
+  const localizedCardName = t('name', options, i18n, '{{cardName}}');
   fitFontSize(
     ctx,
     localizedCardName,

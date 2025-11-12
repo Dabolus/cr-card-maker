@@ -22,7 +22,11 @@ interface CRCMDBSchemaConfig {
       cardType: Type;
       elixirCost: number | null;
       description: string;
-      image: {
+      image?: {
+        src: Blob | null;
+        fit: ImageFit;
+      };
+      heroImage?: {
         src: Blob | null;
         fit: ImageFit;
       };

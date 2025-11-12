@@ -95,6 +95,7 @@ export const drawName = ({
       cardName: `<input name="cardName" value="${options.cardName}" placeholder="${t('card-name-placeholder')}" maxlength="32" />`,
     },
     i18n,
+    '{{cardName}}',
   );
   cardName
     .querySelector('select[name="level"]')

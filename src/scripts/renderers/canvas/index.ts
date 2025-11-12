@@ -8,11 +8,12 @@ import { drawElixirCost } from './elixir-cost';
 import { drawRarityType } from './rarity-type';
 import { drawDescription } from './description';
 import { drawStats } from './stats';
+import { drawHeroImage } from './hero-image';
 import {
   getIconsImages,
+  getShape,
   getShapeImage,
   getTemplateField,
-  raritiesConfig,
 } from '../shared';
 import type { DrawCanvasOptions } from './types';
 
@@ -34,6 +35,7 @@ export const drawCanvas = async ({
 
   const [
     loadedImage,
+    loadedHeroImage,
     loadedCardBgImage,
     loadedPageBgImage,
     loadedElixirImage,
@@ -44,14 +46,23 @@ export const drawCanvas = async ({
     loadedStatsEvenBgImage,
     loadedStatsOddBgImage,
   ] = await Promise.all([
-    loadImage(options.image.src).catch(() => null),
+    options.image
+      ? loadImage(options.image?.src ?? options.imagePlaceholderSrc).catch(
+          () => null,
+        )
+      : null,
+    options.heroImage
+      ? loadImage(
+          options.heroImage?.src ?? options.heroImagePlaceholderSrc,
+        ).catch(() => null)
+      : null,
     options.template.background ? loadImage(options.template.background) : null,
     options.template.pages?.[page - 1]?.background
       ? loadImage(options.template.pages?.[page - 1]?.background)
       : null,
     loadImage('/cards-assets/elixir.png'),
     getIconsImages(options.stats?.map((item) => item.icon) ?? []),
-    getShapeImage(raritiesConfig[options.rarity].shape),
+    getShapeImage(getShape(options)),
     rarityBackgroundField
       ? loadImage(rarityBackgroundField.url, options.rarity)
       : null,
@@ -85,6 +96,14 @@ export const drawCanvas = async ({
 
   // Draw the level
   drawLevel({ options, ctx, page });
+
+  // Draw the hero image (if possible)
+  drawHeroImage({
+    options,
+    ctx,
+    page,
+    heroImage: loadedHeroImage,
+  });
 
   // Draw the image (if possible)
   drawImage({

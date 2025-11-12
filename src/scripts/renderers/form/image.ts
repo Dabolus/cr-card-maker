@@ -1,142 +1,19 @@
 import {
-  imageFitOptions,
-  raritiesConfig,
   shapesConfig,
   frameContainerNominalWidth,
   frameContainerNominalHeight,
   getShapeImageSrc,
   getTemplateField,
+  getShape,
 } from '../shared';
-import { css, createToRelativeMapper } from './utils';
-import { loadImage, readFileAsDataUrl } from '../../utils';
-import { t } from '../../i18n';
+import { css, createToRelativeMapper, openImageEditor } from './utils';
+import { readFileAsDataUrl } from '../../utils';
 import type { DrawFormOptions, DrawFormPartParams } from './types';
 import type { ImageFit, Rarity } from '../types';
-import type { CropperSelection } from 'cropperjs';
-import type { Fields } from '../../../templates/generated/types';
+import type { Type } from '../../../templates/generated/types';
 
 // Lazy-load CropperJS
-const cropperJsPromise = import('cropperjs').then((mod) => mod.default);
-
-const handleImageEdit = async ({
-  options,
-  form,
-  fileDataUrl,
-  imageField,
-}: {
-  options: DrawFormPartParams['options'];
-  form: HTMLFormElement;
-  fileDataUrl: string;
-  imageField: NonNullable<Fields['image']>;
-}): Promise<{ image: HTMLImageElement; fit: ImageFit }> => {
-  const { resolve, promise } = Promise.withResolvers<{
-    image: HTMLImageElement;
-    fit: ImageFit;
-  }>();
-
-  await cropperJsPromise;
-
-  const dialog = document.createElement('dialog');
-  dialog.classList.add('fullscreen');
-  dialog.id = 'card-crop-dialog';
-
-  const dialogForm = document.createElement('form');
-  dialogForm.method = 'dialog';
-
-  const cropperCanvas = document.createElement('cropper-canvas');
-  const aspectRatio = imageField.width / imageField.height;
-  cropperCanvas.innerHTML = `
-      <cropper-image src="${fileDataUrl}" alt="Picture" rotatable scalable skewable translatable></cropper-image>
-      <cropper-shade hidden></cropper-shade>
-      <cropper-handle action="move" plain></cropper-handle>
-      <cropper-selection initial-coverage="0.5" aspect-ratio="${aspectRatio}" movable resizable>
-        <cropper-grid role="grid" covered></cropper-grid>
-        <cropper-crosshair centered></cropper-crosshair>
-        <cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>
-        <cropper-handle action="n-resize"></cropper-handle>
-        <cropper-handle action="e-resize"></cropper-handle>
-        <cropper-handle action="s-resize"></cropper-handle>
-        <cropper-handle action="w-resize"></cropper-handle>
-        <cropper-handle action="ne-resize"></cropper-handle>
-        <cropper-handle action="nw-resize"></cropper-handle>
-        <cropper-handle action="se-resize"></cropper-handle>
-        <cropper-handle action="sw-resize"></cropper-handle>
-      </cropper-selection>
-    `;
-  const cropperSelection =
-    cropperCanvas.querySelector<CropperSelection>('cropper-selection')!;
-  dialogForm.appendChild(cropperCanvas);
-
-  const actionsContainer = document.createElement('div');
-  actionsContainer.classList.add('dialog-actions');
-  dialogForm.appendChild(actionsContainer);
-
-  const imageFitLabel = document.createElement('label');
-  imageFitLabel.id = 'image-fit';
-  imageFitLabel.textContent = t('image-fit-label');
-
-  const imageFitSelect = document.createElement('select');
-  imageFitSelect.name = 'image-fit';
-  imageFitSelect.innerHTML = imageFitOptions
-    .map(
-      (option) =>
-        `<option value="${option}" ${option === options.image.fit ? 'selected' : ''}>${t(`image-fit-${option}`)}</option>`,
-    )
-    .join('');
-  imageFitLabel.appendChild(imageFitSelect);
-  actionsContainer.appendChild(imageFitLabel);
-
-  const buttonsContainer = document.createElement('div');
-  buttonsContainer.classList.add('dialog-buttons');
-
-  const dontCropButton = document.createElement('button');
-  dontCropButton.classList.add('secondary-action');
-  dontCropButton.type = 'submit';
-  dontCropButton.formMethod = 'dialog';
-  dontCropButton.value = 'dont-crop';
-  dontCropButton.textContent = t('dont-crop');
-  buttonsContainer.appendChild(dontCropButton);
-
-  const cropButton = document.createElement('button');
-  cropButton.classList.add('primary-action');
-  cropButton.type = 'submit';
-  cropButton.formMethod = 'dialog';
-  cropButton.value = 'crop';
-  cropButton.textContent = t('crop');
-  buttonsContainer.appendChild(cropButton);
-  actionsContainer.appendChild(buttonsContainer);
-
-  dialogForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const submitter = (e as SubmitEvent).submitter as HTMLButtonElement;
-
-    if (submitter.value === 'crop') {
-      const selection = await cropperSelection.$toCanvas();
-      const croppedDataUrl = selection.toDataURL('image/png');
-      const croppedImage = await loadImage(croppedDataUrl);
-      resolve({
-        image: croppedImage,
-        fit: imageFitSelect.value as ImageFit,
-      });
-    } else {
-      const originalImage = await loadImage(fileDataUrl);
-      resolve({
-        image: originalImage,
-        fit: imageFitSelect.value as ImageFit,
-      });
-    }
-
-    dialog.close();
-    form.removeChild(dialog);
-  });
-
-  dialogForm.appendChild(actionsContainer);
-  dialog.appendChild(dialogForm);
-  form.appendChild(dialog);
-  dialog.showModal();
-
-  return await promise;
-};
+import('cropperjs');
 
 export const drawImage = ({
   options,
@@ -145,12 +22,12 @@ export const drawImage = ({
   form,
   page,
 }: DrawFormPartParams): {
-  updateRarityFrame: (rarity: Rarity) => void;
+  updateImageFrame: (config: { rarity: Rarity; cardType: Type }) => void;
 } => {
   const imageField = getTemplateField(options.template, 'image', page);
-  if (!imageField) {
+  if (!options.image || !imageField) {
     return {
-      updateRarityFrame: () => {},
+      updateImageFrame: () => {},
     };
   }
   // Draw the contour of the image
@@ -193,40 +70,6 @@ export const drawImage = ({
       }
     }
   `);
-  styles.insertRule(css`
-    #card-crop-dialog {
-      padding: 1rem;
-
-      & > form {
-        width: 100%;
-        height: 100%;
-
-        & > cropper-canvas {
-          flex: 1;
-          border-radius: 8px;
-        }
-
-        & > .dialog-actions #image-fit {
-          color: #000;
-          margin-right: auto;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 0.5rem;
-
-          @media (min-width: 600px) {
-            flex-direction: row;
-            align-items: center;
-          }
-
-          & > select {
-            padding: 0.25rem;
-            border-radius: 4px;
-          }
-        }
-      }
-    }
-  `);
   const container = document.createElement('label');
   container.id = 'card-image-container';
 
@@ -262,8 +105,8 @@ export const drawImage = ({
   };
   const toContainerRelative = createToRelativeMapper(0, containerSize.width);
 
-  const applyShapeLayout = (rarity: Rarity) => {
-    const shapeKey = raritiesConfig[rarity].shape;
+  const applyShapeLayout = (config: { rarity: Rarity; cardType: Type }) => {
+    const shapeKey = getShape(config);
     const shapeConfig = shapesConfig[shapeKey];
     const scaleX = containerSize.width / frameContainerNominalWidth;
     const scaleY = containerSize.height / frameContainerNominalHeight;
@@ -306,15 +149,18 @@ export const drawImage = ({
     cardImageFrame.style.backgroundImage = `url("${getShapeImageSrc(shapeKey)}")`;
   };
 
-  cardImage.src = options.image?.src ?? '';
+  cardImage.src = options.image?.src ?? options.imagePlaceholderSrc;
 
   const setImageFit = (fit: ImageFit) => {
     cardImage.style.objectFit = fit;
-    options.image.fit = fit;
+    options.image = {
+      ...options.image,
+      fit,
+    };
   };
   setImageFit(options.image.fit);
 
-  applyShapeLayout(options.rarity);
+  applyShapeLayout(options);
 
   imageInput.addEventListener('change', async (event) => {
     const target = event.target as HTMLInputElement;
@@ -325,11 +171,11 @@ export const drawImage = ({
     const fileDataUrl = await readFileAsDataUrl(file);
     // Reset the input
     imageInput.value = '';
-    const editResult = await handleImageEdit({
-      options,
+    const editResult = await openImageEditor({
       form,
       fileDataUrl,
-      imageField,
+      imageSize: imageField,
+      defaultImageFit: options.image?.fit,
     });
     cardImage.src = editResult.image.src;
     setImageFit(editResult.fit);
@@ -351,8 +197,6 @@ export const drawImage = ({
   form.appendChild(container);
 
   return {
-    updateRarityFrame: (rarity: Rarity) => {
-      applyShapeLayout(rarity);
-    },
+    updateImageFrame: applyShapeLayout,
   };
 };

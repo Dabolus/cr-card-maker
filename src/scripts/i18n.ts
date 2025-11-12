@@ -32,8 +32,9 @@ export const t = (
   key: string,
   params: Record<string, unknown> = {},
   localeData: Record<string, string> = currentLocaleData,
+  fallbackTranslation: string = key,
 ) => {
-  const rawTranslation = localeData[key];
+  const rawTranslation = localeData[key] ?? fallbackTranslation;
 
   if (!rawTranslation) {
     if (import.meta.env.DEV) {

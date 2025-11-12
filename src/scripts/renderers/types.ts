@@ -33,7 +33,7 @@ export type CardImage = {
    * The source URL of the image.
    * It can also be a valid data URL (e.g. a base64 encoded image).
    */
-  src: string;
+  src?: string;
   /**
    * The fit of the image.
    * Similarly to the CSS property, it can be:
@@ -118,7 +118,11 @@ export type Card = {
   /**
    * The image of the card.
    */
-  image: CardImage;
+  image?: CardImage;
+  /**
+   * The hero image of the card.
+   */
+  heroImage?: CardImage;
   /**
    * The stats to show on the card.
    */

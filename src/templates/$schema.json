@@ -49,7 +49,7 @@
               "$ref": "#/definitions/ColorValue"
             }
           },
-          "required": ["common", "rare", "epic", "legendary", "champion"],
+          "required": ["common", "rare", "epic", "legendary"],
           "additionalProperties": false
         }
       ]
@@ -78,7 +78,7 @@
               "type": "string"
             }
           },
-          "required": ["common", "rare", "epic", "legendary", "champion"],
+          "required": ["common", "rare", "epic", "legendary"],
           "additionalProperties": false
         }
       ]
@@ -131,6 +131,25 @@
           "additionalProperties": false
         },
         "image": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            }
+          },
+          "required": ["x", "y", "width", "height"],
+          "additionalProperties": false
+        },
+        "hero-image": {
           "type": "object",
           "properties": {
             "x": {

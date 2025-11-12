@@ -2,9 +2,9 @@ import { db, type CRCMDBSchema } from '../db';
 import {
   frameContainerNominalHeight,
   frameContainerNominalWidth,
+  getShape,
   getShapeImageSrc,
   rarities,
-  raritiesConfig,
   shapesConfig,
 } from '../renderers/shared';
 import { createToRelativeMapper } from '../renderers/form/utils';
@@ -15,9 +15,12 @@ import {
   dbCardToRendererOptions,
   downloadCard,
   exportCard,
+  getTemplate,
   shareCard,
 } from '../cards-utils';
 import { showNotification } from '../ui/notifications';
+import placeholderPortraitUrl from '../../images/portrait-placeholder.svg?url';
+import placeholderHeroUrl from '../../images/hero-placeholder.svg?url';
 import type { $Schema as TemplateSchema } from '../../templates/generated/types';
 
 type StoredCard = CRCMDBSchema['cards']['value'];
@@ -39,7 +42,10 @@ const renderImage = async (
   cardPreviewDialog: HTMLDialogElement,
 ) => {
   const { drawCanvas } = await import('../renderers/canvas');
-  const imageUrl = card.image.src ? URL.createObjectURL(card.image.src) : '';
+  const imageUrl = card.image?.src ? URL.createObjectURL(card.image.src) : '';
+  const heroImageUrl = card.heroImage?.src
+    ? URL.createObjectURL(card.heroImage.src)
+    : '';
   const canvas = await drawCanvas({
     template,
     language: card.language,
@@ -52,10 +58,16 @@ const renderImage = async (
     description: card.description,
     image: {
       src: imageUrl,
-      fit: card.image.fit,
+      fit: card.image?.fit ?? 'contain',
+    },
+    heroImage: {
+      src: heroImageUrl,
+      fit: card.heroImage?.fit ?? 'contain',
     },
     stats: card.stats,
     page,
+    imagePlaceholderSrc: placeholderPortraitUrl,
+    heroImagePlaceholderSrc: placeholderHeroUrl,
   });
   if (imageUrl) {
     URL.revokeObjectURL(imageUrl);
@@ -82,21 +94,23 @@ const createCardPreviewElement = (
   const cardImageViewport = document.createElement('div');
   cardImageViewport.classList.add('card-preview-image-viewport');
 
-  const cardImage = document.createElement('img');
-  cardImage.classList.add('card-preview-image');
-  cardImage.loading = 'lazy';
-  cardImage.decoding = 'async';
-  cardImage.alt = '';
-  cardImage.style.objectFit = card.image.fit;
-  cardImage.style.objectPosition = 'center';
-  if (card.image.src) {
-    const objectUrl = URL.createObjectURL(card.image.src);
-    cardImage.src = objectUrl;
-    cardImage.addEventListener('load', () => URL.revokeObjectURL(objectUrl), {
-      once: true,
-    });
+  if (card.image) {
+    const cardImage = document.createElement('img');
+    cardImage.classList.add('card-preview-image');
+    cardImage.loading = 'lazy';
+    cardImage.decoding = 'async';
+    cardImage.alt = '';
+    cardImage.style.objectFit = card.image.fit;
+    cardImage.style.objectPosition = 'center';
+    if (card.image.src) {
+      const objectUrl = URL.createObjectURL(card.image.src);
+      cardImage.src = objectUrl;
+      cardImage.addEventListener('load', () => URL.revokeObjectURL(objectUrl), {
+        once: true,
+      });
+    }
+    cardImageViewport.appendChild(cardImage);
   }
-  cardImageViewport.appendChild(cardImage);
 
   const containerSize = {
     width: frameContainerNominalWidth,
@@ -104,7 +118,7 @@ const createCardPreviewElement = (
   };
   const toContainerRelative = createToRelativeMapper(0, containerSize.width);
 
-  const shapeKey = raritiesConfig[card.rarity].shape;
+  const shapeKey = getShape(card);
   const shapeConfig = shapesConfig[shapeKey];
   const scaleX = containerSize.width / frameContainerNominalWidth;
   const scaleY = containerSize.height / frameContainerNominalHeight;
@@ -162,9 +176,7 @@ const createCardPreviewElement = (
   cardElement.appendChild(elixirElement);
 
   cardElement.addEventListener('click', async () => {
-    const { default: template } = (await import(
-      `../../templates/${card.templateId}.json`
-    )) as { default: TemplateSchema };
+    const template = await getTemplate(card.templateId);
 
     openedCardReference = card;
     openedTemplateReference = template;

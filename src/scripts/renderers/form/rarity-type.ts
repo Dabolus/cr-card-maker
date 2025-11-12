@@ -3,10 +3,11 @@ import { css, getCssSimplifiedColor } from './utils';
 import { getTemplateField, rarities, types } from '../shared';
 import type { DrawFormOptions, DrawFormPartParams } from './types';
 import type { Rarity } from '../types';
-import type { Url } from '../../../templates/generated/types';
+import type { Type, Url } from '../../../templates/generated/types';
 
 export interface DrawRarityTypeParams extends DrawFormPartParams {
-  onRarityChange: (rarity: Rarity) => void;
+  onRarityChange?: (rarity: Rarity) => void;
+  onTypeChange?: (type: Type) => void;
 }
 
 export const drawRarityType = ({
@@ -16,6 +17,7 @@ export const drawRarityType = ({
   form,
   page,
   onRarityChange,
+  onTypeChange,
 }: DrawRarityTypeParams) => {
   const i18n =
     options.template.i18n?.[
@@ -79,12 +81,36 @@ export const drawRarityType = ({
 
   const updateTypeBackground = setupBackground('type', typeBackgroundField);
 
-  (['rarity', 'type'] as const).forEach((key) => {
-    const labelField = getTemplateField(options.template, `${key}-label`, page);
+  // Not the most elegant way to do this, but the simplest given the current setup
+  const htmlElements = {
+    rarityLabel: null as HTMLDivElement | null,
+    rarityValue: null as HTMLSelectElement | null,
+    typeLabel: null as HTMLDivElement | null,
+    typeValue: null as HTMLSelectElement | null,
+  };
+  (
+    [
+      {
+        templateKey: 'rarity',
+        cardKey: 'rarity',
+        availableOptions: options.template['supported-rarities'] ?? rarities,
+      },
+      {
+        templateKey: 'type',
+        cardKey: 'cardType',
+        availableOptions: options.template['supported-types'] ?? types,
+      },
+    ] as const
+  ).forEach(({ templateKey, cardKey, availableOptions }) => {
+    const labelField = getTemplateField(
+      options.template,
+      `${templateKey}-label`,
+      page,
+    );
     if (labelField) {
       const labelTextAlign = labelField.textAlign ?? 'left';
       styles.insertRule(css`
-        #${key}-label {
+        #${templateKey}-label {
           left: ${toRelative(
             labelField.x -
               (labelTextAlign === 'center' ? labelField.maxWidth / 2 : 0),
@@ -97,14 +123,23 @@ export const drawRarityType = ({
           text-align: ${labelTextAlign};
         }
       `);
+      const labelElement = document.createElement('div');
+      labelElement.id = `${templateKey}-label`;
+      labelElement.innerText = t(`${templateKey}-label`, {}, i18n);
+      htmlElements[`${templateKey}Label`] = labelElement;
+      form.appendChild(labelElement);
     }
-    const valueField = getTemplateField(options.template, `${key}-value`, page);
+    const valueField = getTemplateField(
+      options.template,
+      `${templateKey}-value`,
+      page,
+    );
     if (valueField) {
       const valueShadowSize = toRelative(valueField.fontSize * 0.03);
       const valueShadowBottomSize = toRelative(valueField.fontSize * 0.09);
       const valueTextAlign = valueField.textAlign ?? 'left';
       styles.insertRule(css`
-        #${key}-value {
+        #${templateKey}-value {
           left: ${toRelative(
             valueField.x -
               (valueTextAlign === 'center' ? valueField.maxWidth / 2 + 24 : 4),
@@ -125,79 +160,65 @@ export const drawRarityType = ({
             ${valueShadowSize} ${valueShadowBottomSize} 0 #000;
         }
       `);
+      const valueElement = document.createElement('select');
+      valueElement.id = `${templateKey}-value`;
+      valueElement.name = templateKey;
+      valueElement.setAttribute('aria-label', t(`${templateKey}-label`));
+      valueElement.innerHTML = availableOptions
+        .map(
+          (value) =>
+            `<option value="${value}"${
+              value === options[cardKey] ? ' selected' : ''
+            }>${t(`${templateKey}-${value}`, {}, i18n)}</option>`,
+        )
+        .join('');
+      htmlElements[`${templateKey}Value`] = valueElement;
+      form.appendChild(valueElement);
     }
   });
 
-  const rarityLabel = document.createElement('div');
-  rarityLabel.id = 'rarity-label';
-  rarityLabel.innerText = t('rarity-label', {}, i18n);
-  form.appendChild(rarityLabel);
-
-  const rarityValue = document.createElement('select');
-  rarityValue.id = 'rarity-value';
-  rarityValue.name = 'rarity';
-  rarityValue.setAttribute('aria-label', t('rarity-label'));
-  rarityValue.innerHTML = (options.template['supported-rarities'] ?? rarities)
-    .map(
-      (r) =>
-        `<option value="${r}"${
-          r === options.rarity ? ' selected' : ''
-        }>${t(`rarity-${r}`, {}, i18n)}</option>`,
-    )
-    .join('');
-  form.appendChild(rarityValue);
-
-  const typeLabel = document.createElement('div');
-  typeLabel.id = 'type-label';
-  typeLabel.innerText = t('type-label', {}, i18n);
-  form.appendChild(typeLabel);
-
-  const typeValue = document.createElement('select');
-  typeValue.id = 'type-value';
-  typeValue.name = 'cardType';
-  typeValue.setAttribute('aria-label', t('type-label'));
-  typeValue.innerHTML = (options.template['supported-types'] ?? types)
-    .map(
-      (type) =>
-        `<option value="${type}"${
-          type === options.cardType ? ' selected' : ''
-        }>${t(`type-${type}`, {}, i18n)}</option>`,
-    )
-    .join('');
-  form.appendChild(typeValue);
-
-  const colorTargets: {
-    element: HTMLElement;
-    fieldKey: 'rarity-label' | 'rarity-value' | 'type-label' | 'type-value';
-  }[] = [
-    { element: rarityLabel, fieldKey: 'rarity-label' },
-    { element: rarityValue, fieldKey: 'rarity-value' },
-    { element: typeLabel, fieldKey: 'type-label' },
-    { element: typeValue, fieldKey: 'type-value' },
-  ];
-
   const applyColors = (rarity: Rarity) => {
-    colorTargets.forEach(({ element, fieldKey }) => {
-      const field = getTemplateField(options.template, fieldKey, page);
-      if (!field?.color) {
-        return;
+    (['rarity', 'type'] as const).forEach((templateKey) => {
+      const labelField = getTemplateField(
+        options.template,
+        `${templateKey}-label`,
+        page,
+      );
+      if (labelField?.color) {
+        const element = htmlElements[`${templateKey}Label`] as HTMLDivElement;
+        element.style.color = getCssSimplifiedColor(labelField.color, {
+          rarity,
+        });
       }
-      element.style.color = getCssSimplifiedColor(field.color, { rarity });
+      const valueField = getTemplateField(
+        options.template,
+        `${templateKey}-value`,
+        page,
+      );
+      if (valueField?.color) {
+        const element = htmlElements[
+          `${templateKey}Value`
+        ] as HTMLSelectElement;
+        element.style.color = getCssSimplifiedColor(valueField.color, {
+          rarity,
+        });
+      }
     });
   };
 
-  rarityValue.addEventListener('change', (e) => {
+  htmlElements.rarityValue?.addEventListener('change', (e) => {
     const newRarity = (e.target as HTMLSelectElement).value as Rarity;
     updateRarityBackground?.(newRarity);
     updateTypeBackground?.(newRarity);
     applyColors(newRarity);
-    onRarityChange(newRarity);
+    onRarityChange?.(newRarity);
     options.onChange?.({ ...options, rarity: newRarity }, 'rarity', newRarity);
   });
 
-  typeValue.addEventListener('change', (e) => {
+  htmlElements.typeValue?.addEventListener('change', (e) => {
     const newType = (e.target as HTMLSelectElement)
       .value as DrawFormOptions['cardType'];
+    onTypeChange?.(newType);
     options.onChange?.({ ...options, cardType: newType }, 'cardType', newType);
   });
 

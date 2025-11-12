@@ -1,22 +1,22 @@
 {
   "$schema": "./$schema.json",
-  "id": "standard",
+  "id": "tower-troop",
   "name-translation-key": "template-name",
   "width": 989,
-  "height": 1240,
+  "height": 1793,
   "supported-rarities": ["common", "rare", "epic", "legendary"],
-  "supported-types": ["troop", "building", "spell"],
+  "supported-types": ["tower-troop"],
   "fields": {
     "card-name": {
-      "x": 649,
-      "y": 88,
-      "fontSize": 58,
+      "x": 637,
+      "y": 149,
+      "fontSize": 48,
       "maxWidth": 660,
       "color": "#fff"
     },
     "level": {
       "x": 649,
-      "y": 154,
+      "y": 213,
       "fontSize": 40,
       "color": {
         "common": "#a4cbfa",
@@ -26,107 +26,116 @@
       }
     },
     "image": {
-      "x": 31,
-      "y": 47,
+      "x": 45,
+      "y": 43,
       "width": 242,
       "height": 332
     },
-    "elixir-cost": {
-      "x": 15,
-      "y": 49,
-      "width": 63,
-      "height": 75,
-      "fontSize": 41
-    },
-    "rarity-background": {
-      "x": 307,
-      "y": 307,
-      "width": 228,
-      "height": 85,
-      "url": {
-        "common": "/cards-assets/rarity-backgrounds/standard/common.png",
-        "rare": "/cards-assets/rarity-backgrounds/standard/rare.png",
-        "epic": "/cards-assets/rarity-backgrounds/standard/epic.png",
-        "legendary": "/cards-assets/rarity-backgrounds/standard/legendary.png"
-      }
-    },
-    "rarity-label": {
-      "x": 428,
-      "y": 331,
-      "fontSize": 28,
-      "maxWidth": 150,
-      "textAlign": "center",
-      "color": {
-        "common": "#3a568d",
-        "rare": "#7a3f15",
-        "epic": "#5c1d76",
-        "legendary": "#2e6851"
-      }
-    },
-    "rarity-value": {
-      "x": 428,
-      "y": 390,
-      "fontSize": 34,
-      "maxWidth": 190,
-      "textAlign": "center",
-      "color": {
-        "common": "#a7c9fa",
-        "rare": "#f2d171",
-        "epic": "#ddb3f9",
-        "legendary": ["#9f6", "#fff", "#f9f", "#ff9", "#66fffc"]
-      }
-    },
-    "type-background": {
-      "x": 565,
-      "y": 307,
-      "width": 228,
-      "height": 85,
-      "url": {
-        "common": "/cards-assets/rarity-backgrounds/standard/common.png",
-        "rare": "/cards-assets/rarity-backgrounds/standard/rare.png",
-        "epic": "/cards-assets/rarity-backgrounds/standard/epic.png",
-        "legendary": "/cards-assets/rarity-backgrounds/standard/legendary.png"
-      }
-    },
-    "type-label": {
-      "x": 685,
-      "y": 331,
-      "fontSize": 28,
-      "maxWidth": 190,
-      "textAlign": "center",
-      "color": {
-        "common": "#3a568d",
-        "rare": "#7a3f15",
-        "epic": "#5c1d76",
-        "legendary": "#2e6851"
-      }
-    },
-    "type-value": {
-      "x": 685,
-      "y": 390,
-      "fontSize": 34,
-      "maxWidth": 190,
-      "textAlign": "center",
-      "color": {
-        "common": "#a7c9fa",
-        "rare": "#f2d171",
-        "epic": "#ddb3f9",
-        "legendary": ["#9f6", "#fff", "#f9f", "#ff9", "#66fffc"]
-      }
+    "hero-image": {
+      "x": 6,
+      "y": 290,
+      "width": 977,
+      "height": 599
     }
   },
   "pages": [
+    {
+      "name-translation-key": "page-rarity-type-name",
+      "x": 0,
+      "y": 0,
+      "width": 989,
+      "height": 1793,
+      "background": "/cards-assets/backgrounds/tower-troop-rarity-type.png",
+      "fields": {
+        "rarity-background": {
+          "x": 187,
+          "y": 1352,
+          "width": 275,
+          "height": 95,
+          "url": {
+            "common": "/cards-assets/rarity-backgrounds/tower-troop/common.png",
+            "rare": "/cards-assets/rarity-backgrounds/tower-troop/rare.png",
+            "epic": "/cards-assets/rarity-backgrounds/tower-troop/epic.png",
+            "legendary": "/cards-assets/rarity-backgrounds/tower-troop/legendary.png"
+          }
+        },
+        "rarity-label": {
+          "x": 343,
+          "y": 1374,
+          "fontSize": 28,
+          "maxWidth": 150,
+          "textAlign": "center",
+          "color": {
+            "common": "#3a568d",
+            "rare": "#7a3f15",
+            "epic": "#5c1d76",
+            "legendary": "#2e6851"
+          }
+        },
+        "rarity-value": {
+          "x": 343,
+          "y": 1440,
+          "fontSize": 34,
+          "maxWidth": 240,
+          "textAlign": "center",
+          "color": {
+            "common": "#a7c9fa",
+            "rare": "#f2d171",
+            "epic": "#ddb3f9",
+            "legendary": ["#9f6", "#fff", "#f9f", "#ff9", "#66fffc"]
+          }
+        },
+        "type-background": {
+          "x": 502,
+          "y": 1352,
+          "width": 275,
+          "height": 95,
+          "url": {
+            "common": "/cards-assets/rarity-backgrounds/tower-troop/common.png",
+            "rare": "/cards-assets/rarity-backgrounds/tower-troop/rare.png",
+            "epic": "/cards-assets/rarity-backgrounds/tower-troop/epic.png",
+            "legendary": "/cards-assets/rarity-backgrounds/tower-troop/legendary.png"
+          }
+        },
+        "type-label": {
+          "x": 660,
+          "y": 1374,
+          "fontSize": 28,
+          "maxWidth": 190,
+          "textAlign": "center",
+          "color": {
+            "common": "#3a568d",
+            "rare": "#7a3f15",
+            "epic": "#5c1d76",
+            "legendary": "#2e6851"
+          }
+        },
+        "type-value": {
+          "x": 660,
+          "y": 1440,
+          "fontSize": 34,
+          "maxWidth": 240,
+          "textAlign": "center",
+          "color": {
+            "common": "#a7c9fa",
+            "rare": "#f2d171",
+            "epic": "#ddb3f9",
+            "legendary": ["#9f6", "#fff", "#f9f", "#ff9", "#66fffc"]
+          }
+        }
+      }
+    },
     {
       "name-translation-key": "page-stats-name",
       "x": 0,
       "y": 0,
       "width": 989,
-      "height": 1240,
-      "background": "/cards-assets/backgrounds/standard-stats.png",
+      "height": 1793,
+      "background": "/cards-assets/backgrounds/tower-troop-stats.png",
       "fields": {
         "stats": {
           "x": 58,
-          "y": 486,
+          "y": 931,
           "gapX": 19,
           "gapY": 6,
           "maxItems": 12,
@@ -166,16 +175,16 @@
       "x": 0,
       "y": 0,
       "width": 989,
-      "height": 1240,
-      "background": "/cards-assets/backgrounds/standard-description.png",
+      "height": 1793,
+      "background": "/cards-assets/backgrounds/tower-troop-description.png",
       "fields": {
         "description": {
           "x": 495,
-          "y": 532,
+          "y": 977,
           "maxWidth": 760,
           "fontSize": 40,
           "lineHeight": 44,
-          "maxLines": 9,
+          "maxLines": 10,
           "textBaseline": "middle",
           "color": "#4a566b"
         }
@@ -184,7 +193,8 @@
   ],
   "i18n": {
     "en": {
-      "template-name": "Standard",
+      "template-name": "Tower Troop",
+      "page-rarity-type-name": "Rarity & Type",
       "page-stats-name": "Stats",
       "page-description-name": "Description",
       "level": "Level {{level}}",
@@ -194,12 +204,11 @@
       "rarity-epic": "Epic",
       "rarity-legendary": "Legendary",
       "type-label": "TYPE",
-      "type-troop": "Troop",
-      "type-building": "Building",
-      "type-spell": "Spell"
+      "type-tower-troop": "Tower Troop"
     },
     "fr": {
       "template-name": "Standard",
+      "page-rarity-type-name": "Rareté et Type",
       "page-stats-name": "Statistiques",
       "page-description-name": "Description",
       "level": "Niveau {{level}}",
@@ -209,12 +218,11 @@
       "rarity-epic": "Épique",
       "rarity-legendary": "Légendaire",
       "type-label": "TYPE",
-      "type-troop": "Combattant",
-      "type-building": "Bâtiment",
-      "type-spell": "Sort"
+      "type-tower-troop": "Troupe de tour"
     },
     "de": {
       "template-name": "Standard",
+      "page-rarity-type-name": "Seltenheit und Typ",
       "page-stats-name": "Statistiken",
       "page-description-name": "Beschreibung",
       "level": "Level {{level}}",
@@ -224,12 +232,11 @@
       "rarity-epic": "Episch",
       "rarity-legendary": "Legendär",
       "type-label": "TYP",
-      "type-troop": "Einheit",
-      "type-building": "Gebäude",
-      "type-spell": "Zauber"
+      "type-tower-troop": "Turmtruppe"
     },
     "es": {
       "template-name": "Estándar",
+      "page-rarity-type-name": "Rareza y Tipo",
       "page-stats-name": "Estadísticas",
       "page-description-name": "Descripción",
       "level": "Nivel {{level}}",
@@ -239,12 +246,11 @@
       "rarity-epic": "Épica",
       "rarity-legendary": "Legendaria",
       "type-label": "TIPO",
-      "type-troop": "Tropa",
-      "type-building": "Estructura",
-      "type-spell": "Hechizo"
+      "type-tower-troop": "Tropa de las torres"
     },
     "it": {
       "template-name": "Standard",
+      "page-rarity-type-name": "Rarità e Tipo",
       "page-stats-name": "Statistiche",
       "page-description-name": "Descrizione",
       "level": "Livello {{level}}",
@@ -254,12 +260,11 @@
       "rarity-epic": "Epica",
       "rarity-legendary": "Leggendaria",
       "type-label": "TIPO",
-      "type-troop": "Truppa",
-      "type-building": "Edificio",
-      "type-spell": "Incantesimo"
+      "type-tower-troop": "Truppa delle torri"
     },
     "ja": {
       "template-name": "スタンダード",
+      "page-rarity-type-name": "レア度とタイプ",
       "page-stats-name": "ステータス",
       "page-description-name": "説明",
       "level": "レベル{{level}}",
@@ -269,12 +274,11 @@
       "rarity-epic": "スーパーレア",
       "rarity-legendary": "ウルトラレア",
       "type-label": "タイプ",
-      "type-troop": "ユニット",
-      "type-building": "建物",
-      "type-spell": "呪文"
+      "type-tower-troop": "タワーユニット"
     },
     "pt": {
       "template-name": "Padrão",
+      "page-rarity-type-name": "Raridade e Tipo",
       "page-stats-name": "Estatísticas",
       "page-description-name": "Descrição",
       "level": "Nível {{level}}",
@@ -284,12 +288,11 @@
       "rarity-epic": "Épica",
       "rarity-legendary": "Lendária",
       "type-label": "TIPO",
-      "type-troop": "Tropa",
-      "type-building": "Construção",
-      "type-spell": "Feitiço"
+      "type-tower-troop": "Tropa de Torre"
     },
     "nl": {
       "template-name": "Standaard",
+      "page-rarity-type-name": "Zeldzaamheid & Type",
       "page-stats-name": "Statistieken",
       "page-description-name": "Beschrijving",
       "level": "Level {{level}}",
@@ -299,12 +302,11 @@
       "rarity-epic": "Episch",
       "rarity-legendary": "Legendarisch",
       "type-label": "TYPE",
-      "type-troop": "Eenheid",
-      "type-building": "Gebouw",
-      "type-spell": "Spreuk"
+      "type-tower-troop": "Torentroep"
     },
     "ru": {
       "template-name": "Стандарт",
+      "page-rarity-type-name": "Редкость и Тип",
       "page-stats-name": "Статистика",
       "page-description-name": "Описание",
       "level": "{{level}}-й уровень",
@@ -314,9 +316,7 @@
       "rarity-epic": "Эпическая",
       "rarity-legendary": "Легендарная",
       "type-label": "ТИП",
-      "type-troop": "Войско",
-      "type-building": "Здание",
-      "type-spell": "Заклинание"
+      "type-tower-troop": "Воин для башни"
     }
   }
 }

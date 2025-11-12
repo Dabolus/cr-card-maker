@@ -1,10 +1,10 @@
 import { fitContentInContainer } from '../form/utils';
 import {
-  raritiesConfig,
   shapesConfig,
   frameContainerNominalWidth,
   frameContainerNominalHeight,
   getTemplateField,
+  getShape,
 } from '../shared';
 import type { DrawCanvasPartParams } from './types';
 
@@ -21,13 +21,13 @@ export const drawImage = ({
   shapeImage,
 }: DrawImageParams) => {
   const imageField = getTemplateField(options.template, 'image', page);
-  if (!imageField) {
+  if (!options.image || !imageField) {
     return;
   }
 
   ctx.save();
 
-  const shapeConfig = shapesConfig[raritiesConfig[options.rarity].shape];
+  const shapeConfig = shapesConfig[getShape(options)];
 
   const scaleX = imageField.width / frameContainerNominalWidth;
   const scaleY = imageField.height / frameContainerNominalHeight;

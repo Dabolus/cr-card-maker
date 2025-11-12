@@ -1,6 +1,10 @@
 import type { RendererBaseOptions } from '../types';
 
 export type DrawFormOptions = RendererBaseOptions & {
+  /** The placeholder image to show when no image has been selected */
+  imagePlaceholderSrc: string;
+  /** The placeholder hero image to show when no hero image has been selected */
+  heroImagePlaceholderSrc: string;
   /**
    * The default page number to render (1-based).
    * If not provided, the first page will be rendered.

@@ -1,5 +1,7 @@
 import { loadImage, readFileAsDataUrl } from './utils';
 import { t } from './i18n';
+import placeholderPortraitUrl from '../images/portrait-placeholder.svg?url';
+import placeholderHeroUrl from '../images/hero-placeholder.svg?url';
 import type { CRCMDBSchema } from './db';
 import type { Card, RendererBaseOptions } from './renderers/types';
 import type { DrawCanvasOptions } from './renderers/canvas/types';
@@ -13,6 +15,11 @@ export const canShareImages =
       (_, index) => new File([], `${index}.png`, { type: 'image/png' }),
     ),
   });
+
+export const getTemplate = async (id: string): Promise<TemplateSchema> => {
+  const { default: template } = await import(`../templates/${id}.json`);
+  return template as TemplateSchema;
+};
 
 const renderImage = async (params: DrawCanvasOptions) => {
   const { drawCanvas } = await import('./renderers/canvas');
@@ -40,18 +47,20 @@ const renderImage = async (params: DrawCanvasOptions) => {
 export const rendererOptionsToDbCard = async (
   params: RendererBaseOptions,
 ): Promise<CRCMDBSchema['cards']['value']> => {
-  const cardImageBlob = await loadImage(params.image.src)
-    .then((img) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      const ctx = canvas.getContext('2d')!;
-      ctx.drawImage(img, 0, 0);
-      return new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, 'image/png', 1),
-      );
-    })
-    .catch(() => null);
+  const cardImageBlob = params.image?.src
+    ? await loadImage(params.image.src)
+        .then((img) => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          const ctx = canvas.getContext('2d')!;
+          ctx.drawImage(img, 0, 0);
+          return new Promise<Blob | null>((resolve) =>
+            canvas.toBlob(resolve, 'image/png', 1),
+          );
+        })
+        .catch(() => null)
+    : null;
   const parsedElixirCost = Number(params.elixirCost);
   return {
     id: params.cardId,
@@ -65,7 +74,7 @@ export const rendererOptionsToDbCard = async (
     description: params.description,
     image: {
       src: cardImageBlob,
-      fit: params.image.fit,
+      fit: params.image?.fit ?? 'contain',
     },
     stats: params.stats ?? [],
     createdAt: new Date(),
@@ -76,12 +85,13 @@ export const rendererOptionsToDbCard = async (
 export const dbCardToRendererOptions = async (
   card: CRCMDBSchema['cards']['value'],
 ): Promise<RendererBaseOptions> => {
-  const { default: template } = (await import(
-    `../templates/${card.templateId}.json`
-  )) as { default: TemplateSchema };
-  const cardImageSrc = card.image.src
+  const template = await getTemplate(card.templateId);
+  const cardImageSrc = card.image?.src
     ? await readFileAsDataUrl(card.image.src)
-    : (await import('../images/placeholder.svg')).default;
+    : undefined;
+  const heroImageSrc = card.heroImage?.src
+    ? await readFileAsDataUrl(card.heroImage.src)
+    : undefined;
   return {
     cardId: card.id,
     template,
@@ -94,7 +104,11 @@ export const dbCardToRendererOptions = async (
     description: card.description,
     image: {
       src: cardImageSrc,
-      fit: card.image.fit,
+      fit: card.image?.fit ?? 'contain',
+    },
+    heroImage: {
+      src: heroImageSrc,
+      fit: card.heroImage?.fit ?? 'contain',
     },
     stats: card.stats,
   };
@@ -190,7 +204,7 @@ const getBrotli = (): BrotliWrapper => {
   }
 };
 
-export const parseCard = async (file: File): Promise<RendererBaseOptions> => {
+export const parseCard = async (file: File): Promise<Card> => {
   const brotli = getBrotli();
   const cardDataArrayBuffer = await file.arrayBuffer();
   const fullCard = new Uint8Array(cardDataArrayBuffer);
@@ -236,7 +250,12 @@ export const downloadCard = async (params: RendererBaseOptions) => {
   const [{ saveAs }, ...imageFiles] = await Promise.all([
     import('file-saver'),
     ...Array.from({ length: totalPages }, (_, index) =>
-      renderImage({ ...params, page: index + 1 }),
+      renderImage({
+        ...params,
+        page: index + 1,
+        imagePlaceholderSrc: placeholderPortraitUrl,
+        heroImagePlaceholderSrc: placeholderHeroUrl,
+      }),
     ),
   ]);
   imageFiles.forEach((file) => saveAs(file));
@@ -246,7 +265,12 @@ export const shareCard = async (params: RendererBaseOptions) => {
   const totalPages = params.template.pages?.length ?? 1;
   const imageFiles = await Promise.all(
     Array.from({ length: totalPages }, (_, index) =>
-      renderImage({ ...params, page: index + 1 }),
+      renderImage({
+        ...params,
+        page: index + 1,
+        imagePlaceholderSrc: placeholderPortraitUrl,
+        heroImagePlaceholderSrc: placeholderHeroUrl,
+      }),
     ),
   );
   await navigator.share({ files: imageFiles });
